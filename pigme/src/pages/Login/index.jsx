@@ -1,9 +1,18 @@
 import styled from "@emotion/styled";
-
 import Pig from "/public/pig.svg";
 import LogoText from "/public/logo-text.svg";
+import KakaoLoginBtn from "/public/kakao-login-button.svg";
 
-export default function Login() {
+const SocialKakao = () => {
+    const Rest_api_key = import.meta.env.VITE_KAKAO_REST_API_KEY; // REST API KEY
+    const redirect_uri = "http://localhost:5173/auth"; // Redirect URI
+    // OAuth 요청 URL
+    const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
+
+    const handleLogin = () => {
+        window.location.href = kakaoURL; // 카카오 로그인 요청으로 리디렉션
+    };
+
     return (
         <>
             <Style.Wrapper>
@@ -14,13 +23,15 @@ export default function Login() {
                     <img src={LogoText} />
                 </Style.LogoWrapper>
                 <Style.Footer>
-                    <Style.LoginButton>로그인</Style.LoginButton>
+                    <Style.LoginButton onClick={handleLogin}>
+                        <img src={KakaoLoginBtn} />
+                    </Style.LoginButton>
                     <Style.CopyRight>Copyright ⓒ 2024. 순대렐라와이쑤신장군. All rights reserved.</Style.CopyRight>
                 </Style.Footer>
             </Style.Wrapper>
         </>
     );
-}
+};
 
 const Style = {
     Wrapper: styled.div`
@@ -51,7 +62,7 @@ const Style = {
         align-items: center;
         width: 100%;
     `,
-    LoginButton: styled.div`
+    LoginButton: styled.button`
         padding: 0 0 30px;
     `,
     CopyRight: styled.div`
@@ -61,3 +72,5 @@ const Style = {
         padding: 0 0 15px;
     `,
 };
+
+export default SocialKakao;
