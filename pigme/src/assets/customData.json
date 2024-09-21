@@ -1,0 +1,32 @@
+{
+    "colors": [
+      { "id": 1, "name": "basic", "image": "/colors/pig.svg" },
+      { "id": 2, "name": "cadetblue", "image": "/colors/cadetblue-pig.svg" },
+      { "id": 3, "name": "darkkhaki", "image": "/colors/darkkhaki-pig.svg" },
+      { "id": 4, "name": "hotpink", "image": "/colors/hotpink-pig.svg"},
+      { "id": 5, "name": "green", "image": "/colors/green-pig.svg"},
+      { "id": 6, "name": "lightsteelblue", "image": "/colors/lightsteelblue-pig.svg"},
+      { "id": 7, "name": "limesalmon", "image": "/colors/limesalmon-pig.svg"},
+      { "id": 8, "name": "mediumpurple", "image": "/colors/mediumpurple-pig.svg"},
+      { "id": 9, "name": "orange", "image": "/colors/orange-pig.svg"},
+      { "id": 10, "name": "purple", "image": "/colors/purple-pig.svg"},
+      { "id": 11, "name": "redorange", "image": "/colors/redorange-pig.svg"},
+      { "id": 12, "name": "sandybrown", "image": "/colors/sandybrown-pig.svg"},
+      { "id": 13, "name": "whiteblue", "image": "/colors/whiteblue-pig.svg"}
+
+    ],
+    "items": [
+      { "id": 1, "name": "watermelon", "image": "/items/watermelon.svg" ,"x": -40, "y": 55},
+      { "id": 2, "name": "rudolph", "image": "/items/rudolph.svg", "x": -40, "y":-20 },
+      { "id": 3, "name": "dancing", "image": "/items/dancing.svg", "x": 140, "y":10},
+      { "id": 4, "name": "umbrella", "image": "/items/umbrella.svg", "x": 120, "y":-30},
+      { "id": 5, "name": "unicorn", "image": "/items/unicorn.svg", "x": -60, "y":50},
+      { "id": 6, "name": "pie", "image": "/items/pie.svg"},
+      { "id": 7, "name": "winter-hat", "image": "/items/winter-hat.svg"},
+      { "id": 8, "name": "winter-tree", "image": "/items/winter-tree.svg"},
+      { "id": 9, "name": "glove", "image": "/items/glove.svg"},
+      { "id": 10, "name": "santa-hat", "image": "/items/santa-hat.svg"},
+      { "id": 11, "name": "mask", "image": "/items/mask.svg"},
+      { "id": 12, "name": "LGUplus", "image": "/items/LGUplus.svg"}
+    ]
+  }
