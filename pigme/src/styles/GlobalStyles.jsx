@@ -9,6 +9,8 @@ const GlobalStyles = () => {
                 ${emotionNormalize}
                 * {
                     box-sizing: border-box;
+                    scrollbar-width: none; // 스크롤의 기본 스타일은 지우고 스크롤의 기능만 사용
+                    overscroll-behavior: none; // 스크롤이 오버되는 것을 막아준다.
                 }
                 html,
                 body {
@@ -20,13 +22,13 @@ const GlobalStyles = () => {
                     justify-content: center;
                     align-items: center;
                     box-sizing: border-box;
-                    background-color: black;
-                    overflow: hidden;
+                    background-color: #F5F5F5;
                 }
                 button {
                     border: none;
                     background: none;
                     cursor: pointer;
+                    padding: 0;
                 }
                 p {
                     margin: 0;
