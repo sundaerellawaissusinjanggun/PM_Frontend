@@ -3,7 +3,7 @@ import ReactModal from "react-modal";
 import styled from "@emotion/styled";
 import { Block, Text } from "../../styles/UI";
 
-export default function BasicModal({ isOpen, title, width, height, maxHeight, children, setIsOpen }) {
+export default function BasicModal({ isOpen, setIsOpen, title, width, height, children }) {
     useEffect(() => {
         const handleClose = event => {
             if (event.key === "Escape") {
