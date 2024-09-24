@@ -8,9 +8,9 @@ export default function App() {
     return (
         <Style.Wrapper>
             {/* <Test /> */}
-            {/* <Login /> */}
-            {/* <Profile/> */}
-            <CustomizePage/>
+            <Login />
+            {/* <Profile /> */}
+            {/* <CustomizePage/> */}
         </Style.Wrapper>
     );
 }
@@ -20,6 +20,6 @@ const Style = {
         border-radius: 30px;
         overflow: hidden;
         box-shadow: 0 0 25px rgba(0, 0, 0, 0.25);
-        background: url(/background.svg);    
-        `,
+        background: url(/background.svg);
+    `,
 };
