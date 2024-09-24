@@ -9,10 +9,12 @@ export default function CustomizePage() {
         navigate("/home");
     };
     return (
-        <Style.Wrapper>
+        <>
             <button onClick={handleGoToMain}>다음</button>
-            <Custombox />
-        </Style.Wrapper>
+            <Style.Wrapper>
+                <Custombox />
+            </Style.Wrapper>
+        </>
     );
 }
 
