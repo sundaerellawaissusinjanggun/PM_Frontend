@@ -4,16 +4,16 @@ import Header from '../../components/Layout/Header';
 import { Block } from '../../styles/UI';
 
 export default function Profile() {
-  return (
-    <>
-      <Style.HeaderWrapper>
-        <Header />
-      </Style.HeaderWrapper>
-      <Block.AbsoluteBox bottom="0">
-        <Context />
-      </Block.AbsoluteBox>
-    </>
-  );
+    return (
+        <>
+            <Style.HeaderWrapper>
+                <Header showHomeIcon={true} />
+            </Style.HeaderWrapper>
+            <Style.ContextWrapper>
+                <Context />
+            </Style.ContextWrapper>
+        </>
+    );
 }
 
 const Style = {

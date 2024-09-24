@@ -1,18 +1,14 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import Custombox from "../../components/Custom/Custombox";
-import { useNavigate } from "react-router-dom";
 
 export default function CustomizePage() {
-    const navigate = useNavigate();
-    const handleGoToMain = () => {
-        navigate("/home");
-    };
     return (
-        <Style.Wrapper>
-            <button onClick={handleGoToMain}>다음</button>
-            <Custombox />
-        </Style.Wrapper>
+        <>
+            <Style.Wrapper>
+                <Custombox />
+            </Style.Wrapper>
+        </>
     );
 }
 
