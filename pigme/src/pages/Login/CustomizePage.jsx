@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 import Custombox from "../../components/Custom/Custombox";
 import { useNavigate } from "react-router-dom";
+import { Block } from "../../styles/UI";
 
 export default function CustomizePage() {
     const navigate = useNavigate();

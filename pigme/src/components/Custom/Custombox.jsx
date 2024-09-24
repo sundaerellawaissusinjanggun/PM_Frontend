@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
 import customData from "../../assets/customData";
+import { Block } from "../../styles/UI";
 
 export default function Custombox() {
     const [selectedTab, setSelectedTab] = useState("color");
@@ -41,18 +42,24 @@ export default function Custombox() {
                         />
                     )}
                 </PigDisplay>
-
-                <div>
-                    {/* 탭 메뉴 */}
-                    <TabContainer>
-                        <TabButton isActive={selectedTab === "color"} onClick={() => setSelectedTab("color")}>
-                            COLOR
-                        </TabButton>
-                        <TabButton isActive={selectedTab === "items"} onClick={() => setSelectedTab("items")}>
-                            ITEMS
-                        </TabButton>
-                    </TabContainer>
-
+                {/* 탭 메뉴 */}
+                <TabContainer>
+                    <TabButton isActive={selectedTab === "color"} onClick={() => setSelectedTab("color")}>
+                        COLOR
+                    </TabButton>
+                    <TabButton isActive={selectedTab === "items"} onClick={() => setSelectedTab("items")}>
+                        ITEMS
+                    </TabButton>
+                </TabContainer>
+                <Block.AbsoluteBox
+                    width="100%"
+                    height="60%"
+                    padding="10px 0 0 3px"
+                    borderRadius="30px"
+                    bgColor="white"
+                    bottom="0"
+                    left="0"
+                >
                     {/* 조건에 따른 콘텐츠 렌더링 */}
                     <OptionsContainer>
                         {selectedTab === "color" && (
@@ -92,7 +99,7 @@ export default function Custombox() {
                             </>
                         )}
                     </OptionsContainer>
-                </div>
+                </Block.AbsoluteBox>
             </CustomizationScreen>
         </>
     );
@@ -103,14 +110,15 @@ const CustomizationScreen = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
-    width: 100%;
-    height: 90%;
+    width: 92%;
+    height: 35%;
+    margin-bottom: 470px;
+    /* border: 1px solid red; */
 `;
 
 const PigDisplay = styled.div`
     position: relative;
     width: 140px;
-    height: 170px;
 `;
 
 const Pig = styled.img`
@@ -140,7 +148,7 @@ const TabButton = styled.button`
     background: ${({ isActive }) => (isActive ? "#faf1f4" : "#f6e5ea")};
     border: none;
     height: 32px;
-    padding: 0px 60px;
+    padding: 0px 62px;
     border-radius: 20px;
     font-size: 16px;
     color: #ff7195;
@@ -157,7 +165,7 @@ const OptionsContainer = styled.div`
     margin-top: 20px;
     max-height: 430px; /* 최대 높이 설정 */
     overflow-y: auto; /* 세로로 스크롤 가능 */
-    padding: 0 10px;
+    padding: 0 30px;
 `;
 
 const OptionButton = styled.button`
