@@ -1,14 +1,23 @@
 import BasicModal from "./BasicModal";
 import { Block, Text } from "../../styles/UI";
 
-export default function ConfirmModal({ isOpen, setIsOpen, onConfirm }) {
+export default function ConfirmModal({
+    isOpen,
+    setIsOpen,
+    title,
+    message,
+    confirmText,
+    cancelText,
+    onConfirm,
+    onCancel,
+}) {
     return (
-        <BasicModal isOpen={isOpen} setIsOpen={setIsOpen} width="340px" height="292px" title="확인">
+        <BasicModal isOpen={isOpen} setIsOpen={setIsOpen} width="340px" height="292px" title={title}>
             <Block.FlexBox direction="column" alignItems="center">
-                <Text.Body1>이 작업을 정말로 진행하시겠습니까?</Text.Body1>
+                <Text.Body1>{message}</Text.Body1>
                 <Block.FlexBox justifyContent="space-between">
-                    <button onClick={() => setIsOpen(false)}>취소</button>
-                    <button onClick={onConfirm}>확인</button>
+                    <button onClick={onCancel || (() => setIsOpen(false))}>{cancelText}</button>
+                    <button onClick={onConfirm}>{confirmText}</button>
                 </Block.FlexBox>
             </Block.FlexBox>
         </BasicModal>

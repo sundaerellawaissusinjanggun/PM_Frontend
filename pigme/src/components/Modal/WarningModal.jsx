@@ -1,12 +1,12 @@
 import BasicModal from "./BasicModal";
 import { Block, Text } from "../../styles/UI";
 
-export default function WarningModal({ isOpen, setIsOpen }) {
+export default function WarningModal({ isOpen, setIsOpen, title, message, actionText, onAction }) {
     return (
-        <BasicModal isOpen={isOpen} setIsOpen={setIsOpen} width="340px" height="292px" title="경고">
+        <BasicModal isOpen={isOpen} setIsOpen={setIsOpen} width="340px" height="292px" title={title}>
             <Block.FlexBox direction="column" alignItems="center">
-                <Text.Body1>로그인이 필요한 기능입니다!</Text.Body1>
-                <button onClick={() => alert("로그인 페이지로 이동")}>로그인 페이지로 이동하기</button>
+                <Text.Body1>{message}</Text.Body1>
+                <button onClick={onAction}>{actionText}</button>
             </Block.FlexBox>
         </BasicModal>
     );
