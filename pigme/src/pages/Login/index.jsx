@@ -2,8 +2,11 @@ import styled from "@emotion/styled";
 import Pig from "/colors/pig.svg";
 import LogoText from "/public/logo-text.svg";
 import KakaoLoginBtn from "/public/kakao-login-button.svg";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+    const navigate = useNavigate();
+
     const Rest_api_key = import.meta.env.VITE_KAKAO_REST_API_KEY; // REST API KEY
     const redirect_uri = "http://localhost:5173/auth"; // Redirect URI
     // OAuth 요청 URL
@@ -15,35 +18,23 @@ export default function Login() {
 
     return (
         <>
-            <Style.Wrapper>
-                <Style.LogoWrapper>
-                    <Style.LogoImage>
-                        <img src={Pig} />
-                    </Style.LogoImage>
-                    <img src={LogoText} />
-                </Style.LogoWrapper>
-                <Style.Footer>
-                    <Style.LoginButton onClick={handleLogin}>
-                        <img src={KakaoLoginBtn} />
-                    </Style.LoginButton>
-                    <Style.CopyRight>Copyright ⓒ 2024. 순대렐라와이쑤신장군. All rights reserved.</Style.CopyRight>
-                </Style.Footer>
-            </Style.Wrapper>
+            <Style.LogoWrapper>
+                <Style.LogoImage>
+                    <img src={Pig} />
+                </Style.LogoImage>
+                <img src={LogoText} />
+            </Style.LogoWrapper>
+            <Style.Footer>
+                <Style.LoginButton onClick={handleLogin}>
+                    <img src={KakaoLoginBtn} />
+                </Style.LoginButton>
+                <Style.CopyRight>Copyright ⓒ 2024. 순대렐라와이쑤신장군. All rights reserved.</Style.CopyRight>
+            </Style.Footer>
         </>
     );
 }
 
 const Style = {
-    Wrapper: styled.div`
-        width: 390px;
-        height: 844px;
-        background: url(public/background.svg);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        position: relative;
-    `,
     LogoWrapper: styled.div`
         display: flex;
         align-items: center;
