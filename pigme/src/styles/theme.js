@@ -9,6 +9,7 @@ const color = {
     senderMessageBox: "#6245ff",
     receiverMessageBox: "#e9e9e9",
     pink: "#ff7195",
+    purple: "#AA9ECB",
 };
 
 const fontSize = {

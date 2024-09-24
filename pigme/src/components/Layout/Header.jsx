@@ -7,25 +7,19 @@ export default function Header({ showHomeIcon, showBackIcon, showMyPageIcon, sho
     const navigate = useNavigate();
 
     return (
-        <Style.Wrapper>
-            {showBackIcon && <button onClick={() => navigate(-1)}>뒤로가기</button>}
-            {showHomeIcon && <button onClick={() => navigate("/home")}>홈</button>}
-            {showMyPageIcon && <button onClick={() => navigate("/profile")}>마이페이지</button>}
+        <>
+            {showBackIcon && (
+                <button onClick={() => navigate(-1)}>
+                    <Text.MiniTitle2 color="purple">뒤로</Text.MiniTitle2>
+                </button>
+            )}
+            {showHomeIcon && <button onClick={() => navigate("/home")}>홈</button>} {/* 이미지 대체하기 */}
+            {showMyPageIcon && <button onClick={() => navigate("/profile")}>프로필</button>} {/* 이미지 대체하기 */}
             {showNextIcon && (
                 <button onClick={() => navigate("/profileSetup")}>
                     <Text.MiniTitle2 color="white">완료</Text.MiniTitle2>
                 </button>
             )}
-        </Style.Wrapper>
+        </>
     );
 }
-
-const Style = {
-    Wrapper: styled.div`
-        width: 90%;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        flex-direction: row;
-    `,
-};
