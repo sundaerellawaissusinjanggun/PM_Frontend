@@ -6,6 +6,7 @@ import NotFound from "./pages/NotFound";
 import Auth from "./pages/Login/Auth";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
+import ProfileSetupPage from "./pages/Login/ProfileSetupPage";
 
 export const router = createBrowserRouter([
     {
@@ -31,6 +32,10 @@ export const router = createBrowserRouter([
             {
                 path: "/profile",
                 element: <Profile />,
+            },
+            {
+                path: "/profileSetup",
+                element: <ProfileSetupPage />,
             },
         ],
         errorElement: <NotFound />,

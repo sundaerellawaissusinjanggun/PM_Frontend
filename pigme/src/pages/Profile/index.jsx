@@ -6,7 +6,7 @@ export default function Profile() {
     return (
         <>
             <Style.HeaderWrapper>
-                <Header />
+                <Header showHomeIcon={true} />
             </Style.HeaderWrapper>
             <Style.ContextWrapper>
                 <Context />

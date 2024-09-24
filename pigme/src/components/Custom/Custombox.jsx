@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { useState } from "react";
 import customData from "../../assets/customData";
 import { Block, Text } from "../../styles/UI";
+import Header from "../Layout/Header";
 
 export default function Custombox() {
     const [selectedTab, setSelectedTab] = useState("color");
@@ -27,6 +28,7 @@ export default function Custombox() {
     return (
         <>
             <CustomizationScreen>
+                <Header showNextIcon={true} />
                 {/* 돼지 캐릭터 영역 */}
                 <PigDisplay>
                     <Pig src={selectedColor.image} alt="Selected Pig" /> {/* Use the selected color's image */}
@@ -45,10 +47,10 @@ export default function Custombox() {
                 {/* 탭 메뉴 */}
                 <TabContainer>
                     <TabButton isActive={selectedTab === "color"} onClick={() => setSelectedTab("color")}>
-                        <Text.MiniTitle color="pink">COLOR</Text.MiniTitle>
+                        <Text.MiniTitle1 color="pink">COLOR</Text.MiniTitle1>
                     </TabButton>
                     <TabButton isActive={selectedTab === "items"} onClick={() => setSelectedTab("items")}>
-                        <Text.MiniTitle color="pink">ITEMS</Text.MiniTitle>
+                        <Text.MiniTitle1 color="pink">ITEMS</Text.MiniTitle1>
                     </TabButton>
                 </TabContainer>
                 <Block.AbsoluteBox
@@ -148,7 +150,7 @@ const TabButton = styled.button`
     background: ${({ isActive }) => (isActive ? "#faf1f4" : "#f6e5ea")};
     border: none;
     height: 32px;
-    padding: 0px 58px;
+    padding: 0px 64px;
     border-radius: 20px;
     font-size: 16px;
     color: #ff7195;
