@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
 import customData from "../../assets/customData";
-import { Block } from "../../styles/UI";
+import { Block, Text } from "../../styles/UI";
 
 export default function Custombox() {
     const [selectedTab, setSelectedTab] = useState("color");
@@ -45,10 +45,10 @@ export default function Custombox() {
                 {/* 탭 메뉴 */}
                 <TabContainer>
                     <TabButton isActive={selectedTab === "color"} onClick={() => setSelectedTab("color")}>
-                        COLOR
+                        <Text.MiniTitle color="pink">COLOR</Text.MiniTitle>
                     </TabButton>
                     <TabButton isActive={selectedTab === "items"} onClick={() => setSelectedTab("items")}>
-                        ITEMS
+                        <Text.MiniTitle color="pink">ITEMS</Text.MiniTitle>
                     </TabButton>
                 </TabContainer>
                 <Block.AbsoluteBox
@@ -148,7 +148,7 @@ const TabButton = styled.button`
     background: ${({ isActive }) => (isActive ? "#faf1f4" : "#f6e5ea")};
     border: none;
     height: 32px;
-    padding: 0px 62px;
+    padding: 0px 58px;
     border-radius: 20px;
     font-size: 16px;
     color: #ff7195;
