@@ -22,7 +22,8 @@ const GlobalStyles = () => {
                     justify-content: center;
                     align-items: center;
                     box-sizing: border-box;
-                    background-color: #F5F5F5;
+                    background: url("/pixel_back2_half.png") no-repeat center;
+                    background-size: cover;
                 }
                 button {
                     border: none;

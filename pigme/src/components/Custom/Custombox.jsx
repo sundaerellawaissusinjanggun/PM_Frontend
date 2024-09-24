@@ -112,10 +112,9 @@ const CustomizationScreen = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
-    width: 92%;
+
     height: 35%;
     margin-bottom: 470px;
-    /* border: 1px solid red; */
 `;
 
 const PigDisplay = styled.div`
@@ -136,14 +135,14 @@ const ItemImg = styled.img`
 
 const TabContainer = styled.div`
     width: 100%;
-    height: 52px;
+    height: 43px;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
     background-color: #f6e5ea;
     border-radius: 30px;
     padding: 10px 0;
-    border: 10px solid white;
+    border: 6px solid white;
 `;
 
 const TabButton = styled.button`

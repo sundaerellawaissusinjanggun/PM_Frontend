@@ -15,7 +15,7 @@ const Style = {
     FullWrapper: styled.div`
         border-radius: 30px;
         overflow: hidden;
-        box-shadow: 0 0 25px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
         background: url(/background.svg);
     `,
     Wrapper: styled.div`
