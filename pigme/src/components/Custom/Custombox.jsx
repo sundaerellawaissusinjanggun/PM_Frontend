@@ -24,75 +24,77 @@ export default function Custombox() {
     };
 
     return (
-        <CustomizationScreen>
-            {/* 돼지 캐릭터 영역 */}
-            <PigDisplay>
-                <Pig src={selectedColor.image} alt="Selected Pig" /> {/* Use the selected color's image */}
-                {selectedItem && selectedItem.image && (
-                    <ItemImg
-                        src={selectedItem.image}
-                        alt="Item"
-                        style={{
-                            position: "absolute",
-                            top: `${selectedItem.y}px`, // JSON에서 가져온 y 좌표
-                            left: `${selectedItem.x}px`, // JSON에서 가져온 x 좌표
-                        }}
-                    />
-                )}
-            </PigDisplay>
+        <>
+            <CustomizationScreen>
+                {/* 돼지 캐릭터 영역 */}
+                <PigDisplay>
+                    <Pig src={selectedColor.image} alt="Selected Pig" /> {/* Use the selected color's image */}
+                    {selectedItem && selectedItem.image && (
+                        <ItemImg
+                            src={selectedItem.image}
+                            alt="Item"
+                            style={{
+                                position: "absolute",
+                                top: `${selectedItem.y}px`, // JSON에서 가져온 y 좌표
+                                left: `${selectedItem.x}px`, // JSON에서 가져온 x 좌표
+                            }}
+                        />
+                    )}
+                </PigDisplay>
 
-            <div>
-                {/* 탭 메뉴 */}
-                <TabContainer>
-                    <TabButton isActive={selectedTab === "color"} onClick={() => setSelectedTab("color")}>
-                        COLOR
-                    </TabButton>
-                    <TabButton isActive={selectedTab === "items"} onClick={() => setSelectedTab("items")}>
-                        ITEMS
-                    </TabButton>
-                </TabContainer>
+                <div>
+                    {/* 탭 메뉴 */}
+                    <TabContainer>
+                        <TabButton isActive={selectedTab === "color"} onClick={() => setSelectedTab("color")}>
+                            COLOR
+                        </TabButton>
+                        <TabButton isActive={selectedTab === "items"} onClick={() => setSelectedTab("items")}>
+                            ITEMS
+                        </TabButton>
+                    </TabContainer>
 
-                {/* 조건에 따른 콘텐츠 렌더링 */}
-                <OptionsContainer>
-                    {selectedTab === "color" && (
-                        <>
-                            {customData.colors.map(color => (
-                                <OptionButton
-                                    key={color.id}
-                                    onClick={() => handleColorChange(color)}
-                                    isSelected={selectedColor.id === color.id}
-                                >
+                    {/* 조건에 따른 콘텐츠 렌더링 */}
+                    <OptionsContainer>
+                        {selectedTab === "color" && (
+                            <>
+                                {customData.colors.map(color => (
+                                    <OptionButton
+                                        key={color.id}
+                                        onClick={() => handleColorChange(color)}
+                                        isSelected={selectedColor.id === color.id}
+                                    >
+                                        <Box.Wrapper>
+                                            <img src={color.image} alt={color.name} />
+                                        </Box.Wrapper>
+                                    </OptionButton>
+                                ))}
+                            </>
+                        )}
+                        {selectedTab === "items" && (
+                            <>
+                                <OptionButton onClick={handleEmptyItemSelection} isSelected={selectedItem === null}>
                                     <Box.Wrapper>
-                                        <img src={color.image} alt={color.name} />
+                                        <img src="/none.svg" alt="Empty" style={{ width: "50px", height: "50px" }} />
                                     </Box.Wrapper>
                                 </OptionButton>
-                            ))}
-                        </>
-                    )}
-                    {selectedTab === "items" && (
-                        <>
-                            <OptionButton onClick={handleEmptyItemSelection} isSelected={selectedItem === null}>
-                                <Box.Wrapper>
-                                    <img src="/none.svg" alt="Empty" style={{ width: "50px", height: "50px" }} />
-                                </Box.Wrapper>
-                            </OptionButton>
 
-                            {customData.items.map(item => (
-                                <OptionButton
-                                    key={item.id}
-                                    onClick={() => handleItemChange(item)}
-                                    isSelected={selectedItem?.id === item.id}
-                                >
-                                    <Box.Wrapper>
-                                        <img src={item.image} alt={item.name} />
-                                    </Box.Wrapper>
-                                </OptionButton>
-                            ))}
-                        </>
-                    )}
-                </OptionsContainer>
-            </div>
-        </CustomizationScreen>
+                                {customData.items.map(item => (
+                                    <OptionButton
+                                        key={item.id}
+                                        onClick={() => handleItemChange(item)}
+                                        isSelected={selectedItem?.id === item.id}
+                                    >
+                                        <Box.Wrapper>
+                                            <img src={item.image} alt={item.name} />
+                                        </Box.Wrapper>
+                                    </OptionButton>
+                                ))}
+                            </>
+                        )}
+                    </OptionsContainer>
+                </div>
+            </CustomizationScreen>
+        </>
     );
 }
 
@@ -123,36 +125,43 @@ const ItemImg = styled.img`
 `;
 
 const TabContainer = styled.div`
+    width: 100%;
+    height: 52px;
     display: flex;
-    justify-content: center;
-    margin-top: 20px;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: #f6e5ea;
+    border-radius: 30px;
+    padding: 10px 0;
+    border: 10px solid white;
 `;
 
 const TabButton = styled.button`
-    background: ${({ isActive }) => (isActive ? "#f08" : "#ddd")};
+    background: ${({ isActive }) => (isActive ? "#faf1f4" : "#f6e5ea")};
     border: none;
-    padding: 10px 20px;
-    margin: 0 10px;
+    height: 32px;
+    padding: 0px 60px;
     border-radius: 20px;
     font-size: 16px;
-    color: white;
+    color: #ff7195;
     cursor: pointer;
-
     &:hover {
-        background: #f08;
+        color: white;
     }
 `;
 
 const OptionsContainer = styled.div`
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3개의 컬럼 */
-    gap: 30px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
     margin-top: 20px;
     max-height: 430px; /* 최대 높이 설정 */
     overflow-y: auto; /* 세로로 스크롤 가능 */
+    padding: 0 10px;
 `;
 
 const OptionButton = styled.button`
+    width: 88px;
     background: none;
     border: none;
     cursor: pointer;
