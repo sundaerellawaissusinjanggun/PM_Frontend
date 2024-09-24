@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
-import React, {useState} from 'react';
+import {useState} from 'react';
 import customData from '../../assets/customData.json';
-import Item from '/items/watermelon.svg';
 
 export default function Custombox() {
   const [selectedTab, setSelectedTab] = useState('color');

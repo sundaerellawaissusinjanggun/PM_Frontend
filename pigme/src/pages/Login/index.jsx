@@ -1,9 +1,9 @@
 import styled from "@emotion/styled";
-import Pig from "/public/pig.svg";
+import Pig from "/colors/pig.svg";
 import LogoText from "/public/logo-text.svg";
 import KakaoLoginBtn from "/public/kakao-login-button.svg";
 
-const SocialKakao = () => {
+export default function Login() {
     const Rest_api_key = import.meta.env.VITE_KAKAO_REST_API_KEY; // REST API KEY
     const redirect_uri = "http://localhost:5173/auth"; // Redirect URI
     // OAuth 요청 URL
@@ -31,7 +31,7 @@ const SocialKakao = () => {
             </Style.Wrapper>
         </>
     );
-};
+}
 
 const Style = {
     Wrapper: styled.div`
@@ -72,5 +72,3 @@ const Style = {
         padding: 0 0 15px;
     `,
 };
-
-export default SocialKakao;
