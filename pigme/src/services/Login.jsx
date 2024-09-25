@@ -1,3 +1,4 @@
+// Login.jsx
 import { useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
@@ -9,40 +10,39 @@ export default function Login() {
   const navigate = useNavigate();
   const auth = getAuth();
 
-  // Kakao SDK 초기화
+  // Initialize Kakao SDK
   useEffect(() => {
     if (window.Kakao) {
       window.Kakao.init(KAKAO_APP_KEY);
     }
   }, []);
 
-  // 로그인 상태 확인 및 리다이렉트 처리
+  // Check login status and handle redirection
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        // 만약 로그인된 상태라면
         console.log('User already logged in:', user);
-        // 커스텀 완료 여부에 따라 페이지 리다이렉트
-        const customComplete = user.customComplete; // 예시, 실제 customComplete 여부를 확인
+        const customComplete = user.customComplete; // Example: Check custom completion status
         if (customComplete) {
-          navigate('/home'); // 커스텀 완료된 경우 홈으로 리다이렉트
+          navigate('/home'); // Redirect to home if custom is complete
         } else {
-          navigate('/custom'); // 커스텀 미완료된 경우 커스텀 페이지로 리다이렉트
+          navigate('/custom'); // Redirect to custom if custom is incomplete
         }
       } else {
-        // 로그인되지 않은 경우에만 로그인 페이지 표시
+        // Show the login page only if not logged in
         setLoading(false);
       }
     });
 
-    return () => unsubscribe(); // 컴포넌트 언마운트 시 구독 해제
+    return () => unsubscribe(); // Clean up subscription on unmount
   }, [auth, navigate]);
 
+  // Handle Kakao login
   const handleKakaoLogin = () => {
     window.Kakao.Auth.login({
       success: (response) => {
         console.log('Login Success:', response);
-        // 로그인 성공 후 사용자 정보 가져오기
+        // After login success, fetch user info if needed
       },
       fail: (error) => {
         console.error('Kakao login failed:', error);
@@ -56,7 +56,7 @@ export default function Login() {
 
   return (
     <div>
-      <button onClick={handleKakaoLogin}>Kakao 로그인</button>
+      <button onClick={handleKakaoLogin}>Kakao Login</button>
     </div>
   );
 }

@@ -7,6 +7,7 @@ export default function Header({
   showBackIcon,
   showMyPageIcon,
   showNextIcon,
+  onComplete, // Add onComplete prop
 }) {
   const navigate = useNavigate();
 
@@ -32,10 +33,12 @@ export default function Header({
         />
       )}
       {showNextIcon && (
-        <button onClick={() => navigate('/profileSetup')}>
+        <button onClick={onComplete}>
+          {/* Call the onComplete function here */}
           <Text.MiniTitle2 color="white">완료</Text.MiniTitle2>
         </button>
       )}
     </>
   );
 }
+``;
