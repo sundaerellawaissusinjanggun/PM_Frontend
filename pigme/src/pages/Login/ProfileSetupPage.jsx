@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/Layout/Header';
 import { Block, Button, Input, Text } from '../../styles/UI';
-import Pig from '/colors/pig.svg';
+import ProfileAvatar from '../../components/Layout/ProfileAvatar';
 
 export default function ProfileSetupPage() {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ export default function ProfileSetupPage() {
         padding="0 0 0 20px"
         justifyContent="center"
       >
-        <img src={Pig} /> {/* 나중에 DB에 저장되어있는 돼지로 불러와야 함 */}
+        <ProfileAvatar />
       </Block.AbsoluteBox>
 
       {/* input 영역*/}

@@ -33,7 +33,13 @@ export default function Custombox() {
       await setDoc(doc(db, 'userSelections', userId), {
         userId,
         selectedColor: selectedColor.image,
-        ...(selectedItem && { selectedItem: selectedItem.image }),
+        ...(selectedItem && {
+          selectedItem: {
+            image: selectedItem.image,
+            x: selectedItem.x || 0,
+            y: selectedItem.y || 0,
+          },
+        }),
       });
       console.log('Selections saved to Firebase');
       navigate('/profileSetup');
@@ -41,7 +47,6 @@ export default function Custombox() {
       console.error('Error saving selections:', error);
     }
   };
-
   return (
     <>
       {/* Header Area */}
@@ -197,8 +202,8 @@ const OptionsContainer = styled.div`
   grid-template-columns: repeat(3, 1fr);
   gap: 25px;
   margin-top: 20px;
-  max-height: 430px; /* Set maximum height */
-  overflow-y: auto; /* Allow vertical scrolling */
+  max-height: 430px;
+  overflow-y: auto;
   padding: 0 30px;
 `;
 
@@ -207,7 +212,7 @@ const OptionButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
-  border: 1px solid ${({ isSelected }) => (isSelected ? '#FF7195' : '#BEBEBE')}; // Change border color based on selection
+  border: 1px solid ${({ isSelected }) => (isSelected ? '#FF7195' : '#BEBEBE')};
   border-radius: 20px;
   img {
     width: 50px;
