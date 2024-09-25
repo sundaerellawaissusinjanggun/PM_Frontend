@@ -26,7 +26,7 @@ export default function Header({
       )}
       {showMyPageIcon && (
         <Img.AngledIcon
-          width="20px"
+          width="30px"
           src="/profile.svg"
           onClick={() => navigate('/profile')}
         />
