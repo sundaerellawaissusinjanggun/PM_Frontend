@@ -50,6 +50,10 @@ export const Block = {
         bottom: ${props => props.bottom};
         left: ${props => props.left};
         z-index: ${props => props.zIndex};
+        display: flex;
+        flex-direction: ${props => props.direction};
+        justify-content: ${props => props.justifyContent};
+        align-items: ${props => props.alignItems};
         width: ${props => (props.width ? props.width : "100%")};
         height: ${props => (props.width ? props.height : "auto")};
         margin: ${props => props.margin};
@@ -90,9 +94,23 @@ export const Block = {
         padding: ${props => props.padding};
         border: ${props => props.border};
         border-radius: ${props => props.borderRadius};
-        background-color: ${props => props.color};
+        background-color: ${props => props.bgColor};
         cursor: ${props => props.pointer && "pointer"};
         /* border: 1px solid red; */
+    `,
+    BackgroundWhiteBox: styled.div`
+        width: 100%;
+        height: 70%;
+        padding: ${props => props.padding};
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 30px;
+        background-color: white;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     `,
 };
 

@@ -59,7 +59,8 @@ export default function Custombox() {
                 <Block.AbsoluteBox
                     width="100%"
                     height="60%"
-                    padding="10px 0 0 3px"
+                    justifyContent="center"
+                    alignItems="center"
                     borderRadius="30px"
                     bgColor="white"
                     bottom="0"
@@ -115,14 +116,13 @@ const CustomizationScreen = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
-
     height: 35%;
     margin-bottom: 470px;
 `;
 
 const PigDisplay = styled.div`
     position: relative;
-    width: 140px;
+    padding: 20px 0 0 30px;
 `;
 
 const Pig = styled.img`
