@@ -10,6 +10,7 @@ export default function BasicModal({
   width,
   height,
   children,
+  showCloseIcon = true,
 }) {
   useEffect(() => {
     const handleClose = (event) => {
@@ -54,13 +55,16 @@ export default function BasicModal({
       >
         <Style.Wrapper>
           <Text.Body1>{title}</Text.Body1>
-          <Block.FlexBox
-            onClick={() => setIsOpen(false)}
-            justifyContent="flex-end"
-            padding="0 20px 0 0"
-          >
-            <Img.AngledIcon width="20px" src="/cancel.svg" />
-          </Block.FlexBox>
+
+          {showCloseIcon && (
+            <Block.FlexBox
+              onClick={() => setIsOpen(false)}
+              padding="0 20px 0 0"
+              justifyContent="flex-end"
+            >
+              <Img.AngledIcon width="20px" src="/cancel.svg" />
+            </Block.FlexBox>
+          )}
 
           <Block.FlexBox>{children}</Block.FlexBox>
         </Style.Wrapper>
