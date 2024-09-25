@@ -1,8 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import Header from "../../components/Layout/Header";
 import { Block, Button, Input, Text } from "../../styles/UI";
 import Pig from "/colors/pig.svg";
 
 export default function ProfileSetupPage() {
+    const navigate = useNavigate();
+    const handleGoToMainHome = () => navigate("/home");
     return (
         <>
             {/* 헤더 영역 */}
@@ -30,7 +33,9 @@ export default function ProfileSetupPage() {
                     <Input.TextAreaInput type="text" placeholder="내용을 작성해주세요." />
 
                     <Button.SubmitBtn height="50px" bgColor="grayDeep">
-                        <Text.Body3 color="white">프로필 저장하기</Text.Body3>
+                        <Text.Body3 color="white" onClick={handleGoToMainHome}>
+                            프로필 저장하기
+                        </Text.Body3>
                     </Button.SubmitBtn>
                 </Block.FlexBox>
             </Block.BackgroundWhiteBox>
