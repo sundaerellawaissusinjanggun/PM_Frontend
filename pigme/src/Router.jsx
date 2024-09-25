@@ -8,7 +8,7 @@ import Home from './pages/Home';
 import Profile from './pages/Profile';
 import ProfileSetupPage from './pages/Login/ProfileSetupPage';
 import MyPiggyBankPage from './pages/Profile/MyPiggyBankPage';
-import MessageInputPage from './pages/MessageInputPage';
+import MessageInputPage from './pages/Message/MessageInputPage';
 import LikedMessagesPage from './pages/Profile/LikedMessagesPage';
 
 export const router = createBrowserRouter([
@@ -41,15 +41,15 @@ export const router = createBrowserRouter([
         element: <ProfileSetupPage />,
       },
       {
-        path: '/MyBank',
+        path: '/myBank',
         element: <MyPiggyBankPage />,
       },
       {
-        path: '/Like',
+        path: '/like',
         element: <LikedMessagesPage />,
       },
       {
-        path: '/Message',
+        path: '/message',
         element: <MessageInputPage />,
       },
     ],
