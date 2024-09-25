@@ -27,21 +27,35 @@ export default function ProfileSetupPage() {
       <Block.BackgroundWhiteBox>
         <Block.FlexBox
           direction="column"
-          padding="28px"
+          padding="42px 28px"
           justifyContent="space-between"
+          alignItems="center"
         >
-          <Text.Body3>*이메일</Text.Body3>
-          <Text.Body2>zuitopia.dev@gmail.com</Text.Body2>
-          {/* 현재 로그인 하고 있는 이메일 받아와서 보여주는 부분이므로 추후 수정 */}
+          <Block.ColumnFlexBox gap="12px">
+            <Text.Body3>*이메일</Text.Body3>
+            <Block.FlexBox width="94%" padding="0 0 30px 10px">
+              <Text.Body2>zuitopia.dev@gmail.com</Text.Body2>
+              {/* 현재 로그인 하고 있는 이메일 받아와서 보여주는 부분이므로 추후 수정 */}
+            </Block.FlexBox>
+            <Text.Body3>*닉네임</Text.Body3>
+            <Input.BasicInput
+              type="text"
+              placeholder="닉네임을 입력해주세요."
+            />
+            <Block.FlexBox width="94%" justifyContent="flex-end">
+              <Text.Warning>
+                한글/영문 최소 2자 이상, 최대 9자까지 가능
+              </Text.Warning>
+            </Block.FlexBox>
 
-          <Text.Body3>*닉네임</Text.Body3>
-          <Input.BasicInput type="text" placeholder="닉네임을 입력해주세요." />
-          <Text.Body1>한글/영문 최소 2자 이상, 최대 9자까지 가능</Text.Body1>
-
-          <Text.Body3>*한 줄 소개 (선택)</Text.Body3>
-          <Input.TextAreaInput type="text" placeholder="내용을 작성해주세요." />
-
+            <Text.Body3>*한 줄 소개 (선택)</Text.Body3>
+            <Input.TextAreaInput
+              type="text"
+              placeholder="내용을 작성해주세요."
+            />
+          </Block.ColumnFlexBox>
           <Button.SubmitBtn
+            width="321px"
             height="50px"
             bgColor="grayDeep"
             onClick={handleGoToMainHome}
