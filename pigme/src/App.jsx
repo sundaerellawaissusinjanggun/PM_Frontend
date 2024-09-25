@@ -1,14 +1,14 @@
-import styled from "@emotion/styled";
-import { Outlet } from "react-router-dom";
+import styled from '@emotion/styled';
+import { Outlet } from 'react-router-dom';
 
 export default function App() {
-    return (
-        <Style.FullWrapper>
-            <Style.Wrapper>
-                <Outlet />
-            </Style.Wrapper>
-        </Style.FullWrapper>
-    );
+  return (
+    <Style.FullWrapper>
+      <Style.Wrapper>
+        <Outlet />
+      </Style.Wrapper>
+    </Style.FullWrapper>
+  );
 }
 
 const Style = {
@@ -28,4 +28,5 @@ const Style = {
         flex-direction: column;
         position: relative;
     `,
+
 };

@@ -1,13 +1,25 @@
 // 나의 저금통
-
-import Background from '../../components/Layout/Background';
+import { useState } from 'react';
+import styled from '@emotion/styled';
 import { Block } from '../../styles/UI';
+import Background from '../../components/Layout/Background';
 import Header from '../../components/Layout/Header';
 import ProfileAvatar from '../../components/Layout/ProfileAvatar';
+import PiggyBankMessages from '../../components/Hooks/PiggyBankMessages';
 import Coin from '/coin.svg';
-import styled from '@emotion/styled';
 
 export default function MyPiggyBankPage() {
+  const [messages, setMessages] = useState([]);
+
+  // 메시지를 추가하는 함수
+  const addMessage = (messageText) => {
+    const newMessage = {
+      id: messages.length + 1,
+      text: messageText,
+    };
+    setMessages([...messages, newMessage]); // 새로운 메시지를 추가
+  };
+
   return (
     <Wrapper>
       <HeaderWrapper>
@@ -27,7 +39,9 @@ export default function MyPiggyBankPage() {
               현재 보유 코인 <StatsCount>12개</StatsCount>
             </StatsDisplay>
           </UserStatsContainer>
-          코인 들어가는 곳
+          <MessageWrapper>
+            <PiggyBankMessages messages={messages} />
+          </MessageWrapper>
         </Background>
       </Block.AbsoluteBox>
     </Wrapper>
@@ -79,3 +93,8 @@ const StatsCount = styled.span`
   color: black;
 `;
 const CoinContainer = styled.div``;
+
+const MessageWrapper = styled.div`
+  position: absolute;
+  padding: 30px;
+`;
