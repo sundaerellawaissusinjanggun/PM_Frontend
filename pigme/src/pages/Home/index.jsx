@@ -53,7 +53,7 @@
 
 import React from 'react';
 import styled from '@emotion/styled';
-import Fence from '/home-fence.svg';
+import Fence from '/fence.svg';
 import { Block } from '../../styles/UI';
 import Header from '../../components/Layout/Header';
 
@@ -66,10 +66,7 @@ export default function Home() {
           <Header showMyPageIcon={true} />
         </Block.HeaderBox>
         <div>돼지 한마리 두마리 ~</div>
-        <Block.AbsoluteBox bottom="0" left="0" alignItems="center">
-          <FenceImage src={Fence} />
-          <FenceImage src={Fence} />
-          <FenceImage src={Fence} />
+        <Block.AbsoluteBox bottom="0" left="14px" alignItems="center">
           <FenceImage src={Fence} />
         </Block.AbsoluteBox>
       </HomeWrapper>
