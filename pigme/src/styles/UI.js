@@ -39,6 +39,13 @@ export const Text = {
         cursor: ${props => props.pointer && "pointer"};
         margin-bottom: 3px;
     `,
+    Body3: styled.span`
+        display: inline-block;
+        font-weight: ${({ weight }) => (weight ? theme.fontWeight[weight] : theme.fontWeight.bold)};
+        font-size: ${({ size }) => (size ? theme.fontSize[size] : theme.fontSize.large)};
+        color: ${({ color }) => (color ? theme.color[color] : theme.color.black)};
+        cursor: ${props => props.pointer && "pointer"};
+    `,
 };
 
 // 재사용 될 블록

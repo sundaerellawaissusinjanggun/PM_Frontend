@@ -1,5 +1,5 @@
 import Header from "../../components/Layout/Header";
-import { Block } from "../../styles/UI";
+import { Block, Text } from "../../styles/UI";
 import Pig from "/colors/pig.svg";
 
 export default function ProfileSetupPage() {
@@ -17,7 +17,20 @@ export default function ProfileSetupPage() {
 
             {/* input 영역*/}
             <Block.BackgroundWhiteBox>
-                <input type="text" />
+                <Block.FlexBox direction="column">
+                    <Text.Body3>*이메일</Text.Body3>
+                    <Text.Body2>zuitopia.dev@gmail.com</Text.Body2>
+                    {/* 현재 로그인 하고 있는 이메일 받아와서 보여주는 부분이므로 추후 수정 */}
+
+                    <Text.Body3>*닉네임</Text.Body3>
+                    <input type="text" placeholder="닉네임을 입력해주세요." />
+                    <Text.Body1>한글/영문 최소 2자 이상, 최대 9자까지 가능</Text.Body1>
+
+                    <Text.Body3>*한 줄 소개 (선택)</Text.Body3>
+                    <textarea type="text" placeholder="내용을 작성해주세요." />
+
+                    <button>프로필 저장하기</button>
+                </Block.FlexBox>
             </Block.BackgroundWhiteBox>
         </>
     );
