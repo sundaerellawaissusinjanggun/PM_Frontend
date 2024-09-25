@@ -183,14 +183,14 @@ export const Img = {
     height: ${(props) => (props.height ? props.height : 'auto')};
     border: ${(props) => props.border};
     border-radius: 100%;
-    cursor: ${(props) => props.pointer && 'pointer'};
+    cursor: pointer;
   `,
   AngledIcon: styled.img`
     display: block;
     width: ${(props) => (props.width ? props.width : '100%')};
     height: ${(props) => (props.height ? props.height : 'auto')};
     border: ${(props) => props.border};
-    cursor: ${(props) => props.pointer && 'pointer'};
+    cursor: pointer;
   `,
 };
 
