@@ -1,11 +1,28 @@
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/Layout/Header';
 import { Block, Button, Input, Text } from '../../styles/UI';
 import ProfileAvatar from '../../components/Layout/ProfileAvatar';
 
 export default function ProfileSetupPage() {
+  const [nickname, setNickname] = useState('');
   const navigate = useNavigate();
-  const handleGoToMainHome = () => navigate('/home');
+
+  const handleGoToMainHome = () => {
+    const isNicknameValid = nickname.length >= 2 && nickname.length <= 9;
+
+    if (!isNicknameValid) {
+      alert('닉네임은 한글/영문 최소 2자 이상, 최대 9자까지 입력해야 합니다.');
+      return;
+    }
+
+    navigate('/home');
+  };
+
+  const handleNicknameChange = (e) => {
+    setNickname(e.target.value);
+  };
+
   return (
     <>
       {/* 헤더 영역 */}
@@ -41,6 +58,8 @@ export default function ProfileSetupPage() {
             <Input.BasicInput
               type="text"
               placeholder="닉네임을 입력해주세요."
+              value={nickname}
+              onChange={handleNicknameChange}
             />
             <Block.FlexBox width="94%" justifyContent="flex-end">
               <Text.Warning>
