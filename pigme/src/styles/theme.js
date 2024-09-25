@@ -1,7 +1,7 @@
 const color = {
   black: '#1a1a1a',
   white: '#fff',
-  grayDeep: '#979797',
+  grayDeep: '#838383',
   grayLight: '#bebebe',
   grayDate: '#888',
   inputBackground: '#e3e3e35f',

@@ -28,16 +28,26 @@ export default function MessageShowPage() {
       <Block.BackgroundWhiteBox padding="30px">
         <Block.FlexBox direction="column" height="100%">
           <Block.RowFlexBox>
+            {/* 받는 사람 */}
             <ReceiverTextWrapper>
               <Text.Title color="grayLight">To.&nbsp;</Text.Title>
               <Text.Title>닉네임</Text.Title>
             </ReceiverTextWrapper>
+
+            {/* 좋아요 버튼 영역*/}
             <Block.FlexBox justifyContent="flex-end">
               <Like />
             </Block.FlexBox>
           </Block.RowFlexBox>
+
+          {/* 메세지 영역 */}
+          <MessageWrapper>
+            내 우리 놀러와서 나도 돈 줘 저금 100개만 해주라 .. 제 발 나 지금
+            2픽밖에 없어서 나한테 쓴글 못보는중이야 궁금해 궁금해애애
+          </MessageWrapper>
+          {/* 보낸 사람 */}
           <SenderTextWrapper>
-            <Text.Title color="grayLight">From.</Text.Title>
+            <Text.Title color="grayLight">From.&nbsp;</Text.Title>
             <Text.Title>닉네임</Text.Title>
           </SenderTextWrapper>
         </Block.FlexBox>
@@ -58,4 +68,11 @@ const SenderTextWrapper = styled.div`
   margin-top: auto;
   white-space: nowrap;
   /* width: 100%; */
+`;
+const MessageWrapper = styled(Block.FlexBox)`
+  height: 100%;
+  padding: 30px 50px;
+  align-items: center;
+  color: #838383;
+  font-size: 20px;
 `;
