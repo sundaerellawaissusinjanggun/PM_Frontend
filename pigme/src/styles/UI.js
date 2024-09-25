@@ -81,6 +81,25 @@ export const Text = {
     cursor: ${(props) => props.pointer && 'pointer'};
     text-decoration: underline;
   `,
+  ModalTitle: styled.span`
+    display: inline-block;
+    font-weight: ${({ weight }) =>
+      weight ? theme.fontWeight[weight] : theme.fontWeight.bold};
+    font-size: ${({ size }) =>
+      size ? theme.fontSize[size] : theme.fontSize.title};
+    color: ${({ color }) => (color ? theme.color[color] : theme.color.black)};
+    cursor: ${(props) => props.pointer && 'pointer'};
+  `,
+  ModalTitle2: styled.span`
+    display: inline-block;
+    font-weight: ${({ weight }) =>
+      weight ? theme.fontWeight[weight] : theme.fontWeight.bold};
+    font-size: ${({ size }) =>
+      size ? theme.fontSize[size] : theme.fontSize.title};
+    color: ${({ color }) =>
+      color ? theme.color[color] : theme.color.grayLight};
+    cursor: ${(props) => props.pointer && 'pointer'};
+  `,
   ModalText: styled.span`
     display: inline-block;
     font-weight: ${({ weight }) =>
@@ -221,7 +240,8 @@ export const Button = {
     height: ${(props) => (props.height ? props.height : 'auto')};
     border: ${(props) => props.border};
     border-radius: 10px;
-    background-color: ${({ bgColor }) => theme.color[bgColor]};
+    background-color: ${({ bgColor }) =>
+      bgColor ? theme.color[bgColor] : '#F7F7F7'};
     color: white;
     transition: background-color 0.3s ease;
 

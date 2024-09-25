@@ -20,7 +20,7 @@ export default function Header({
       {showHomeIcon && (
         <Img.AngledIcon
           width="20px"
-          src="/home_button.svg"
+          src="/home-button.svg"
           onClick={() => navigate('/home')}
         />
       )}

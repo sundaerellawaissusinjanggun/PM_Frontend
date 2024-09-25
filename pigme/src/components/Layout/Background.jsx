@@ -11,6 +11,6 @@ const Style = {
     padding: 30px;
     background-color: #fff;
     border-radius: 20px 20px 0 0;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px -10px 15px -2px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   `,
 };
