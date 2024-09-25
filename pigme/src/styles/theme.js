@@ -15,8 +15,9 @@ const color = {
 const fontSize = {
     small: "12px",
     medium: "14px",
+    large: "16px",
     subtitle: "18px",
-    title: "32px",
+    maintitle: "32px",
 };
 
 const fontWeight = {

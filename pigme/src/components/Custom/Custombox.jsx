@@ -27,8 +27,11 @@ export default function Custombox() {
 
     return (
         <>
+            {/* 헤더 영역 */}
+            <Block.HeaderBox justifyContent="space-between">
+                <Header showNextIcon={true} showBackIcon={true} />
+            </Block.HeaderBox>
             <CustomizationScreen>
-                <Header showNextIcon={true} />
                 {/* 돼지 캐릭터 영역 */}
                 <PigDisplay>
                     <Pig src={selectedColor.image} alt="Selected Pig" /> {/* Use the selected color's image */}
@@ -56,7 +59,8 @@ export default function Custombox() {
                 <Block.AbsoluteBox
                     width="100%"
                     height="60%"
-                    padding="10px 0 0 3px"
+                    justifyContent="center"
+                    alignItems="center"
                     borderRadius="30px"
                     bgColor="white"
                     bottom="0"
@@ -112,15 +116,13 @@ const CustomizationScreen = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
-    width: 92%;
     height: 35%;
     margin-bottom: 470px;
-    /* border: 1px solid red; */
 `;
 
 const PigDisplay = styled.div`
     position: relative;
-    width: 140px;
+    padding: 20px 0 0 30px;
 `;
 
 const Pig = styled.img`
@@ -129,21 +131,21 @@ const Pig = styled.img`
 `;
 
 const ItemImg = styled.img`
-    width: 150px;
-    height: 150px;
+    /* width: 150px; */
+    /* height: 150px; */
     position: absolute;
 `;
 
 const TabContainer = styled.div`
     width: 100%;
-    height: 52px;
+    height: 43px;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
     background-color: #f6e5ea;
     border-radius: 30px;
     padding: 10px 0;
-    border: 10px solid white;
+    border: 6px solid white;
 `;
 
 const TabButton = styled.button`
