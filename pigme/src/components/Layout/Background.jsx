@@ -7,7 +7,7 @@ export default function Background({ children }) {
 const Style = {
   Wrapper: styled.div`
     width: 390px;
-    height: 619px;
+    height: 600px;
     padding: 30px;
     background-color: #fff;
     border-radius: 20px 20px 0 0;
