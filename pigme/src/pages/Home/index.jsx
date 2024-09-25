@@ -72,6 +72,7 @@ export default function Home() {
           <FenceImage src={Fence} />
         </Block.AbsoluteBox>
       </HomeWrapper>
+ 
     </>
   );
 }
