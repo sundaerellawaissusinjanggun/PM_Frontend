@@ -1,24 +1,61 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+// Auth.jsx
+import { useEffect } from 'react';
+import axios from 'axios'; // Axios for API requests
+import { useNavigate } from 'react-router-dom';
 
 export default function Auth() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        // URL에서 인증 코드 추출
-        const urlParams = new URLSearchParams(window.location.search);
-        const authCode = urlParams.get("code");
+  useEffect(() => {
+    // Extract the authentication code from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const authCode = urlParams.get('code');
 
-        if (authCode) {
-            // 여기서 인증 코드를 사용하여 서버와 통신 후,
-            // 성공하면 /custom 페이지로 리디렉션
+    if (authCode) {
+      // Check if Kakao SDK is initialized
+      if (window.Kakao && !window.Kakao.isInitialized()) {
+        window.Kakao.init(import.meta.env.VITE_KAKAO_APP_KEY);
+      }
 
-            navigate("/custom");
-        } else {
-            // 인증 코드가 없으면 에러 처리
-            console.error("카카오 인증 실패 또는 인증 코드 없음");
-        }
-    }, [navigate]);
+      // Use the authentication code to request an access token
+      axios
+        .post(
+          'https://kauth.kakao.com/oauth/token',
+          {
+            grant_type: 'authorization_code',
+            client_id: import.meta.env.VITE_KAKAO_APP_KEY, // Fetch Kakao App Key from .env
+            redirect_uri: 'http://localhost:5173/auth', // Redirect URI
+            code: authCode,
+            client_secret: import.meta.env.VITE_KAKAO_CLIENT_SECRET, // Add client_secret if necessary
+          },
+          { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+        )
+        .then((response) => {
+          const accessToken = response.data.access_token;
+          console.log('Access Token:', accessToken);
 
-    return <div>인증 처리 중...</div>;
+          // Set the access token and request user info
+          if (window.Kakao) {
+            window.Kakao.Auth.setAccessToken(accessToken);
+            window.Kakao.API.request({
+              url: '/v2/user/me',
+              success: (res) => {
+                console.log('User Info:', res);
+                navigate('/custom'); // On success, redirect to the custom page
+              },
+              fail: (error) => {
+                console.error('Failed to get user info:', error);
+              },
+            });
+          }
+        })
+        .catch((error) => {
+          console.error('Kakao authentication failed:', error);
+        });
+    } else {
+      console.error('Kakao authentication failed or no authorization code');
+    }
+  }, [navigate]);
+
+  return <div>Processing authentication...</div>;
 }
