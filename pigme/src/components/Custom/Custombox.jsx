@@ -28,7 +28,9 @@ export default function Custombox() {
     return (
         <>
             <CustomizationScreen>
-                <Header showNextIcon={true} />
+                <Block.FlexBox width="90%" justifyContent="space-between">
+                    <Header showNextIcon={true} showBackIcon={true} />
+                </Block.FlexBox>
                 {/* 돼지 캐릭터 영역 */}
                 <PigDisplay>
                     <Pig src={selectedColor.image} alt="Selected Pig" /> {/* Use the selected color's image */}
