@@ -73,6 +73,27 @@ export const Block = {
         background-color: ${props => props.bgColor};
         cursor: ${props => props.pointer && "pointer"};
     `,
+    HeaderBox: styled.div`
+        position: absolute;
+        top: 0;
+        margin-top: 35px;
+        right: ${props => props.right};
+        bottom: ${props => props.bottom};
+        left: ${props => props.left};
+        z-index: ${props => props.zIndex};
+        display: flex;
+        flex-direction: ${props => props.direction};
+        justify-content: ${props => props.justifyContent};
+        align-items: ${props => props.alignItems};
+        width: 85%;
+        height: ${props => (props.width ? props.height : "auto")};
+        padding: ${props => props.padding};
+        border: ${props => props.border};
+        border-radius: ${props => props.borderRadius};
+        background-color: ${props => props.color};
+        cursor: ${props => props.pointer && "pointer"};
+        /* border: 1px solid red; */
+    `,
 };
 
 // 재사용 될 이미지

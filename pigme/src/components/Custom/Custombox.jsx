@@ -27,10 +27,11 @@ export default function Custombox() {
 
     return (
         <>
+            {/* 헤더 영역 */}
+            <Block.HeaderBox justifyContent="space-between">
+                <Header showNextIcon={true} showBackIcon={true} />
+            </Block.HeaderBox>
             <CustomizationScreen>
-                <Block.FlexBox width="90%" justifyContent="space-between">
-                    <Header showNextIcon={true} showBackIcon={true} />
-                </Block.FlexBox>
                 {/* 돼지 캐릭터 영역 */}
                 <PigDisplay>
                     <Pig src={selectedColor.image} alt="Selected Pig" /> {/* Use the selected color's image */}
@@ -130,8 +131,8 @@ const Pig = styled.img`
 `;
 
 const ItemImg = styled.img`
-    width: 150px;
-    height: 150px;
+    /* width: 150px; */
+    /* height: 150px; */
     position: absolute;
 `;
 
