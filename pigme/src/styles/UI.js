@@ -240,7 +240,8 @@ export const Button = {
     height: ${(props) => (props.height ? props.height : 'auto')};
     border: ${(props) => props.border};
     border-radius: 10px;
-    background-color: ${({ bgColor }) => theme.color[bgColor]};
+    background-color: ${({ bgColor }) =>
+      bgColor ? theme.color[bgColor] : '#F7F7F7'};
     color: white;
     transition: background-color 0.3s ease;
 

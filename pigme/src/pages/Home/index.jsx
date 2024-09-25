@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import BankModal from '../../components/Modal/BankModal';
 
 export default function Home() {
-  const [nickname, setNickname] = useState('고주희');
+  const [nickname, setNickname] = useState('저돼지아닌데요');
   // 경고 모달
   const confirmModal = useModal();
   const navigate = useNavigate();
@@ -35,6 +35,7 @@ export default function Home() {
         cancelText="취소"
         onConfirm={handleConfirm}
         onCancel={handleCancel}
+        imageSrc="/colors/pig.svg"
       />
       <HomeWrapper>
         {/* 헤더 영역 */}

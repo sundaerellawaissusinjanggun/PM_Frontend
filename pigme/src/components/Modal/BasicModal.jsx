@@ -39,7 +39,7 @@ export default function BasicModal({
           content: {
             outline: 'none',
             margin: '0 auto',
-            marginTop: '320px',
+            marginTop: '220px',
             padding: 0,
             width,
             height,
