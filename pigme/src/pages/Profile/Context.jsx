@@ -154,6 +154,7 @@ const Style = {
     align-items: flex-end;
     justify-content: flex-end;
     flex-direction: column;
+    gap: 10px;
   `,
   StatsButton: styled.button`
     font-size: 14px;
