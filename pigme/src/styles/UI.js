@@ -62,7 +62,7 @@ export const Block = {
         justify-content: ${props => props.justifyContent};
         align-items: ${props => props.alignItems};
         width: ${props => (props.width ? props.width : "100%")};
-        height: ${props => (props.width ? props.height : "auto")};
+        height: ${props => (props.height ? props.height : "auto")};
         margin: ${props => props.margin};
         padding: ${props => props.padding};
         border: ${props => props.border};
@@ -76,7 +76,7 @@ export const Block = {
         justify-content: ${props => props.justifyContent};
         align-items: ${props => props.alignItems};
         width: ${props => (props.width ? props.width : "100%")};
-        height: ${props => (props.width ? props.height : "auto")};
+        height: ${props => (props.height ? props.height : "auto")};
         margin: ${props => props.margin};
         padding: ${props => props.padding};
         border: ${props => props.border};
@@ -98,7 +98,7 @@ export const Block = {
         justify-content: ${props => props.justifyContent};
         align-items: ${props => props.alignItems};
         width: 85%;
-        height: ${props => (props.width ? props.height : "auto")};
+        height: ${props => (props.height ? props.height : "auto")};
         padding: ${props => props.padding};
         border: ${props => props.border};
         border-radius: ${props => props.borderRadius};
@@ -126,7 +126,7 @@ export const Img = {
     RoundIcon: styled.img`
         display: block;
         width: ${props => (props.width ? props.width : "100%")};
-        height: ${props => (props.width ? props.height : "auto")};
+        height: ${props => (props.height ? props.height : "auto")};
         border: ${props => props.border};
         border-radius: 100%;
         cursor: ${props => props.pointer && "pointer"};
@@ -134,7 +134,7 @@ export const Img = {
     AngledIcon: styled.img`
         display: block;
         width: ${props => (props.width ? props.width : "100%")};
-        height: ${props => (props.width ? props.height : "auto")};
+        height: ${props => (props.height ? props.height : "auto")};
         border: ${props => props.border};
         cursor: ${props => props.pointer && "pointer"};
     `,
@@ -143,9 +143,9 @@ export const Img = {
 export const Button = {
     SubmitBtn: styled.button`
         width: ${props => (props.width ? props.width : "100%")};
-        height: ${props => (props.width ? props.height : "auto")};
+        height: ${props => (props.height ? props.height : "auto")};
         border: ${props => props.border};
-        border-radius: 20;
+        border-radius: 10px;
         background-color: ${({ bgColor }) => theme.color[bgColor]};
         color: white;
     `,

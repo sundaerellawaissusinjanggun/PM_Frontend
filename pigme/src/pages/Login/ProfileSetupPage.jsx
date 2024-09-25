@@ -29,7 +29,9 @@ export default function ProfileSetupPage() {
                     <Text.Body3>*한 줄 소개 (선택)</Text.Body3>
                     <textarea type="text" placeholder="내용을 작성해주세요." />
 
-                    <Button.SubmitBtn bgColor="grayDeep">프로필 저장하기</Button.SubmitBtn>
+                    <Button.SubmitBtn height="50px" bgColor="grayDeep">
+                        프로필 저장하기
+                    </Button.SubmitBtn>
                 </Block.FlexBox>
             </Block.BackgroundWhiteBox>
         </>
