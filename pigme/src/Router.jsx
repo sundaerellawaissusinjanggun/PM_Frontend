@@ -41,15 +41,15 @@ export const router = createBrowserRouter([
         element: <ProfileSetupPage />,
       },
       {
-        path: '/MyBank',
+        path: '/myBank',
         element: <MyPiggyBankPage />,
       },
       {
-        path: '/Like',
+        path: '/like',
         element: <LikedMessagesPage />,
       },
       {
-        path: '/Message',
+        path: '/message',
         element: <MessageInputPage />,
       },
     ],
