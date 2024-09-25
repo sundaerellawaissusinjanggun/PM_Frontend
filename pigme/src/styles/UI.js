@@ -20,6 +20,7 @@ export const Text = {
       size ? theme.fontSize[size] : theme.fontSize.medium};
     color: ${({ color }) => (color ? theme.color[color] : theme.color.black)};
     cursor: ${(props) => props.pointer && 'pointer'};
+    padding: ${(props) => props.padding};
   `,
   MiniTitle2: styled.span`
     display: inline-block;
