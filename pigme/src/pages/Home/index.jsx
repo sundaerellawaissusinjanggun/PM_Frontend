@@ -55,11 +55,15 @@ import React from 'react';
 import styled from '@emotion/styled';
 import Fence from '/home-fence.svg';
 import { Block } from '../../styles/UI';
+import Header from '../../components/Layout/Header';
 
 export default function Home() {
   return (
     <>
       <HomeWrapper>
+        <Block.HeaderBox>
+          <Header showMyPageIcon={true} />
+        </Block.HeaderBox>
         돼지 한마리 두마리 ~
         <Block.AbsoluteBox bottom="0" left="0" alignItems="center">
           <FenceImage src={Fence} />
