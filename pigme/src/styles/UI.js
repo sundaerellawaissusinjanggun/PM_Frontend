@@ -83,7 +83,6 @@ export const Block = {
         border-radius: ${props => props.borderRadius};
         background-color: ${({ bgColor }) => theme.color[bgColor]};
         cursor: ${props => props.pointer && "pointer"};
-        gap: 20px;
     `,
     HeaderBox: styled.div`
         position: absolute;
@@ -148,5 +147,38 @@ export const Button = {
         border-radius: 10px;
         background-color: ${({ bgColor }) => theme.color[bgColor]};
         color: white;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            background-color: #aa9ecb;
+        }
+    `,
+};
+
+export const Input = {
+    BasicInput: styled.input`
+        width: 321px;
+        height: 45px;
+        padding-left: 18px;
+        background-color: #f7f7f7;
+        border: 1px solid #e6e6e6;
+        border-radius: 10px;
+        ::placeholder {
+            color: #bebebe;
+            font-size: small;
+        }
+    `,
+    TextAreaInput: styled.textarea`
+        width: 321px;
+        height: 190px;
+        padding: 18px 0 0 20px;
+        background-color: #f7f7f7;
+        border: 1px solid #e6e6e6;
+        border-radius: 10px;
+        resize: none;
+        ::placeholder {
+            color: #bebebe;
+            font-size: small;
+        }
     `,
 };
