@@ -61,10 +61,11 @@ export default function Home() {
   return (
     <>
       <HomeWrapper>
-        <Block.HeaderBox>
+        {/* 헤더 영역 */}
+        <Block.HeaderBox width="100%" justifyContent="flex-end">
           <Header showMyPageIcon={true} />
         </Block.HeaderBox>
-        돼지 한마리 두마리 ~
+        <div>돼지 한마리 두마리 ~</div>
         <Block.AbsoluteBox bottom="0" left="0" alignItems="center">
           <FenceImage src={Fence} />
           <FenceImage src={Fence} />
@@ -72,15 +73,17 @@ export default function Home() {
           <FenceImage src={Fence} />
         </Block.AbsoluteBox>
       </HomeWrapper>
- 
     </>
   );
 }
 
 const HomeWrapper = styled.div`
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background: url(background-purple.svg);
 `;
 
