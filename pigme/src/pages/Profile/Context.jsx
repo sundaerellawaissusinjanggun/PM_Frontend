@@ -7,8 +7,8 @@ import Background from '../../components/Layout/Background';
 export default function Context() {
   const navigate = useNavigate();
 
-  const handelGoToMyBank = () => navigate('/MyBank');
-  const handelGoToLike = () => navigate('/Like');
+  const handelGoToMyBank = () => navigate('/myBank');
+  const handelGoToLike = () => navigate('/like');
   return (
     <Background>
       <Style.ProfileTitle>나의 프로필</Style.ProfileTitle>
