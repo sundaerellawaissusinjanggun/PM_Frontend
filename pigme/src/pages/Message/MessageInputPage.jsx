@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Block, Text, Img } from '../../styles/UI';
+import { Block, Text, Img, Input, Button } from '../../styles/UI';
+import styled from '@emotion/styled';
 import Header from '../../components/Layout/Header';
 import Coin from '/coin.svg';
 
@@ -23,18 +24,38 @@ export default function MessageInputPage() {
 
       {/* input 영역 */}
       <Block.BackgroundWhiteBox padding="30px">
-        <Text.Title padding="">
-          닉네임
-          <Text.Title color="titleGray">
-            님에게 <br />
-            따뜻한 메세지를 남겨주세요!
-          </Text.Title>
-        </Text.Title>
+        <Block.FlexBox direction="column">
+          <InlineTextWrapper>
+            <Text.Title>닉네임</Text.Title>
+            <Text.Title color="grayLight">님에게</Text.Title>
+          </InlineTextWrapper>
+          <Text.Title color="grayLight">따뜻한 메세지를 남겨주세요!</Text.Title>
+          <Input.TextAreaInput
+            height="100%"
+            margin="40px 0"
+            placeholder="내용을 작성해주세요."
+            fontSize="large"
+          ></Input.TextAreaInput>
+          <Block.FlexBox direction="row" gap="27px" fontSize="medium">
+            <Button.SubmitBtn height="50px" color="black">
+              취소
+            </Button.SubmitBtn>
+            <Button.SubmitBtn height="50px" bgColor="grayLight">
+              작성완료
+            </Button.SubmitBtn>
+          </Block.FlexBox>
+        </Block.FlexBox>
       </Block.BackgroundWhiteBox>
     </>
   );
 }
 
+const InlineTextWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+`;
+
+// 대충 데이터 입력 창 (나중에 삭제예정)
 // export default function MessageInputPage({ addMessage }) {
 //   const [messageText, setMessageText] = useState('');
 //   const navigate = useNavigate();

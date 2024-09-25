@@ -6,7 +6,7 @@ export const Text = {
   Title: styled.span`
     display: inline-block;
     font-weight: ${({ weight }) =>
-      weight ? theme.fontWeight[weight] : theme.fontWeight.medium};
+      weight ? theme.fontWeight[weight] : theme.fontWeight.bold};
     font-size: ${({ size }) =>
       size ? theme.fontSize[size] : theme.fontSize.title};
     color: ${({ color }) => (color ? theme.color[color] : theme.color.black)};
@@ -212,6 +212,7 @@ export const Block = {
     border-radius: 30px;
     background-color: white;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    /* border: 1px solid red; */
   `,
 };
 
@@ -242,7 +243,7 @@ export const Button = {
     border-radius: 10px;
     background-color: ${({ bgColor }) =>
       bgColor ? theme.color[bgColor] : '#F7F7F7'};
-    color: white;
+    color: ${(props) => (props.color ? props.color : 'white')};
     transition: background-color 0.3s ease;
 
     &:hover {
@@ -267,8 +268,9 @@ export const Input = {
   `,
   TextAreaInput: styled.textarea`
     width: 321px;
-    height: 190px;
-    padding: 18px 0 0 20px;
+    height: ${(props) => (props.height ? props.height : '190px')};
+    padding: 18px 20px;
+    margin: ${(props) => props.margin};
     background-color: #f7f7f7;
     border: 1px solid #e6e6e6;
     border-radius: 10px;
@@ -276,7 +278,7 @@ export const Input = {
     outline: none;
     ::placeholder {
       color: #bebebe;
-      font-size: small;
+      font-size: ${(props) => props.fontSize};
     }
   `,
 };
