@@ -67,7 +67,7 @@ export const Block = {
         padding: ${props => props.padding};
         border: ${props => props.border};
         border-radius: ${props => props.borderRadius};
-        background-color: ${props => props.bgColor};
+        background-color: ${({ bgColor }) => theme.color[bgColor]};
         cursor: ${props => props.pointer && "pointer"};
     `,
     FlexBox: styled.div`
@@ -81,8 +81,9 @@ export const Block = {
         padding: ${props => props.padding};
         border: ${props => props.border};
         border-radius: ${props => props.borderRadius};
-        background-color: ${props => props.bgColor};
+        background-color: ${({ bgColor }) => theme.color[bgColor]};
         cursor: ${props => props.pointer && "pointer"};
+        gap: 20px;
     `,
     HeaderBox: styled.div`
         position: absolute;
@@ -101,7 +102,7 @@ export const Block = {
         padding: ${props => props.padding};
         border: ${props => props.border};
         border-radius: ${props => props.borderRadius};
-        background-color: ${props => props.bgColor};
+        background-color: ${({ bgColor }) => theme.color[bgColor]};
         cursor: ${props => props.pointer && "pointer"};
         /* border: 1px solid red; */
     `,
@@ -114,7 +115,6 @@ export const Block = {
         left: 0;
         display: flex;
         justify-content: center;
-        align-items: center;
         border-radius: 30px;
         background-color: white;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
@@ -137,5 +137,16 @@ export const Img = {
         height: ${props => (props.width ? props.height : "auto")};
         border: ${props => props.border};
         cursor: ${props => props.pointer && "pointer"};
+    `,
+};
+
+export const Button = {
+    SubmitBtn: styled.button`
+        width: ${props => (props.width ? props.width : "100%")};
+        height: ${props => (props.width ? props.height : "auto")};
+        border: ${props => props.border};
+        border-radius: 20;
+        background-color: ${({ bgColor }) => theme.color[bgColor]};
+        color: white;
     `,
 };

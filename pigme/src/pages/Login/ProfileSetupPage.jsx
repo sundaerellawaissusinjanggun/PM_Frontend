@@ -1,5 +1,5 @@
 import Header from "../../components/Layout/Header";
-import { Block, Text } from "../../styles/UI";
+import { Block, Button, Text } from "../../styles/UI";
 import Pig from "/colors/pig.svg";
 
 export default function ProfileSetupPage() {
@@ -17,7 +17,7 @@ export default function ProfileSetupPage() {
 
             {/* input 영역*/}
             <Block.BackgroundWhiteBox>
-                <Block.FlexBox direction="column">
+                <Block.FlexBox direction="column" padding="28px" alignItem="space-between" border="1px solid red">
                     <Text.Body3>*이메일</Text.Body3>
                     <Text.Body2>zuitopia.dev@gmail.com</Text.Body2>
                     {/* 현재 로그인 하고 있는 이메일 받아와서 보여주는 부분이므로 추후 수정 */}
@@ -29,7 +29,7 @@ export default function ProfileSetupPage() {
                     <Text.Body3>*한 줄 소개 (선택)</Text.Body3>
                     <textarea type="text" placeholder="내용을 작성해주세요." />
 
-                    <button>프로필 저장하기</button>
+                    <Button.SubmitBtn bgColor="grayDeep">프로필 저장하기</Button.SubmitBtn>
                 </Block.FlexBox>
             </Block.BackgroundWhiteBox>
         </>
