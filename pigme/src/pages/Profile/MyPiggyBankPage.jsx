@@ -7,6 +7,10 @@ import Header from '../../components/Layout/Header';
 import ProfileAvatar from '../../components/Layout/ProfileAvatar';
 import PiggyBankMessages from '../../components/Hooks/PiggyBankMessages';
 import Coin from '/coin.svg';
+import useModal from '../../components/Hooks/useModal';
+
+import { useNavigate } from 'react-router-dom';
+import WarningModal from '../../components/Modal/WarningModal';
 
 export default function MyPiggyBankPage() {
   const [messages, setMessages] = useState([]);
@@ -20,31 +24,48 @@ export default function MyPiggyBankPage() {
     setMessages([...messages, newMessage]); // 새로운 메시지를 추가
   };
 
+  // 경고 모달
+  const warningModal = useModal();
+  const navigate = useNavigate();
+  const handleGoToMainHome = () => navigate('/home');
+
   return (
-    <Wrapper>
-      <HeaderWrapper>
-        <Header />
-      </HeaderWrapper>
-      <AvatarWrapper>
-        <ProfileAvatar />
-      </AvatarWrapper>
-      <Block.AbsoluteBox bottom="0">
-        <Background>
-          <ProfileTitle>
-            <img src={Coin} />
-            나의 저금통
-          </ProfileTitle>
-          <UserStatsContainer>
-            <StatsDisplay>
-              현재 보유 코인 <StatsCount>12개</StatsCount>
-            </StatsDisplay>
-          </UserStatsContainer>
-          <MessageWrapper>
-            <PiggyBankMessages messages={messages} />
-          </MessageWrapper>
-        </Background>
-      </Block.AbsoluteBox>
-    </Wrapper>
+    <>
+      <WarningModal
+        isOpen={warningModal.isOpen}
+        setIsOpen={warningModal.setIsOpen}
+        message="아직 동전이 2개밖에 없어요!
+받은 편지가 3개 이상일 때부터
+편지를 확인할 수 있어요."
+        actionText="홈으로 이동하기"
+        onAction={handleGoToMainHome}
+        imageSrc="/sad-pig.svg"
+      />
+      <Wrapper>
+        <HeaderWrapper>
+          <Header />
+        </HeaderWrapper>
+        <AvatarWrapper>
+          <ProfileAvatar />
+        </AvatarWrapper>
+        <Block.AbsoluteBox bottom="0">
+          <Background>
+            <ProfileTitle>
+              <img src={Coin} />
+              나의 저금통
+            </ProfileTitle>
+            <UserStatsContainer>
+              <StatsDisplay>
+                현재 보유 코인 <StatsCount>12개</StatsCount>
+              </StatsDisplay>
+            </UserStatsContainer>
+            <MessageWrapper onClick={warningModal.openModal}>
+              <PiggyBankMessages messages={messages} />
+            </MessageWrapper>
+          </Background>
+        </Block.AbsoluteBox>
+      </Wrapper>
+    </>
   );
 }
 

@@ -70,6 +70,27 @@ export const Text = {
     color: ${({ color }) => (color ? theme.color[color] : theme.color.pink)};
     cursor: ${(props) => props.pointer && 'pointer'};
   `,
+  LinkText: styled.span`
+    display: inline-block;
+    font-weight: ${({ weight }) =>
+      weight ? theme.fontWeight[weight] : theme.fontWeight.normal};
+    font-size: ${({ size }) =>
+      size ? theme.fontSize[size] : theme.fontSize.small};
+    color: ${({ color }) =>
+      color ? theme.color[color] : theme.color.grayLight};
+    cursor: ${(props) => props.pointer && 'pointer'};
+    text-decoration: underline;
+  `,
+  ModalText: styled.span`
+    display: inline-block;
+    font-weight: ${({ weight }) =>
+      weight ? theme.fontWeight[weight] : theme.fontWeight.medium};
+    font-size: ${({ size }) =>
+      size ? theme.fontSize[size] : theme.fontSize.large};
+    color: ${({ color }) => (color ? theme.color[color] : theme.color.black)};
+    cursor: ${(props) => props.pointer && 'pointer'};
+    line-height: 1.5;
+  `,
 };
 
 // 재사용 될 블록
