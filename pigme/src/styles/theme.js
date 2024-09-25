@@ -2,7 +2,7 @@ const color = {
   black: '#1a1a1a',
   white: '#fff',
   grayDeep: '#979797',
-  grayLight: '#dbdbdb',
+  grayLight: '#bebebe',
   grayDate: '#888',
   inputBackground: '#e3e3e35f',
   sendMessageLogo: '#445ffe',
