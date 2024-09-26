@@ -108,16 +108,17 @@ export default function ProfileSetupPage() {
               placeholder="내용을 작성해주세요."
               value={introduction}
               onChange={handleIntroductionChange}
+              height="190px"
             />
+            <Button.SubmitBtn
+              width="321px"
+              height="50px"
+              bgColor="grayDeep"
+              onClick={handleGoToMainHome}
+            >
+              <Text.Body3 color="white">프로필 저장하기</Text.Body3>
+            </Button.SubmitBtn>
           </Block.ColumnFlexBox>
-          <Button.SubmitBtn
-            width="321px"
-            height="50px"
-            bgColor="grayDeep"
-            onClick={handleGoToMainHome}
-          >
-            <Text.Body3 color="white">프로필 저장하기</Text.Body3>
-          </Button.SubmitBtn>
         </Block.FlexBox>
       </Block.BackgroundWhiteBox>
     </>

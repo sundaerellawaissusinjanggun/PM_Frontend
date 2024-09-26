@@ -304,7 +304,8 @@ export const Input = {
   `,
   TextAreaInput: styled.textarea`
     width: 321px;
-    height: ${(props) => (props.height ? props.height : '190px')};
+
+    height: ${(props) => (props.height ? props.height : '100%')};
     padding: 18px 20px;
     margin: ${(props) => props.margin};
     background-color: #f7f7f7;
