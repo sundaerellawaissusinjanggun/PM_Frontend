@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import customData from '../../assets/customData';
 import { Block, Text } from '../../styles/UI';
 import Header from '../Layout/Header';
@@ -32,27 +32,24 @@ export default function Custombox() {
     const userId = '3704053471';
 
     try {
+      const colorImage = selectedColor.image;
+      const itemData = selectedItem
+        ? {
+            image: selectedItem.image,
+            x: selectedItem.x || 0,
+            y: selectedItem.y || 0,
+          }
+        : null;
+
       setSelections({
-        selectedColor: selectedColor.image,
-        selectedItem: selectedItem
-          ? {
-              image: selectedItem.image,
-              x: selectedItem.x || 0,
-              y: selectedItem.y || 0,
-            }
-          : null,
+        selectedColor: colorImage,
+        selectedItem: itemData,
       });
 
       await setDoc(doc(db, 'userSelections', userId), {
         userId,
-        selectedColor: selectedColor.image,
-        ...(selectedItem && {
-          selectedItem: {
-            image: selectedItem.image,
-            x: selectedItem.x || 0,
-            y: selectedItem.y || 0,
-          },
-        }),
+        selectedColor: colorImage,
+        ...(itemData && { selectedItem: itemData }),
       });
 
       navigate('/profileSetup');
@@ -67,7 +64,7 @@ export default function Custombox() {
         <Header
           showNextIcon={true}
           showBackIcon={true}
-          onComplete={handleSave}
+          onComplete={handleSave} // 완료 버튼 클릭 시 handleSave 호출
         />
       </Block.HeaderBox>
       <CustomizationScreen>

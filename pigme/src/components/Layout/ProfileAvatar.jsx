@@ -27,17 +27,17 @@ export default function ProfileAvatar() {
 
   return (
     <Wrapper>
-      {selections && (
+      {userSelections && (
         <>
-          <ItemImg src={selections.selectedColor} alt="Color" />
-          {selections.selectedItem && (
+          <ItemImg src={userSelections.selectedColor} alt="Color" />
+          {userSelections.selectedItem && (
             <ItemImg
-              src={selections.selectedItem.image}
+              src={userSelections.selectedItem.image}
               alt="Item"
               style={{
                 position: 'absolute',
-                top: `${selections.selectedItem.y}px`,
-                left: `${selections.selectedItem.x}px`,
+                top: `${userSelections.selectedItem.y}px`,
+                left: `${userSelections.selectedItem.x}px`,
               }}
             />
           )}
