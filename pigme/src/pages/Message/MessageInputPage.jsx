@@ -1,22 +1,42 @@
-import { useState } from 'react';
 import { Block, Text, Img, Input, Button } from '../../styles/UI';
 import styled from '@emotion/styled';
 import useModal from '../../components/Hooks/useModal';
 
 import { useNavigate } from 'react-router-dom';
-import ConfirmModal from '../../components/Modal/ConfirmModal';
+import SuccessModal from '../../components/Modal/SuccessModal';
 import Header from '../../components/Layout/Header';
 import Coin from '/coin.svg';
+import Pig from '/pig-coin.svg';
 
 export default function MessageInputPage() {
-  const confirmModal = useModal();
+  const successModal = useModal();
   const navigate = useNavigate();
-  const handleGoToMainHome = () => navigate('/home');
+  const handleGoToMainHome = () => navigate(-1);
   const handleGoToShowMessage = () => navigate('/showMessage');
+
+  const userNickname = '닉네임';
+
   return (
     <>
       {/* 메세지 작성 완료 모달 */}
-      <ConfirmModal />
+      <SuccessModal
+        isOpen={successModal.isOpen}
+        setIsOpen={successModal.setIsOpen}
+        title={'저금이 완료되었어요!'}
+        imageSrc={Pig}
+        message={
+          <MessageText>
+            따뜻한 메세지가 저장된 코인이
+            <br />
+            <ColoredNickname>{userNickname}</ColoredNickname>님의 저금통에
+            들어갔어요!
+          </MessageText>
+        }
+        cancelText={'메인으로'}
+        confirmText={'내용확인하기'}
+        onCancle={handleGoToMainHome}
+        onConfirm={handleGoToShowMessage}
+      />
       {/* 헤더 영역 */}
       <Block.HeaderBox width="100%" justifyContent="flex-end">
         <Header showHomeIcon={true} />
@@ -53,7 +73,7 @@ export default function MessageInputPage() {
             <Button.SubmitBtn
               height="50px"
               bgColor="grayLight"
-              onClick={confirmModal.openModal}
+              onClick={successModal.openModal}
             >
               작성완료
             </Button.SubmitBtn>
@@ -64,11 +84,21 @@ export default function MessageInputPage() {
   );
 }
 
+const SuccessModalWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 const InlineTextWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
 `;
-
+const ColoredNickname = styled.span`
+  color: black;
+  text-overflow: ellipsis; // 너무 길 경우 ... 처리
+`;
+const MessageText = styled.div`
+  white-space: nowrap; // 줄바꿈을 방지하여 한 줄로 표시
+`;
 // 대충 데이터 입력 창 (나중에 삭제예정)
 // export default function MessageInputPage({ addMessage }) {
 //   const [messageText, setMessageText] = useState('');
