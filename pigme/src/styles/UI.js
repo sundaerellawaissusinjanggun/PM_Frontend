@@ -121,6 +121,16 @@ export const Text = {
     cursor: ${(props) => props.pointer && 'pointer'};
     line-height: 1.5;
   `,
+  ButtonText: styled.span`
+    display: inline-block;
+    font-weight: ${({ weight }) =>
+      weight ? theme.fontWeight[weight] : theme.fontWeight.medium};
+    font-size: ${({ size }) =>
+      size ? theme.fontSize[size] : theme.fontSize.small};
+    color: ${({ color }) => (color ? theme.color[color] : theme.color.black)};
+    cursor: ${(props) => props.pointer && 'pointer'};
+    line-height: 1.5;
+  `,
 };
 
 // 재사용 될 블록
@@ -155,6 +165,7 @@ export const Block = {
     margin: ${(props) => props.margin};
     padding: ${(props) => props.padding};
     border: ${(props) => props.border};
+    border-bottom: ${(props) => props.borderBottom};
     border-radius: ${(props) => props.borderRadius};
     background-color: ${({ bgColor }) => theme.color[bgColor]};
     cursor: ${(props) => props.pointer && 'pointer'};
@@ -255,6 +266,20 @@ export const Button = {
     background-color: ${({ bgColor }) =>
       bgColor ? theme.color[bgColor] : '#F7F7F7'};
     color: ${(props) => (props.color ? props.color : 'white')};
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #aa9ecb;
+    }
+  `,
+  FriendBtn: styled.button`
+    width: ${(props) => (props.width ? props.width : '100%')};
+    height: ${(props) => (props.height ? props.height : 'auto')};
+    border: ${(props) => (props.border ? props.border : '1px solid #808080')};
+    border-radius: 10px;
+    background-color: ${({ bgColor }) =>
+      bgColor ? theme.color[bgColor] : 'pink'};
+    color: ${(props) => (props.color ? props.color : '#808080')};
     transition: background-color 0.3s ease;
 
     &:hover {

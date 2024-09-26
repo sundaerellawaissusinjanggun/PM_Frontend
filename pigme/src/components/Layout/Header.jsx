@@ -35,7 +35,7 @@ export default function Header({
           <MenuButton width="30px" src="/profile.svg" onClick={toggleMenu} />
           <DropDown isVisible={isOpen}>
             <MenuItem>나의 프로필</MenuItem>
-            <MenuItem onClick={() => navigate('/friends')}>나의 친구</MenuItem>
+            <MenuItem onClick={() => navigate('/friend')}>나의 친구</MenuItem>
             <MenuItem>나의 즐겨찾기</MenuItem>
             <MenuItem>나의 저금통</MenuItem>
           </DropDown>
