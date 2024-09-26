@@ -111,6 +111,16 @@ export const Text = {
     cursor: ${(props) => props.pointer && 'pointer'};
     line-height: 1.5;
   `,
+  ModalText2: styled.span`
+    display: inline-block;
+    font-weight: ${({ weight }) =>
+      weight ? theme.fontWeight[weight] : theme.fontWeight.medium};
+    font-size: ${({ size }) =>
+      size ? theme.fontSize[size] : theme.fontSize.medium};
+    color: ${({ color }) => (color ? theme.color[color] : theme.color.black)};
+    cursor: ${(props) => props.pointer && 'pointer'};
+    line-height: 1.5;
+  `,
 };
 
 // 재사용 될 블록
