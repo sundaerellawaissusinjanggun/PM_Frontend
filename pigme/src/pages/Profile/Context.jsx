@@ -88,7 +88,7 @@ export default function Context() {
           </Style.StatsButton>
           <Style.StatsButton onClick={handelGoToLike}>
             즐겨찾는 메세지
-            <Style.StatsCount>{likedMessagesCount}개</Style.StatsCount>
+            <Style.StatsCount> {likedMessagesCount}개</Style.StatsCount>
           </Style.StatsButton>
         </Style.UserStatsContainer>
       </Style.ProfileContainer>
