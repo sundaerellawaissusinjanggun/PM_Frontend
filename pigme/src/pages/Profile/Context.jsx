@@ -9,10 +9,12 @@ import { doc, getDoc } from 'firebase/firestore';
 
 export default function Context() {
   const navigate = useNavigate();
-  
+
   const [userEmail, setUserEmail] = useState('');
   const [nickname, setNickname] = useState('');
   const [introduction, setIntroduction] = useState('');
+  const [coins, setCoins] = useState(0);
+  const [likedMessagesCount, setLikedMessagesCount] = useState(0);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -25,6 +27,8 @@ export default function Context() {
           setUserEmail(auth.currentUser.email);
           setNickname(userData.nickname);
           setIntroduction(userData.introduction);
+          setCoins(userData.coins || 0);
+          setLikedMessagesCount(userData.likedMessages.length || 0);
         }
       } catch (error) {
         console.error('사용자 정보 가져오기 실패:', error);
@@ -33,7 +37,6 @@ export default function Context() {
 
     fetchUserData();
   }, []);
-
 
   const handelGoToCustom = () => navigate('/custom');
   const handelGoToMyBank = () => navigate('/myBank');
@@ -73,10 +76,11 @@ export default function Context() {
         </Style.UserInfo>
         <Style.UserStatsContainer>
           <Style.StatsButton onClick={handelGoToMyBank}>
-            현재 보유 코인 <Style.StatsCount>12개</Style.StatsCount>
+            현재 보유 코인 <Style.StatsCount>{coins}개</Style.StatsCount>
           </Style.StatsButton>
           <Style.StatsButton onClick={handelGoToLike}>
-            즐겨찾는 메세지 <Style.StatsCount>2개</Style.StatsCount>
+            즐겨찾는 메세지{' '}
+            <Style.StatsCount>{likedMessagesCount}개</Style.StatsCount>
           </Style.StatsButton>
         </Style.UserStatsContainer>
       </Style.ProfileContainer>
