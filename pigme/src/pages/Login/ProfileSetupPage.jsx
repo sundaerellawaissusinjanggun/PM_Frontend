@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/Layout/Header';
 import { Block, Button, Input, Text } from '../../styles/UI';
 import ProfileAvatar from '../../components/Layout/ProfileAvatar';
-import { db, auth } from '../../firebase';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { db, auth } from '../../firebase'; // Firestore 설정 파일
+import { doc, setDoc } from 'firebase/firestore'; // Firestore 메서드
 
 export default function ProfileSetupPage() {
   const [nickname, setNickname] = useState('');
-  const [introduction, setIntroduction] = useState('');
+  const [introduction, setIntroduction] = useState(''); // 한 줄 소개 상태 추가
   const navigate = useNavigate();
 
   const handleGoToMainHome = async () => {
@@ -19,29 +19,26 @@ export default function ProfileSetupPage() {
       return;
     }
 
+    // 한 줄 소개가 비어있을 경우 기본 메시지 설정
     const introductionMessage =
       introduction.trim() === ''
         ? '아직 한 줄 소개가 작성되지 않았어요!'
         : introduction;
 
     try {
-      const userId = auth.currentUser.uid;
+      // Firebase에 사용자 데이터 저장
+      const userId = auth.currentUser.uid; // 현재 로그인된 사용자의 UID 가져오기
       await setDoc(
         doc(db, 'users', userId),
         {
           nickname,
           introduction: introductionMessage,
+          // 필요시 추가 데이터 저장
         },
-        { merge: true } // merge: true로 기존 데이터와 병합
-      );
+        { merge: true }
+      ); // merge: true로 기존 데이터와 병합
 
-      const userDoc = await getDoc(doc(db, 'users', userId));
-      if (userDoc.exists()) {
-        // console.log('저장된 사용자 정보:', userDoc.data());
-      } else {
-        console.log('사용자 정보가 존재하지 않습니다.');
-      }
-
+      // 홈 페이지로 이동
       navigate('/home');
     } catch (error) {
       console.error('프로필 저장 실패:', error);
@@ -54,10 +51,8 @@ export default function ProfileSetupPage() {
   };
 
   const handleIntroductionChange = (e) => {
-    setIntroduction(e.target.value);
+    setIntroduction(e.target.value); // 한 줄 소개 상태 업데이트
   };
-
-  const userEmail = auth.currentUser.email;
 
   return (
     <>
@@ -87,7 +82,8 @@ export default function ProfileSetupPage() {
           <Block.ColumnFlexBox gap="12px">
             <Text.Body3>*이메일</Text.Body3>
             <Block.FlexBox width="94%" padding="0 0 30px 10px">
-              <Text.Body2>{userEmail}</Text.Body2>
+              <Text.Body2>zuitopia.dev@gmail.com</Text.Body2>
+              {/* 현재 로그인 하고 있는 이메일 받아와서 보여주는 부분이므로 추후 수정 */}
             </Block.FlexBox>
             <Text.Body3>*닉네임</Text.Body3>
             <Input.BasicInput
@@ -104,11 +100,11 @@ export default function ProfileSetupPage() {
 
             <Text.Body3>*한 줄 소개 (선택)</Text.Body3>
             <Input.TextAreaInput
+              height="190px"
               type="text"
               placeholder="내용을 작성해주세요."
               value={introduction}
-              onChange={handleIntroductionChange}
-              height="190px"
+              onChange={handleIntroductionChange} // 한 줄 소개 변경 처리
             />
             <Button.SubmitBtn
               width="321px"
