@@ -1,5 +1,6 @@
 // Import Firebase and Firestore
 import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth'; // Firebase Auth 추가
 import { getFirestore } from 'firebase/firestore';
 
 // Firebase configuration (Vite 환경 변수를 사용)
@@ -15,4 +16,7 @@ const firebaseConfig = {
 
 // Firebase 초기화
 const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+
+// Firestore 및 Auth 내보내기
+export const db = getFirestore(app); // Firestore 초기화
+export const auth = getAuth(app); // Firebase Auth 초기화

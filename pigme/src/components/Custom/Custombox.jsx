@@ -6,19 +6,21 @@ import Header from '../Layout/Header';
 import { db } from '../../firebase';
 import { doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { selectionsState } from '../../recoil/atoms';
 
 export default function Custombox() {
   const [selectedTab, setSelectedTab] = useState('color');
   const [selectedColor, setSelectedColor] = useState(customData.colors[0]);
   const [selectedItem, setSelectedItem] = useState(null);
   const navigate = useNavigate();
+  const [selections, setSelections] = useRecoilState(selectionsState);
 
   const handleColorChange = (color) => {
     setSelectedColor(color);
   };
 
   const handleItemChange = (item) => {
-    console.log('Selected Item:', item);
     setSelectedItem(item);
   };
 
@@ -30,31 +32,39 @@ export default function Custombox() {
     const userId = '3704053471';
 
     try {
-      await setDoc(doc(db, 'userSelections', userId), {
-        userId,
-        selectedColor: selectedColor.image,
-        ...(selectedItem && {
-          selectedItem: {
+      const colorImage = selectedColor.image;
+      const itemData = selectedItem
+        ? {
             image: selectedItem.image,
             x: selectedItem.x || 0,
             y: selectedItem.y || 0,
-          },
-        }),
+          }
+        : null;
+
+      setSelections({
+        selectedColor: colorImage,
+        selectedItem: itemData,
       });
-      console.log('Selections saved to Firebase');
+
+      await setDoc(doc(db, 'userSelections', userId), {
+        userId,
+        selectedColor: colorImage,
+        ...(itemData && { selectedItem: itemData }),
+      });
+
       navigate('/profileSetup');
     } catch (error) {
-      console.error('Error saving selections:', error);
+      console.error('커스텀을 저장하지 못 했습니다.', error);
     }
   };
+
   return (
     <>
-      {/* Header Area */}
       <Block.HeaderBox justifyContent="space-between">
         <Header
           showNextIcon={true}
           showBackIcon={true}
-          onComplete={handleSave}
+          onComplete={handleSave} // 완료 버튼 클릭 시 handleSave 호출
         />
       </Block.HeaderBox>
       <CustomizationScreen>

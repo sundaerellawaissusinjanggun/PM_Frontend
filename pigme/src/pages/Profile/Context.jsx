@@ -1,11 +1,39 @@
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import Profile from '/colors/pig.svg';
 import Edit from '/pencil.svg';
 import Background from '../../components/Layout/Background';
+import { db, auth } from '../../firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 export default function Context() {
   const navigate = useNavigate();
+  
+  const [userEmail, setUserEmail] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [introduction, setIntroduction] = useState('');
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userId = auth.currentUser.uid;
+        const userDoc = await getDoc(doc(db, 'users', userId));
+
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          setUserEmail(auth.currentUser.email);
+          setNickname(userData.nickname);
+          setIntroduction(userData.introduction);
+        }
+      } catch (error) {
+        console.error('사용자 정보 가져오기 실패:', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
 
   const handelGoToCustom = () => navigate('/custom');
   const handelGoToMyBank = () => navigate('/myBank');
@@ -20,7 +48,7 @@ export default function Context() {
             <Style.UserDetails>
               <Style.InfoContainer>
                 <Style.InfoLabel>이메일</Style.InfoLabel>
-                <Style.InfoText>kyoul10121@naver.com</Style.InfoText>
+                <Style.InfoText>{userEmail}</Style.InfoText>
               </Style.InfoContainer>
               <Style.ProfileImageContainer onClick={handelGoToCustom}>
                 <Style.ProfileImage src={Profile} />
@@ -31,13 +59,13 @@ export default function Context() {
 
           <Style.InfoLabel>닉네임</Style.InfoLabel>
           <Style.EditableField>
-            <Style.InfoText>나 돼지임 ㅋㅋ</Style.InfoText>
+            <Style.InfoText>{nickname}</Style.InfoText>
             <Style.FieldEditImage src={Edit} />
           </Style.EditableField>
 
           <Style.InfoLabel>한 줄 소개</Style.InfoLabel>
           <Style.EditableField>
-            <Style.InfoText> 나 얼마나 먹을 거 같아 ? </Style.InfoText>
+            <Style.InfoText>{introduction}</Style.InfoText>
             <Style.FieldEditImage src={Edit} />
           </Style.EditableField>
 
