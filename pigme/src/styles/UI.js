@@ -283,3 +283,13 @@ export const Input = {
     }
   `,
 };
+
+//클릭 시 나오는 메뉴
+export const DropdownMenu = styled.ul`
+  display: ${({ isVisible }) => (isVisible ? 'block' : 'none')};
+  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
+  transform: ${({ isVisible }) =>
+    isVisible ? 'translateY(0)' : 'translateY(-10px)'};
+  transition: all 0.3s ease;
+  pointer-events: ${({ isVisible }) => (isVisible ? 'auto' : 'none')};
+`;

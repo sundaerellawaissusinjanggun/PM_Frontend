@@ -25,7 +25,7 @@ export default function MessageShowPage() {
       </Block.AbsoluteBox>
 
       {/* input 영역 */}
-      <Block.BackgroundWhiteBox padding="30px">
+      <BackgroundBox padding="30px">
         <Block.FlexBox direction="column" height="100%">
           <Block.RowFlexBox>
             {/* 받는 사람 */}
@@ -51,11 +51,15 @@ export default function MessageShowPage() {
             <Text.Title>닉네임</Text.Title>
           </SenderTextWrapper>
         </Block.FlexBox>
-      </Block.BackgroundWhiteBox>
+      </BackgroundBox>
     </>
   );
 }
-
+const BackgroundBox = styled(Block.BackgroundWhiteBox)`
+  background-image: url(${BackgroundCoin});
+  background-repeat: no-repeat; /* 이미지가 반복되지 않도록 설정 */
+  background-position: center;
+`;
 const ReceiverTextWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
