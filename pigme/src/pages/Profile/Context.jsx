@@ -9,7 +9,7 @@ import { doc, getDoc } from 'firebase/firestore';
 
 export default function Context() {
   const navigate = useNavigate();
-
+  
   const [userEmail, setUserEmail] = useState('');
   const [nickname, setNickname] = useState('');
   const [introduction, setIntroduction] = useState('');
@@ -34,6 +34,8 @@ export default function Context() {
     fetchUserData();
   }, []);
 
+
+  const handelGoToCustom = () => navigate('/custom');
   const handelGoToMyBank = () => navigate('/myBank');
   const handelGoToLike = () => navigate('/like');
 
@@ -48,7 +50,7 @@ export default function Context() {
                 <Style.InfoLabel>이메일</Style.InfoLabel>
                 <Style.InfoText>{userEmail}</Style.InfoText>
               </Style.InfoContainer>
-              <Style.ProfileImageContainer>
+              <Style.ProfileImageContainer onClick={handelGoToCustom}>
                 <Style.ProfileImage src={Profile} />
                 <Style.EditImage src={Edit} />
               </Style.ProfileImageContainer>
