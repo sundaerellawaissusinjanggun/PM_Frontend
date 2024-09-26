@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { db } from '../../firebase';
 import { doc, getDoc } from 'firebase/firestore';
+import { useRecoilValue } from 'recoil';
+import { selectionsState } from '../../recoil/atoms';
 
 export default function ProfileAvatar() {
   const [userSelections, setUserSelections] = useState(null);
+  const selections = useRecoilValue(selectionsState);
 
   useEffect(() => {
     const fetchUserSelections = async () => {
@@ -24,17 +27,17 @@ export default function ProfileAvatar() {
 
   return (
     <Wrapper>
-      {userSelections && (
+      {selections && (
         <>
-          <ItemImg src={userSelections.selectedColor} alt="Color" />
-          {userSelections.selectedItem && (
+          <ItemImg src={selections.selectedColor} alt="Color" />
+          {selections.selectedItem && (
             <ItemImg
-              src={userSelections.selectedItem.image}
+              src={selections.selectedItem.image}
               alt="Item"
               style={{
                 position: 'absolute',
-                top: `${userSelections.selectedItem.y}px`,
-                left: `${userSelections.selectedItem.x}px`,
+                top: `${selections.selectedItem.y}px`,
+                left: `${selections.selectedItem.x}px`,
               }}
             />
           )}
@@ -50,11 +53,6 @@ const Wrapper = styled.div`
   justify-content: center;
   position: relative;
   border: 1px solid red;
-`;
-
-const ImageWrapper = styled.img`
-  width: 93px;
-  height: 88px;
 `;
 
 const ItemImg = styled.img`
