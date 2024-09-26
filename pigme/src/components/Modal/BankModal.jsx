@@ -17,7 +17,7 @@ export default function BankModal({
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       width="340px"
-      height="692px"
+      height="651px"
       showCloseIcon={false}
     >
       <Block.ColumnFlexBox gap="30px">
@@ -30,7 +30,7 @@ export default function BankModal({
         <Text.ModalText style={{ whiteSpace: 'pre-line', textAlign: 'center' }}>
           {message}
         </Text.ModalText>
-        <Block.FlexBox padding="20px" height="250px">
+        <Block.FlexBox padding="20px" height="220px">
           메시지 랜덤으로 보이는 곳
         </Block.FlexBox>
         <Block.FlexBox justifyContent="space-evenly">
