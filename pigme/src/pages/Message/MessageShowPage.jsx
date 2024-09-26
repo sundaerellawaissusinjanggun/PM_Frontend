@@ -3,7 +3,6 @@ import { Block, Text, Img } from '../../styles/UI';
 import styled from '@emotion/styled';
 import Header from '../../components/Layout/Header';
 import LikeMessage from '../../components/LikeMessage';
-import DeleteMessage from '../../components/DeleteMessge';
 import BackgroundCoin from '/background-coin.svg';
 import Pig from '/colors/pig.svg';
 
@@ -37,8 +36,7 @@ export default function MessageShowPage() {
 
             {/* 좋아요 버튼 영역*/}
             <Block.FlexBox justifyContent="flex-end">
-              {/* <LikeMessage /> */}
-              <DeleteMessage />
+              <LikeMessage />
             </Block.FlexBox>
           </Block.RowFlexBox>
 

@@ -203,7 +203,7 @@ export const Block = {
   `,
   BackgroundWhiteBox: styled.div`
     width: 100%;
-    height: 70%;
+    height: ${(props) => props.height};
     padding: ${(props) => props.padding};
     position: absolute;
     bottom: 0;
@@ -293,3 +293,5 @@ export const DropdownMenu = styled.ul`
   transition: all 0.3s ease;
   pointer-events: ${({ isVisible }) => (isVisible ? 'auto' : 'none')};
 `;
+
+export const MenuItem = styled.li``;
