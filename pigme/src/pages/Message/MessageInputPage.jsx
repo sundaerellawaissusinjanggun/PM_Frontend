@@ -1,12 +1,22 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Block, Text, Img, Input, Button } from '../../styles/UI';
 import styled from '@emotion/styled';
+import useModal from '../../components/Hooks/useModal';
+
+import { useNavigate } from 'react-router-dom';
+import ConfirmModal from '../../components/Modal/ConfirmModal';
 import Header from '../../components/Layout/Header';
 import Coin from '/coin.svg';
 
 export default function MessageInputPage() {
+  const confirmModal = useModal();
+  const navigate = useNavigate();
+  const handleGoToMainHome = () => navigate('/home');
+  const handleGoToShowMessage = () => navigate('/showMessage');
   return (
     <>
+      {/* 메세지 작성 완료 모달 */}
+      <ConfirmModal />
       {/* 헤더 영역 */}
       <Block.HeaderBox width="100%" justifyContent="flex-end">
         <Header showHomeIcon={true} />
@@ -40,7 +50,11 @@ export default function MessageInputPage() {
             <Button.SubmitBtn height="50px" color="black">
               취소
             </Button.SubmitBtn>
-            <Button.SubmitBtn height="50px" bgColor="grayLight">
+            <Button.SubmitBtn
+              height="50px"
+              bgColor="grayLight"
+              onClick={confirmModal.openModal}
+            >
               작성완료
             </Button.SubmitBtn>
           </Block.FlexBox>

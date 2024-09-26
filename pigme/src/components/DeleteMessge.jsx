@@ -1,11 +1,12 @@
-// 좋아요 개수, 좋아요 목록
+// 삭제 성공 모달
+
 import styled from '@emotion/styled';
 import WarningModal from '../components/Modal/WarningModal.jsx';
 import useModal from '../components/Hooks/useModal';
 import { useNavigate } from 'react-router-dom';
 import Smile from '/sunglasses-smile.svg';
 
-export default function DeleteButton() {
+export default function DeleteMessage() {
   // 경고 모달
   const warningModal = useModal();
   const navigate = useNavigate();

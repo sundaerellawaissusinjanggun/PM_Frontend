@@ -17,7 +17,7 @@ export default function Home() {
 
   const handleConfirm = () => {
     confirmModal.closeModal();
-    navigate('/custom');
+    navigate('/message');
   };
   const handleCancel = () => {
     confirmModal.closeModal();
