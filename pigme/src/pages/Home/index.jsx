@@ -58,7 +58,7 @@ const HomeWrapper = styled.div`
   justify-content: center;
   width: 100%;
   height: 100vh;
-  background: url(background-purple.svg);
+  background-color: #fae8e0;
 `;
 
 const FenceImage = styled.img`
