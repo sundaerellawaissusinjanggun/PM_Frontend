@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import Profile from '/colors/pig.svg';
-import Edit from '/pencil.svg';
 import Background from '../../components/Layout/Background';
 import { db, auth } from '../../firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { Text } from '../../styles/UI';
+import { onAuthStateChanged } from 'firebase/auth';
 
 export default function Context() {
   const navigate = useNavigate();
@@ -18,9 +18,8 @@ export default function Context() {
   const [likedMessagesCount, setLikedMessagesCount] = useState(0);
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchUserData = async (userId) => {
       try {
-        const userId = auth.currentUser.uid;
         const userDoc = await getDoc(doc(db, 'users', userId));
 
         if (userDoc.exists()) {
@@ -36,8 +35,17 @@ export default function Context() {
       }
     };
 
-    fetchUserData();
-  }, []);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        fetchUserData(user.uid);
+      } else {
+        console.error('사용자가 로그인되어 있지 않습니다.');
+        navigate('/login');
+      }
+    });
+
+    return () => unsubscribe();
+  }, [navigate]);
 
   const handelGoToCustom = () => navigate('/custom');
   const handelGoToMyBank = () => navigate('/myBank');
