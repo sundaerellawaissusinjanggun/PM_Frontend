@@ -1,8 +1,9 @@
 // 남의 메세지 구경 화면
-import { Block, Text, Img, Input, Button } from '../../styles/UI';
+import { Block, Text, Img } from '../../styles/UI';
 import styled from '@emotion/styled';
 import Header from '../../components/Layout/Header';
-import Like from '../../components/Like';
+import LikeMessage from '../../components/LikeMessage';
+import DeleteMessage from '../../components/DeleteMessge';
 import BackgroundCoin from '/background-coin.svg';
 import Pig from '/colors/pig.svg';
 
@@ -36,7 +37,8 @@ export default function MessageShowPage() {
 
             {/* 좋아요 버튼 영역*/}
             <Block.FlexBox justifyContent="flex-end">
-              <Like />
+              {/* <LikeMessage /> */}
+              <DeleteMessage />
             </Block.FlexBox>
           </Block.RowFlexBox>
 

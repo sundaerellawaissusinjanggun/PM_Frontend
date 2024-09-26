@@ -11,6 +11,7 @@ import MyPiggyBankPage from './pages/Profile/MyPiggyBankPage';
 import MessageInputPage from './pages/Message/MessageInputPage';
 import LikedMessagesPage from './pages/Profile/LikedMessagesPage';
 import MessageShowPage from './pages/Message/MessageShowPage';
+import MyMessageShowPage from './pages/Message/MyMessageShowPage';
 
 export const router = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ export const router = createBrowserRouter([
       {
         path: '/showMessage',
         element: <MessageShowPage />,
+      },
+      {
+        path: '/myMessage',
+        element: <MyMessageShowPage />,
       },
     ],
     errorElement: <NotFound />,
