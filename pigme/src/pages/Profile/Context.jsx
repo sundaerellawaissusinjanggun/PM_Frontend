@@ -7,8 +7,10 @@ import Background from '../../components/Layout/Background';
 export default function Context() {
   const navigate = useNavigate();
 
+  const handelGoToCustom = () => navigate('/custom');
   const handelGoToMyBank = () => navigate('/myBank');
   const handelGoToLike = () => navigate('/like');
+
   return (
     <Background>
       <Style.ProfileTitle>나의 프로필</Style.ProfileTitle>
@@ -20,7 +22,7 @@ export default function Context() {
                 <Style.InfoLabel>이메일</Style.InfoLabel>
                 <Style.InfoText>kyoul10121@naver.com</Style.InfoText>
               </Style.InfoContainer>
-              <Style.ProfileImageContainer>
+              <Style.ProfileImageContainer onClick={handelGoToCustom}>
                 <Style.ProfileImage src={Profile} />
                 <Style.EditImage src={Edit} />
               </Style.ProfileImageContainer>
