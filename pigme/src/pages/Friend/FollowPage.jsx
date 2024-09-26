@@ -14,6 +14,7 @@ export default function FollowPage() {
   const handleGoToMessage = () => {
     confirmModal.closeModal();
     navigate('/message');
+    // 추후에 친구 요청 목록으로 이동하게 변경!!
   };
 
   const validateEmail = (email) => {
