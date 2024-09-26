@@ -1,22 +1,38 @@
 import styled from '@emotion/styled';
 import Pig from '/colors/pig.svg';
 import LogoText from '/public/logo.svg';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { auth } from '../../firebase';
+import { useNavigate } from 'react-router';
 
 export default function Login() {
-  const handleLogin = () => {
-    // 로그인 버튼 클릭 시 실행할 함수
+  const navigate = useNavigate();
+
+  const handleGoogleSign = async () => {
+    const provider = new GoogleAuthProvider();
+
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      console.log('User data:', user);
+
+      navigate('/home');
+    } catch (error) {
+      console.error('Google 로그인 실패 :', error);
+      alert('Google 로그인 실패! 다시 시도해 주세요.');
+    }
   };
 
   return (
     <>
       <Style.LogoWrapper>
         <Style.LogoImage>
-          <img src={Pig} />
+          <img src={Pig} alt="Pig Logo" />
         </Style.LogoImage>
-        <img src={LogoText} />
+        <img src={LogoText} alt="Logo Text" />
       </Style.LogoWrapper>
       <Style.Footer>
-        <Style.LoginButton onClick={handleLogin}>
+        <Style.LoginButton onClick={handleGoogleSign}>
           구글 로그인 하기
         </Style.LoginButton>
         <Style.CopyRight>
