@@ -1,5 +1,5 @@
 // 친구 추가
-import { Block, Input, Button } from '../../styles/UI';
+import { Block, Input, Button, Img, Text } from '../../styles/UI';
 import Header from '../../components/Layout/Header';
 export default function FollowPage() {
   return (
@@ -9,18 +9,34 @@ export default function FollowPage() {
       </Block.HeaderBox>
 
       <Block.BackgroundWhiteBox height="758px">
-        <Block.FlexBox direction="column">
-          <Block.FlexBox justifyContent="flex-end">친구요청목록</Block.FlexBox>
-          <Block.FlexBox justifyContent="center">이미지</Block.FlexBox>
-          <Block.FlexBox justifyContent="center">문구</Block.FlexBox>
-          <Block.FlexBox>
-            <Input.BasicInput />
-          </Block.FlexBox>
-          <Block.FlexBox justifyContent="center">경고문구</Block.FlexBox>
-          <Block.FlexBox>
-            <Button.SubmitBtn>나랑 친구하자</Button.SubmitBtn>
-          </Block.FlexBox>
-        </Block.FlexBox>
+        <Block.ColumnFlexBox
+          height="80%"
+          justifyContent="space-evenly"
+          gap="100px"
+        >
+          <div>
+            <Text.Body3>8개의 친구 요청</Text.Body3>
+          </div>
+
+          <Block.ColumnFlexBox gap="20px">
+            <Img.AngledIcon width="120px" src="/friends-pig.svg" />
+
+            <Text.ModalTitle>친구 추가</Text.ModalTitle>
+
+            <Text.Body1>이메일을 입력하고 친구를 만들어요!</Text.Body1>
+
+            <div>
+              <Input.BasicInput />
+              <Block.FlexBox justifyContent="flex-end" padding="10px 10px 0  0">
+                <Text.Warning>올바른 이메일 형식을 입력해주세요.</Text.Warning>
+              </Block.FlexBox>
+            </div>
+
+            <Button.SubmitBtn bgColor="pink" width="123px" height="45px">
+              <Text.Body2 color="white">나랑 친구하자!</Text.Body2>
+            </Button.SubmitBtn>
+          </Block.ColumnFlexBox>
+        </Block.ColumnFlexBox>
       </Block.BackgroundWhiteBox>
     </>
   );
