@@ -1,9 +1,58 @@
-// 친구 추가
+import { useState } from 'react';
 import { Block, Input, Button, Img, Text } from '../../styles/UI';
 import Header from '../../components/Layout/Header';
+import ConfirmModal from '../../components/Modal/ConfirmModal';
+import useModal from '../../components/Hooks/useModal';
+import { useNavigate } from 'react-router';
+
 export default function FollowPage() {
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState(false);
+  const confirmModal = useModal();
+  const navigate = useNavigate();
+
+  const handleGoToMessage = () => {
+    confirmModal.closeModal();
+    navigate('/message');
+  };
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const handleConfirm = () => {
+    if (validateEmail(email)) {
+      setEmailError(false);
+      confirmModal.openModal();
+    } else {
+      setEmailError(true);
+    }
+  };
+
+  const handleEmailChange = (e) => {
+    const inputEmail = e.target.value;
+    setEmail(inputEmail);
+
+    if (validateEmail(inputEmail)) {
+      setEmailError(false);
+    } else {
+      setEmailError(true);
+    }
+  };
+
   return (
     <>
+      <ConfirmModal
+        isOpen={confirmModal.isOpen}
+        setIsOpen={confirmModal.setIsOpen}
+        title="알림"
+        message="친구 요청을 보낼까요?"
+        confirmText="보낼래요"
+        cancelText="취소"
+        onConfirm={handleGoToMessage}
+      />
+
       <Block.HeaderBox justifyContent="flex-end">
         <Header showHomeIcon={true} />
       </Block.HeaderBox>
@@ -25,14 +74,36 @@ export default function FollowPage() {
 
             <Text.Body1>이메일을 입력하고 친구를 만들어요!</Text.Body1>
 
-            <div>
-              <Input.BasicInput />
-              <Block.FlexBox justifyContent="flex-end" padding="10px 10px 0  0">
-                <Text.Warning>올바른 이메일 형식을 입력해주세요.</Text.Warning>
-              </Block.FlexBox>
-            </div>
+            <Block.FlexBox
+              direction="column"
+              alignItems="center"
+              justifyContent="flex-start"
+              width="84%"
+              height="70px"
+            >
+              <Input.BasicInput
+                placeholder="example@gmail.com"
+                value={email}
+                onChange={handleEmailChange}
+              />
+              {emailError && (
+                <Block.FlexBox
+                  justifyContent="flex-end"
+                  padding="10px 10px 0  0"
+                >
+                  <Text.Warning>
+                    올바른 형식의 이메일을 입력해주세요.
+                  </Text.Warning>
+                </Block.FlexBox>
+              )}
+            </Block.FlexBox>
 
-            <Button.SubmitBtn bgColor="pink" width="123px" height="45px">
+            <Button.SubmitBtn
+              bgColor="pink"
+              width="123px"
+              height="45px"
+              onClick={handleConfirm}
+            >
               <Text.Body2 color="white">나랑 친구하자!</Text.Body2>
             </Button.SubmitBtn>
           </Block.ColumnFlexBox>
