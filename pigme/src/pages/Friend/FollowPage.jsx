@@ -27,6 +27,7 @@ export default function FollowPage() {
       confirmModal.openModal();
     } else {
       setEmailError(true);
+      alert('이메일 형식을 확인해주세요.');
     }
   };
 
