@@ -1,14 +1,46 @@
 import styled from '@emotion/styled';
 import Pig from '/colors/pig.svg';
 import LogoText from '/public/logo.svg';
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  onAuthStateChanged,
+} from 'firebase/auth';
 import { auth } from '../../firebase';
 import { useNavigate } from 'react-router';
-import { doc, getDoc } from 'firebase/firestore'; // Firestore imports
-import { db } from '../../firebase'; // Assuming Firestore is set up
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../firebase';
+import { useEffect, useState } from 'react';
 
 export default function Login() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+
+  // 인증 상태 확인
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const userDocRef = doc(db, 'users', user.uid);
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+
+          if (userData.avatar && userData.nickname) {
+            navigate('/home');
+          } else {
+            navigate('/custom');
+          }
+        } else {
+          navigate('/custom');
+        }
+      } else {
+        setLoading(false);
+      }
+    });
+
+    return () => unsubscribe(); // 컴포넌트 언마운트 시 구독 해제
+  }, [navigate]);
 
   const handleGoogleSign = async () => {
     const provider = new GoogleAuthProvider();
@@ -16,28 +48,15 @@ export default function Login() {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-
-      console.log('User data:', user);
-
-      const userDocRef = doc(db, 'users', user.uid);
-      const userDoc = await getDoc(userDocRef);
-
-      if (userDoc.exists()) {
-        const userData = userDoc.data();
-
-        if (userData.avatar && userData.nickname) {
-          navigate('/home');
-        } else {
-          navigate('/custom');
-        }
-      } else {
-        navigate('/custom');
-      }
     } catch (error) {
       console.error('Google 로그인 실패 :', error);
       alert('Google 로그인 실패! 다시 시도해 주세요.');
     }
   };
+
+  if (loading) {
+    return <div>로딩중</div>;
+  }
 
   return (
     <>
