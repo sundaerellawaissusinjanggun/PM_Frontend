@@ -11,7 +11,7 @@ import Pig from '/pig-coin.svg';
 export default function MessageInputPage() {
   const successModal = useModal();
   const navigate = useNavigate();
-  const handleGoToMainHome = () => navigate('/home');
+  const handleGoToMainHome = () => navigate(-1);
   const handleGoToShowMessage = () => navigate('/showMessage');
 
   const userNickname = '닉네임';
@@ -34,8 +34,8 @@ export default function MessageInputPage() {
         }
         cancelText={'메인으로'}
         confirmText={'내용확인하기'}
-        onCancle={() => navigate(-1)}
-        onConfirm={() => navigate('/showMessage')}
+        onCancle={handleGoToMainHome}
+        onConfirm={handleGoToShowMessage}
       />
       {/* 헤더 영역 */}
       <Block.HeaderBox width="100%" justifyContent="flex-end">
@@ -84,6 +84,10 @@ export default function MessageInputPage() {
   );
 }
 
+const SuccessModalWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 const InlineTextWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
