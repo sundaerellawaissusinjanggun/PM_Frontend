@@ -6,6 +6,7 @@ import Edit from '/pencil.svg';
 import Background from '../../components/Layout/Background';
 import { db, auth } from '../../firebase';
 import { doc, getDoc } from 'firebase/firestore';
+import { Text } from '../../styles/UI';
 
 export default function Context() {
   const navigate = useNavigate();
@@ -50,36 +51,35 @@ export default function Context() {
           <Style.UserInfoContainer>
             <Style.UserDetails>
               <Style.InfoContainer>
-                <Style.InfoLabel>이메일</Style.InfoLabel>
-                <Style.InfoText>{userEmail}</Style.InfoText>
+                <Text.MiniTitle1>이메일</Text.MiniTitle1>
+                <Style.InfoField>
+                  <Text.Body1>{userEmail}</Text.Body1>
+                </Style.InfoField>
               </Style.InfoContainer>
               <Style.ProfileImageContainer onClick={handelGoToCustom}>
                 <Style.ProfileImage src={Profile} />
-                <Style.EditImage src={Edit} />
               </Style.ProfileImageContainer>
             </Style.UserDetails>
           </Style.UserInfoContainer>
 
-          <Style.InfoLabel>닉네임</Style.InfoLabel>
-          <Style.EditableField>
-            <Style.InfoText>{nickname}</Style.InfoText>
-            <Style.FieldEditImage src={Edit} />
-          </Style.EditableField>
+          <Text.MiniTitle1>닉네임</Text.MiniTitle1>
+          <Style.InfoField>
+            <Text.Body1>{nickname}</Text.Body1>
+          </Style.InfoField>
 
-          <Style.InfoLabel>한 줄 소개</Style.InfoLabel>
-          <Style.EditableField>
-            <Style.InfoText>{introduction}</Style.InfoText>
-            <Style.FieldEditImage src={Edit} />
-          </Style.EditableField>
+          <Text.MiniTitle1>한 줄 소개</Text.MiniTitle1>
+          <Style.InfoField>
+            <Text.Body1>{introduction}</Text.Body1>
+          </Style.InfoField>
 
-          <Style.SaveButton>저장하기</Style.SaveButton>
+          <Style.SaveButton>프로필 수정하기</Style.SaveButton>
         </Style.UserInfo>
         <Style.UserStatsContainer>
           <Style.StatsButton onClick={handelGoToMyBank}>
             현재 보유 코인 <Style.StatsCount>{coins}개</Style.StatsCount>
           </Style.StatsButton>
           <Style.StatsButton onClick={handelGoToLike}>
-            즐겨찾는 메세지{' '}
+            즐겨찾는 메세지
             <Style.StatsCount>{likedMessagesCount}개</Style.StatsCount>
           </Style.StatsButton>
         </Style.UserStatsContainer>
@@ -130,7 +130,6 @@ const Style = {
   ProfileImage: styled.img`
     width: 45px;
     height: 42px;
-    opacity: 0.2;
     position: absolute;
     z-index: 1;
   `,
@@ -172,13 +171,13 @@ const Style = {
     background-color: #ededed;
     border-radius: 15px;
   `,
-  EditableField: styled.div`
+  InfoField: styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 10px 15px;
     background-color: #fafafa;
-    border: 1px solid #e6e6e6;
+    /* border: 1px solid #e6e6e6; */
     border-radius: 10px;
   `,
   UserStatsContainer: styled.div`
