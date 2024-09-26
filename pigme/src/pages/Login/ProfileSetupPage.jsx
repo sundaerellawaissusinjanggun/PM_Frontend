@@ -3,12 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../../components/Layout/Header';
 import { Block, Button, Input, Text } from '../../styles/UI';
 import ProfileAvatar from '../../components/Layout/ProfileAvatar';
+import { db, auth } from '../../firebase';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 export default function ProfileSetupPage() {
   const [nickname, setNickname] = useState('');
+  const [introduction, setIntroduction] = useState('');
   const navigate = useNavigate();
 
-  const handleGoToMainHome = () => {
+  const handleGoToMainHome = async () => {
     const isNicknameValid = nickname.length >= 2 && nickname.length <= 9;
 
     if (!isNicknameValid) {
@@ -16,12 +19,45 @@ export default function ProfileSetupPage() {
       return;
     }
 
-    navigate('/home');
+    const introductionMessage =
+      introduction.trim() === ''
+        ? '아직 한 줄 소개가 작성되지 않았어요!'
+        : introduction;
+
+    try {
+      const userId = auth.currentUser.uid;
+      await setDoc(
+        doc(db, 'users', userId),
+        {
+          nickname,
+          introduction: introductionMessage,
+        },
+        { merge: true } // merge: true로 기존 데이터와 병합
+      );
+
+      const userDoc = await getDoc(doc(db, 'users', userId));
+      if (userDoc.exists()) {
+        // console.log('저장된 사용자 정보:', userDoc.data());
+      } else {
+        console.log('사용자 정보가 존재하지 않습니다.');
+      }
+
+      navigate('/home');
+    } catch (error) {
+      console.error('프로필 저장 실패:', error);
+      alert('프로필 저장 중 문제가 발생했습니다. 다시 시도해 주세요.');
+    }
   };
 
   const handleNicknameChange = (e) => {
     setNickname(e.target.value);
   };
+
+  const handleIntroductionChange = (e) => {
+    setIntroduction(e.target.value);
+  };
+
+  const userEmail = auth.currentUser.email;
 
   return (
     <>
@@ -40,7 +76,7 @@ export default function ProfileSetupPage() {
         <ProfileAvatar />
       </Block.AbsoluteBox>
 
-      {/* input 영역*/}
+      {/* input 영역 */}
       <Block.BackgroundWhiteBox>
         <Block.FlexBox
           direction="column"
@@ -51,8 +87,7 @@ export default function ProfileSetupPage() {
           <Block.ColumnFlexBox gap="12px">
             <Text.Body3>*이메일</Text.Body3>
             <Block.FlexBox width="94%" padding="0 0 30px 10px">
-              <Text.Body2>zuitopia.dev@gmail.com</Text.Body2>
-              {/* 현재 로그인 하고 있는 이메일 받아와서 보여주는 부분이므로 추후 수정 */}
+              <Text.Body2>{userEmail}</Text.Body2>
             </Block.FlexBox>
             <Text.Body3>*닉네임</Text.Body3>
             <Input.BasicInput
@@ -71,6 +106,8 @@ export default function ProfileSetupPage() {
             <Input.TextAreaInput
               type="text"
               placeholder="내용을 작성해주세요."
+              value={introduction}
+              onChange={handleIntroductionChange}
             />
           </Block.ColumnFlexBox>
           <Button.SubmitBtn
