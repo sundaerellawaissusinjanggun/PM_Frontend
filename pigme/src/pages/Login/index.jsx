@@ -4,6 +4,8 @@ import LogoText from '/public/logo.svg';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../../firebase';
 import { useNavigate } from 'react-router';
+import { doc, getDoc } from 'firebase/firestore'; // Firestore imports
+import { db } from '../../firebase'; // Assuming Firestore is set up
 
 export default function Login() {
   const navigate = useNavigate();
@@ -14,9 +16,23 @@ export default function Login() {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
+
       console.log('User data:', user);
 
-      navigate('/home');
+      const userDocRef = doc(db, 'users', user.uid);
+      const userDoc = await getDoc(userDocRef);
+
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+
+        if (userData.avatar && userData.nickname) {
+          navigate('/home');
+        } else {
+          navigate('/custom');
+        }
+      } else {
+        navigate('/custom');
+      }
     } catch (error) {
       console.error('Google 로그인 실패 :', error);
       alert('Google 로그인 실패! 다시 시도해 주세요.');
