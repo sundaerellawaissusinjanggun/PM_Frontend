@@ -11,6 +11,7 @@ import MessageInputPage from './pages/Message/MessageInputPage';
 import LikedMessagesPage from './pages/Profile/LikedMessagesPage';
 import MessageShowPage from './pages/Message/MessageShowPage';
 import MyMessageShowPage from './pages/Message/MyMessageShowPage';
+import FollowPage from './pages/Friend/FollowPage';
 
 export const router = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ export const router = createBrowserRouter([
       {
         path: '/myMessage',
         element: <MyMessageShowPage />,
+      },
+      {
+        path: '/friends',
+        element: <FollowPage />,
       },
     ],
     errorElement: <NotFound />,
