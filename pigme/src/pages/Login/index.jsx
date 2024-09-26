@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import Pig from '/colors/pig.svg';
-import LogoText from '/public/logo-text.svg';
+import LogoText from '/public/logo.svg';
 
 export default function Login() {
   const handleLogin = () => {
