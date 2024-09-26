@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { db } from '../../firebase';
+import { db, auth } from '../../firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { useRecoilValue } from 'recoil';
 import { selectionsState } from '../../recoil/atoms';
@@ -11,7 +11,7 @@ export default function ProfileAvatar() {
 
   useEffect(() => {
     const fetchUserSelections = async () => {
-      const userId = '3704053471';
+      const userId = auth.currentUser.uid;
       const docRef = doc(db, 'userSelections', userId);
       const docSnap = await getDoc(docRef);
 

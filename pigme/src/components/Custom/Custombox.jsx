@@ -3,7 +3,7 @@ import { useState } from 'react';
 import customData from '../../assets/customData';
 import { Block, Text } from '../../styles/UI';
 import Header from '../Layout/Header';
-import { db } from '../../firebase';
+import { db, auth } from '../../firebase';
 import { doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
@@ -29,7 +29,7 @@ export default function Custombox() {
   };
 
   const handleSave = async () => {
-    const userId = '3704053471';
+    const userId = auth.currentUser.uid;
 
     try {
       const colorImage = selectedColor.image;
