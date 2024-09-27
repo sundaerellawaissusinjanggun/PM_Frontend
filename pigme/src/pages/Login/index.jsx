@@ -20,37 +20,40 @@ export default function Login() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
+        console.log('현재 사용자 정보:', user);
+
         const userDocRef = doc(db, 'users', user.uid);
         const userDoc = await getDoc(userDocRef);
 
-        // 유저 데이터가 없으면 Firestore에 새로 저장 (초기값으로 저장)
         if (!userDoc.exists()) {
-          // Firestore에 기본 데이터를 저장
           await setDoc(userDocRef, { avatar: null, nickname: null });
           navigate('/custom');
         } else {
           const userData = userDoc.data();
 
-          // avatar와 nickname이 있으면 home 페이지로 이동
+          console.log('사용자 아바타:', userData.avatar);
+          console.log('사용자 닉네임:', userData.nickname);
+          console.log('한 줄 소개:', userData.introduction);
+
           if (userData.avatar && userData.nickname) {
             navigate('/home');
           } else {
-            navigate('/custom'); // 없으면 custom 페이지로 이동
+            navigate('/custom');
           }
         }
       } else {
-        setLoading(false); // 로그인 상태가 아닐 때 로딩 해제
+        setLoading(false);
       }
     });
 
-    return () => unsubscribe(); // 컴포넌트 언마운트 시 구독 해제
+    return () => unsubscribe();
   }, [navigate]);
 
   const handleGoogleSign = async () => {
     const provider = new GoogleAuthProvider();
 
     try {
-      await signInWithRedirect(auth, provider); // 리디렉션 방식으로 로그인
+      await signInWithRedirect(auth, provider);
     } catch (error) {
       console.error('Google 로그인 실패:', error);
       alert('Google 로그인 실패! 다시 시도해 주세요.');

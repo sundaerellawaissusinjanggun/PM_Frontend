@@ -64,7 +64,7 @@ export default function Custombox() {
         <Header
           showNextIcon={true}
           showBackIcon={true}
-          onComplete={handleSave} // 완료 버튼 클릭 시 handleSave 호출
+          onComplete={handleSave}
         />
       </Block.HeaderBox>
       <CustomizationScreen>
