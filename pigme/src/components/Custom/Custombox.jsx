@@ -8,6 +8,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { selectionsState } from '../../recoil/atoms';
+import ProfileAvatar from '../Layout/ProfileAvatar';
 
 export default function Custombox() {
   const [selectedTab, setSelectedTab] = useState('color');
@@ -69,7 +70,7 @@ export default function Custombox() {
       </Block.HeaderBox>
       <CustomizationScreen>
         <PigDisplay>
-          <Pig src={selectedColor.image} alt="Selected Pig" />
+          <ProfileAvatar />
           {selectedItem && selectedItem.image && (
             <ItemImg
               src={selectedItem.image}
@@ -164,17 +165,12 @@ const CustomizationScreen = styled.div`
   align-items: center;
   justify-content: space-around;
   height: 35%;
-  margin-bottom: 470px;
+  margin-bottom: 370px;
 `;
 
 const PigDisplay = styled.div`
   position: relative;
   padding: 20px 0 0 30px;
-`;
-
-const Pig = styled.img`
-  width: 156px;
-  height: 148px;
 `;
 
 const ItemImg = styled.img`
@@ -202,6 +198,7 @@ const TabButton = styled.button`
   font-size: 16px;
   color: #ff7195;
   cursor: pointer;
+
   &:hover {
     color: white;
   }
