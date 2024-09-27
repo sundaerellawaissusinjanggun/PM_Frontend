@@ -67,7 +67,7 @@ export default function FollowListPage() {
           ) : (
             <>
               {/* 친구 목록 영역 */}
-              {pendingFriends.map((friend) => (
+              {friends.map((friend) => (
                 <Block.FlexBox
                   key={friend.id}
                   padding="20px 0 "
