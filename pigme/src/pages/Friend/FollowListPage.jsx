@@ -29,6 +29,8 @@ export default function FollowListPage() {
       prevFriends.filter((friend) => friend.id !== id)
     );
   };
+  // 수락되지 않은 친구 요청 개수
+  const pendingFriends = friends.filter((friend) => !friend.isAccepted);
 
   return (
     <>
@@ -46,12 +48,13 @@ export default function FollowListPage() {
           {/* 친구 목록 개수 영역 */}
           <Block.FlexBox justifyContent="flex-end" margin="10px 0">
             <Text.Body1 weight="bold" color="black">
-              {friends.length}개
+              {pendingFriends.length}개
             </Text.Body1>
             <Text.Body1 weight="bold">의 친구 요청</Text.Body1>
           </Block.FlexBox>
 
-          {friends.length === 0 ? (
+          {/* 친구 목록 개수 확인 */}
+          {pendingFriends.length === 0 ? (
             <Block.FlexBox justifyContent="center" alignItem="center">
               <Text.ModalText color="#E7E7E7">
                 아직 친구가 없네요! 먼저 친구 요청을 보내서 친구를 만들어보세요.
@@ -60,7 +63,7 @@ export default function FollowListPage() {
           ) : (
             <>
               {/* 친구 목록 영역 */}
-              {friends.map((friend) => (
+              {pendingFriends.map((friend) => (
                 <Block.FlexBox
                   key={friend.id}
                   padding="20px 0 "
