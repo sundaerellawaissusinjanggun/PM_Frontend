@@ -111,6 +111,16 @@ export const Text = {
     cursor: ${(props) => props.pointer && 'pointer'};
     line-height: 1.5;
   `,
+  ModalText2: styled.span`
+    display: inline-block;
+    font-weight: ${({ weight }) =>
+      weight ? theme.fontWeight[weight] : theme.fontWeight.medium};
+    font-size: ${({ size }) =>
+      size ? theme.fontSize[size] : theme.fontSize.medium};
+    color: ${({ color }) => (color ? theme.color[color] : theme.color.black)};
+    cursor: ${(props) => props.pointer && 'pointer'};
+    line-height: 1.5;
+  `,
   ButtonText: styled.span`
     display: inline-block;
     font-weight: ${({ weight }) =>
@@ -150,11 +160,9 @@ export const Block = {
     flex-direction: ${(props) => props.direction};
     justify-content: ${(props) => props.justifyContent};
     align-items: ${(props) => props.alignItems};
-    text-align: ${(props) => (props.textAlign ? props.textAlign : 'center')};
     width: ${(props) => (props.width ? props.width : '100%')};
     height: ${(props) => (props.height ? props.height : 'auto')};
     margin: ${(props) => props.margin};
-    margin-left: ${(props) => props.marginLeft};
     padding: ${(props) => props.padding};
     border: ${(props) => props.border};
     border-bottom: ${(props) => props.borderBottom};
@@ -271,7 +279,7 @@ export const Button = {
     border-radius: 10px;
     background-color: ${({ bgColor }) =>
       bgColor ? theme.color[bgColor] : 'pink'};
-    color: ${(props) => (props.color ? props.color : 'grayDeep')};
+    color: ${(props) => (props.color ? props.color : '#808080')};
     transition: background-color 0.3s ease;
 
     &:hover {
@@ -306,7 +314,7 @@ export const Input = {
     outline: none;
     ::placeholder {
       color: #bebebe;
-      font-size: ${(props) => props.fontSize};
+      font-size: ${(props) => (props.fontSize ? props.fontSize : 'small')};
     }
   `,
 };
