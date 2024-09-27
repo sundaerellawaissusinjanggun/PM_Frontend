@@ -170,6 +170,7 @@ export const Block = {
     background-color: ${({ bgColor }) => theme.color[bgColor]};
     cursor: ${(props) => props.pointer && 'pointer'};
     gap: ${(props) => props.gap};
+    white-space: ${(props) => props.whiteSpace};
   `,
   ColumnFlexBox: styled.div`
     display: flex;

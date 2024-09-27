@@ -4,6 +4,8 @@ import Header from '../../components/Layout/Header';
 import ConfirmModal from '../../components/Modal/ConfirmModal';
 import useModal from '../../components/Hooks/useModal';
 import { useNavigate } from 'react-router';
+import AnotherPage from '../../components/Friend/AnotherPage';
+import styled from '@emotion/styled';
 
 export default function FollowPage() {
   const [email, setEmail] = useState('');
@@ -61,14 +63,13 @@ export default function FollowPage() {
 
       <Block.BackgroundWhiteBox height="758px">
         <Block.ColumnFlexBox
-          height="80%"
+          height="95%"
           justifyContent="space-evenly"
-          gap="100px"
+          // gap="100px"
         >
-          <div>
-            <Text.Body3>8개의 친구 요청</Text.Body3>
-          </div>
-
+          <FriendCount>
+            <AnotherPage />
+          </FriendCount>
           <Block.ColumnFlexBox gap="20px">
             <Img.AngledIcon width="120px" src="/friends-pig.svg" />
 
@@ -114,3 +115,9 @@ export default function FollowPage() {
     </>
   );
 }
+const FriendCount = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 30px;
+`;
