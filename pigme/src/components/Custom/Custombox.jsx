@@ -70,18 +70,7 @@ export default function Custombox() {
       </Block.HeaderBox>
       <CustomizationScreen>
         <PigDisplay>
-          <ProfileAvatar />
-          {selectedItem && selectedItem.image && (
-            <ItemImg
-              src={selectedItem.image}
-              alt="Item"
-              style={{
-                position: 'absolute',
-                top: `${selectedItem.y}px`,
-                left: `${selectedItem.x}px`,
-              }}
-            />
-          )}
+          <ProfileAvatar color={selectedColor} item={selectedItem} />
         </PigDisplay>
 
         <TabContainer>

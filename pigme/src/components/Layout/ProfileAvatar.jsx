@@ -6,7 +6,7 @@ import { useRecoilValue } from 'recoil';
 import { selectionsState } from '../../recoil/atoms';
 import { onAuthStateChanged } from 'firebase/auth';
 
-export default function ProfileAvatar() {
+export default function ProfileAvatar({ color, item }) {
   const [userSelections, setUserSelections] = useState(null);
   const selections = useRecoilValue(selectionsState);
 
@@ -34,23 +34,25 @@ export default function ProfileAvatar() {
     return () => unsubscribe();
   }, []);
 
+  // 우선적으로 prop으로 전달된 값 사용, 없으면 Firestore 데이터 사용
+  const selectedColor =
+    color || selections.selectedColor || userSelections?.selectedColor;
+  const selectedItem =
+    item || selections.selectedItem || userSelections?.selectedItem;
+
   return (
     <Wrapper>
-      {userSelections && (
-        <>
-          <ItemImg src={userSelections.selectedColor} alt="Color" />
-          {userSelections.selectedItem && (
-            <ItemImg
-              src={userSelections.selectedItem.image}
-              alt="Item"
-              style={{
-                position: 'absolute',
-                top: `${userSelections.selectedItem.y}px`,
-                left: `${userSelections.selectedItem.x}px`,
-              }}
-            />
-          )}
-        </>
+      {selectedColor && <ItemImg src={selectedColor.image} alt="Color" />}
+      {selectedItem && selectedItem.image && (
+        <ItemImg
+          src={selectedItem.image}
+          alt="Item"
+          style={{
+            position: 'absolute',
+            top: `${selectedItem.y}px`,
+            left: `${selectedItem.x}px`,
+          }}
+        />
       )}
     </Wrapper>
   );
