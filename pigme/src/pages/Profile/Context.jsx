@@ -65,7 +65,7 @@ export default function Context() {
                 </Style.InfoField>
               </Style.InfoContainer>
               <Style.ProfileImageContainer onClick={handelGoToCustom}>
-                <Style.ProfileImage src={Profile} />
+                <img src="" alt="사용자가 커스텀한 아바타 보이기" />
               </Style.ProfileImageContainer>
             </Style.UserDetails>
           </Style.UserInfoContainer>

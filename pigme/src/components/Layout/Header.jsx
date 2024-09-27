@@ -8,7 +8,7 @@ export default function Header({
   showBackIcon,
   showMyPageIcon,
   showNextIcon,
-  onComplete, // Add onComplete prop
+  onComplete,
 }) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
@@ -34,7 +34,9 @@ export default function Header({
         <>
           <MenuButton width="30px" src="/profile.svg" onClick={toggleMenu} />
           <DropDown isVisible={isOpen}>
-            <MenuItem>나의 프로필</MenuItem>
+            <MenuItem onClick={() => navigate('/profile')}>
+              나의 프로필
+            </MenuItem>
             <MenuItem onClick={() => navigate('/friend')}>나의 친구</MenuItem>
             <MenuItem>나의 즐겨찾기</MenuItem>
             <MenuItem>나의 저금통</MenuItem>
@@ -43,7 +45,6 @@ export default function Header({
       )}
       {showNextIcon && (
         <button onClick={onComplete}>
-          {/* Call the onComplete function here */}
           <Text.MiniTitle2 color="white">완료</Text.MiniTitle2>
         </button>
       )}
