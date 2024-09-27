@@ -42,7 +42,7 @@ export default function ProfileAvatar({ color, item }) {
 
   return (
     <Wrapper>
-      {selectedColor && <ItemImg src={selectedColor.image} alt="Color" />}
+      {selectedColor && <ItemImg src={selectedColor} alt="Color" />}
       {selectedItem && selectedItem.image && (
         <ItemImg
           src={selectedItem.image}

@@ -5,9 +5,13 @@ import { Block } from '../../styles/UI';
 import { auth } from '../../firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
+import ProfileAvatar from '../../components/Layout/ProfileAvatar';
+import { useRecoilValue } from 'recoil';
+import { selectionsState } from '../../recoil/atoms';
 
 export default function Profile() {
   const [avatar, setAvatar] = useState('');
+  const selections = useRecoilValue(selectionsState);
 
   useEffect(() => {
     const fetchUserAvatar = async () => {
@@ -42,11 +46,10 @@ export default function Profile() {
         padding="0 0 0 20px"
         justifyContent="center"
       >
-        {avatar ? (
-          <img src={avatar} alt="User Avatar" />
-        ) : (
-          <img src="/colors/pig.svg" alt="Default Pig" />
-        )}
+        <ProfileAvatar
+          color={selections.selectedColor}
+          item={selections.selectedItem}
+        />
       </Block.AbsoluteBox>
       <Block.AbsoluteBox bottom="0">
         <Context />
