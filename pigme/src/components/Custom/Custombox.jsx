@@ -8,6 +8,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { selectionsState } from '../../recoil/atoms';
+import ProfileAvatar from '../Layout/ProfileAvatar';
 
 export default function Custombox() {
   const [selectedTab, setSelectedTab] = useState('color');
@@ -64,23 +65,12 @@ export default function Custombox() {
         <Header
           showNextIcon={true}
           showBackIcon={true}
-          onComplete={handleSave} // 완료 버튼 클릭 시 handleSave 호출
+          onComplete={handleSave}
         />
       </Block.HeaderBox>
       <CustomizationScreen>
         <PigDisplay>
-          <Pig src={selectedColor.image} alt="Selected Pig" />
-          {selectedItem && selectedItem.image && (
-            <ItemImg
-              src={selectedItem.image}
-              alt="Item"
-              style={{
-                position: 'absolute',
-                top: `${selectedItem.y}px`,
-                left: `${selectedItem.x}px`,
-              }}
-            />
-          )}
+          <ProfileAvatar color={selectedColor} item={selectedItem} />
         </PigDisplay>
 
         <TabContainer>
@@ -164,17 +154,12 @@ const CustomizationScreen = styled.div`
   align-items: center;
   justify-content: space-around;
   height: 35%;
-  margin-bottom: 470px;
+  margin-bottom: 370px;
 `;
 
 const PigDisplay = styled.div`
   position: relative;
   padding: 20px 0 0 30px;
-`;
-
-const Pig = styled.img`
-  width: 156px;
-  height: 148px;
 `;
 
 const ItemImg = styled.img`
@@ -202,6 +187,7 @@ const TabButton = styled.button`
   font-size: 16px;
   color: #ff7195;
   cursor: pointer;
+
   &:hover {
     color: white;
   }

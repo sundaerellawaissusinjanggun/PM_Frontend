@@ -1,12 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import Custombox from '../../components/Custom/Custombox';
+import { auth } from '../../firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../firebase';
 
 export default function CustomizePage() {
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const userDocRef = doc(db, 'users', user.uid);
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          setUserData(userData);
+        } else {
+          console.log('사용자 데이터가 없습니다.');
+        }
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   return (
     <>
       <Style.Wrapper>
-        <Custombox />
+        {userData && (
+          <Custombox
+            initialColor={userData.avatar}
+            initialItem={userData.item}
+          />
+        )}
       </Style.Wrapper>
     </>
   );
@@ -20,8 +49,8 @@ const Style = {
     align-items: center;
     justify-content: center;
     position: relative;
-    scrollbar-width: none; // 스크롤의 기본 스타일은 지우고 스크롤의 기능만 사용
-    overscroll-behavior: none; // 스크롤이 오버되는 것을 막아준다.
-    overflow-y: auto; /* 스크롤을 세로로만 허용 */
+    scrollbar-width: none;
+    overscroll-behavior: none;
+    overflow-y: auto;
   `,
 };

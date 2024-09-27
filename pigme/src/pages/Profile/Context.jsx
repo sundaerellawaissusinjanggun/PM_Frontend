@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
-import Profile from '/colors/pig.svg';
 import Background from '../../components/Layout/Background';
 import { db, auth } from '../../firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { Text } from '../../styles/UI';
 import { onAuthStateChanged } from 'firebase/auth';
+import ProfileAvatar from '../../components/Layout/ProfileAvatar';
 
 export default function Context() {
   const navigate = useNavigate();
@@ -28,7 +28,16 @@ export default function Context() {
           setNickname(userData.nickname);
           setIntroduction(userData.introduction);
           setCoins(userData.coins || 0);
-          setLikedMessagesCount(userData.likedMessages.length || 0);
+          setLikedMessagesCount(userData.likedMessages?.length || 0);
+
+          console.log('사용자 이메일:', auth.currentUser.email);
+          console.log('닉네임:', userData.nickname);
+          console.log('한 줄 소개:', userData.introduction);
+          console.log('현재 보유 코인:', userData.coins || 0);
+          console.log(
+            '즐겨찾는 메세지 개수:',
+            userData.likedMessages?.length || 0
+          );
         }
       } catch (error) {
         console.error('사용자 정보 가져오기 실패:', error);
@@ -65,7 +74,7 @@ export default function Context() {
                 </Style.InfoField>
               </Style.InfoContainer>
               <Style.ProfileImageContainer onClick={handelGoToCustom}>
-                <img src="" alt="사용자가 커스텀한 아바타 보이기" />
+                <ProfileAvatar />
               </Style.ProfileImageContainer>
             </Style.UserDetails>
           </Style.UserInfoContainer>
@@ -80,7 +89,9 @@ export default function Context() {
             <Text.Body1>{introduction}</Text.Body1>
           </Style.InfoField>
 
-          <Style.SaveButton>프로필 수정하기</Style.SaveButton>
+          <Style.SaveButton onClick={() => navigate('/custom')}>
+            프로필 수정하기
+          </Style.SaveButton>
         </Style.UserInfo>
         <Style.UserStatsContainer>
           <Style.StatsButton onClick={handelGoToMyBank}>
@@ -185,7 +196,6 @@ const Style = {
     justify-content: space-between;
     padding: 10px 15px;
     background-color: #fafafa;
-    /* border: 1px solid #e6e6e6; */
     border-radius: 10px;
   `,
   UserStatsContainer: styled.div`

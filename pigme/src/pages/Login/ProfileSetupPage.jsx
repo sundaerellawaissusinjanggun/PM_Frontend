@@ -1,16 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/Layout/Header';
 import { Block, Button, Input, Text } from '../../styles/UI';
 import ProfileAvatar from '../../components/Layout/ProfileAvatar';
 import { db, auth } from '../../firebase';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 export default function ProfileSetupPage() {
   const [nickname, setNickname] = useState('');
   const [introduction, setIntroduction] = useState('');
   const [nicknameError, setNicknameError] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const userId = auth.currentUser.uid;
+        const userDoc = await getDoc(doc(db, 'users', userId));
+
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          setNickname(userData.nickname || '');
+          setIntroduction(userData.introduction || '');
+        }
+      } catch (error) {
+        console.error('사용자 프로필 정보를 불러오는 중 오류 발생:', error);
+      }
+    };
+
+    if (auth.currentUser) {
+      fetchUserProfile();
+    }
+  }, []);
 
   const handleGoToMainHome = async () => {
     const isNicknameValid = nickname.length >= 2 && nickname.length <= 9;
@@ -27,13 +48,12 @@ export default function ProfileSetupPage() {
 
     try {
       const userId = auth.currentUser.uid;
-      const email = auth.currentUser.email; // 로그인된 사용자의 이메일 가져오기
+      const email = auth.currentUser.email;
 
-      // Firestore에 이메일, 닉네임, 한 줄 소개 저장
       await setDoc(
         doc(db, 'users', userId),
         {
-          email, // 이메일도 저장
+          email,
           nickname,
           introduction: introductionMessage,
         },
@@ -93,9 +113,9 @@ export default function ProfileSetupPage() {
           <Block.ColumnFlexBox gap="12px">
             <Text.Body3>*이메일</Text.Body3>
             <Block.FlexBox width="94%" padding="0 0 10px 10px">
-              <Text.Body2>zuitopia.dev@gmail.com</Text.Body2>
-              {/* 현재 로그인 하고 있는 이메일 받아와서 보여주는 부분이므로 추후 수정 */}
+              <Text.Body2>{auth.currentUser.email}</Text.Body2>
             </Block.FlexBox>
+
             <Text.Body3>*닉네임</Text.Body3>
             <Block.FlexBox
               direction="column"
