@@ -150,6 +150,7 @@ export const Block = {
     flex-direction: ${(props) => props.direction};
     justify-content: ${(props) => props.justifyContent};
     align-items: ${(props) => props.alignItems};
+    text-align: ${(props) => (props.textAlign ? props.textAlign : 'center')};
     width: ${(props) => (props.width ? props.width : '100%')};
     height: ${(props) => (props.height ? props.height : 'auto')};
     margin: ${(props) => props.margin};

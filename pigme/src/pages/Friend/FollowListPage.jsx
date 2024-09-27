@@ -55,10 +55,14 @@ export default function FollowListPage() {
 
           {/* 친구 목록 개수 확인 */}
           {pendingFriends.length === 0 ? (
-            <Block.FlexBox justifyContent="center" alignItem="center">
-              <Text.ModalText color="#E7E7E7">
+            <Block.FlexBox
+              justifyContent="center"
+              alignItem="center"
+              height="100%"
+            >
+              <TextWrapper>
                 아직 친구가 없네요! 먼저 친구 요청을 보내서 친구를 만들어보세요.
-              </Text.ModalText>
+              </TextWrapper>
             </Block.FlexBox>
           ) : (
             <>
@@ -123,4 +127,14 @@ const ButtonWrapper = styled.div`
   justify-content: flex-end;
   margin-left: auto;
   gap: 8px;
+`;
+
+const TextWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  font-size: 16px;
+  color: #bebebe;
 `;
