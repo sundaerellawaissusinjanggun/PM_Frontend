@@ -1,6 +1,4 @@
-// 메인화면 (와글돼지)
-
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import Fence from '/fence.svg';
 import { Block } from '../../styles/UI';
@@ -8,12 +6,49 @@ import Header from '../../components/Layout/Header';
 import useModal from '../../components/Hooks/useModal';
 import { useNavigate } from 'react-router-dom';
 import BankModal from '../../components/Modal/BankModal';
+import { auth, db } from '../../firebase'; // Firebase auth와 Firestore import
+import { doc, getDoc } from 'firebase/firestore'; // Firestore 데이터 가져오기
 
 export default function Home() {
   const [nickname, setNickname] = useState('저돼지아닌데요');
-  // 경고 모달
   const confirmModal = useModal();
   const navigate = useNavigate();
+
+  // 새로고침하거나 페이지가 로드될 때 현재 로그인한 사용자 정보 출력
+  useEffect(() => {
+    const fetchUserData = async (userId) => {
+      try {
+        const userDocRef = doc(db, 'users', userId); // Firestore에서 user 데이터 참조
+        const userDocSnap = await getDoc(userDocRef);
+
+        if (userDocSnap.exists()) {
+          const userData = userDocSnap.data();
+          console.log('사용자 avatar 정보:', userData.avatar);
+          console.log('사용자 닉네임:', userData.nickname);
+          console.log('사용자 한 줄 소개:', userData.introduction);
+        } else {
+          console.log('사용자 데이터를 찾을 수 없습니다.');
+        }
+      } catch (error) {
+        console.error('사용자 데이터 가져오기 실패:', error);
+      }
+    };
+
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        console.log('현재 로그인한 사용자:', user);
+        console.log('사용자 UID:', user.uid);
+        console.log('사용자 이메일:', user.email);
+
+        // Firestore에서 추가 정보 가져오기
+        fetchUserData(user.uid);
+      } else {
+        console.log('사용자가 로그인되어 있지 않습니다.');
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const handleConfirm = () => {
     confirmModal.closeModal();
@@ -29,8 +64,7 @@ export default function Home() {
         isOpen={confirmModal.isOpen}
         setIsOpen={confirmModal.setIsOpen}
         nickname={nickname} // 닉네임을 전달
-        message="사람들이 주고 간 코인을 클릭하면 
-        메세지를 구경할 수 있어요!"
+        message="사람들이 주고 간 코인을 클릭하면 메세지를 구경할 수 있어요!"
         confirmText="나도 저금할래!"
         cancelText="취소"
         onConfirm={handleConfirm}
