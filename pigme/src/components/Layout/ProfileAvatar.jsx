@@ -15,6 +15,8 @@ export default function ProfileAvatar({ color, item }) {
       const docRef = doc(db, 'userSelections', userId);
       const docSnap = await getDoc(docRef);
 
+      console.log('Selected Color:', selectedColor);
+
       if (docSnap.exists()) {
         setUserSelections(docSnap.data());
       } else {
@@ -22,7 +24,6 @@ export default function ProfileAvatar({ color, item }) {
       }
     };
 
-    // 인증 상태 확인 후 UID 가져오기
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         fetchUserSelections(user.uid);
@@ -34,11 +35,10 @@ export default function ProfileAvatar({ color, item }) {
     return () => unsubscribe();
   }, []);
 
-  // 우선적으로 prop으로 전달된 값 사용, 없으면 Firestore 데이터 사용
   const selectedColor =
-    color || selections.selectedColor || userSelections?.selectedColor;
+    selections.selectedColor || userSelections?.selectedColor || color;
   const selectedItem =
-    item || selections.selectedItem || userSelections?.selectedItem;
+    selections.selectedItem || userSelections?.selectedItem || item;
 
   return (
     <Wrapper>

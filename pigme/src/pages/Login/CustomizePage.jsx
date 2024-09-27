@@ -1,38 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import Custombox from '../../components/Custom/Custombox';
-import { auth } from '../../firebase';
-import { onAuthStateChanged } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../../firebase';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../../recoil/atoms';
 
 export default function CustomizePage() {
-  const [userData, setUserData] = useState(null);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const userDocRef = doc(db, 'users', user.uid);
-        const userDoc = await getDoc(userDocRef);
-
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          setUserData(userData);
-        } else {
-          console.log('사용자 데이터가 없습니다.');
-        }
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
+  const userData = useRecoilValue(userState);
 
   return (
     <>
       <Style.Wrapper>
         {userData && (
           <Custombox
-            initialColor={userData.avatar}
+            initialColor={userData.color}
             initialItem={userData.item}
           />
         )}
