@@ -4,14 +4,14 @@ import { db, auth } from '../../firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { useRecoilValue } from 'recoil';
 import { selectionsState } from '../../recoil/atoms';
+import { onAuthStateChanged } from 'firebase/auth';
 
 export default function ProfileAvatar() {
   const [userSelections, setUserSelections] = useState(null);
   const selections = useRecoilValue(selectionsState);
 
   useEffect(() => {
-    const fetchUserSelections = async () => {
-      const userId = auth.currentUser.uid;
+    const fetchUserSelections = async (userId) => {
       const docRef = doc(db, 'userSelections', userId);
       const docSnap = await getDoc(docRef);
 
@@ -22,7 +22,16 @@ export default function ProfileAvatar() {
       }
     };
 
-    fetchUserSelections();
+    // 인증 상태 확인 후 UID 가져오기
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        fetchUserSelections(user.uid);
+      } else {
+        console.log('사용자가 로그인되어 있지 않습니다.');
+      }
+    });
+
+    return () => unsubscribe();
   }, []);
 
   return (
