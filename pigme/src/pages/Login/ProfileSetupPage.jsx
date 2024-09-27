@@ -27,9 +27,13 @@ export default function ProfileSetupPage() {
 
     try {
       const userId = auth.currentUser.uid;
+      const email = auth.currentUser.email; // 로그인된 사용자의 이메일 가져오기
+
+      // Firestore에 이메일, 닉네임, 한 줄 소개 저장
       await setDoc(
         doc(db, 'users', userId),
         {
+          email, // 이메일도 저장
           nickname,
           introduction: introductionMessage,
         },

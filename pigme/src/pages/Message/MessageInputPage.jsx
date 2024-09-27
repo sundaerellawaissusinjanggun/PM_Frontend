@@ -61,7 +61,7 @@ export default function MessageInputPage() {
           </InlineTextWrapper>
           <Text.Title color="grayLight">따뜻한 메세지를 남겨주세요!</Text.Title>
           <Input.TextAreaInput
-            height="100%"
+            height="390px"
             margin="40px 0"
             placeholder="내용을 작성해주세요."
             fontSize="large"

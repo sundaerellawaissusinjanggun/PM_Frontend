@@ -3,12 +3,12 @@ import Pig from '/colors/pig.svg';
 import LogoText from '/public/logo.svg';
 import {
   GoogleAuthProvider,
-  signInWithPopup,
+  signInWithRedirect,
   onAuthStateChanged,
 } from 'firebase/auth';
 import { auth } from '../../firebase';
 import { useNavigate } from 'react-router';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { useEffect, useState } from 'react';
 
@@ -23,19 +23,23 @@ export default function Login() {
         const userDocRef = doc(db, 'users', user.uid);
         const userDoc = await getDoc(userDocRef);
 
-        if (userDoc.exists()) {
+        // 유저 데이터가 없으면 Firestore에 새로 저장 (초기값으로 저장)
+        if (!userDoc.exists()) {
+          // Firestore에 기본 데이터를 저장
+          await setDoc(userDocRef, { avatar: null, nickname: null });
+          navigate('/custom');
+        } else {
           const userData = userDoc.data();
 
+          // avatar와 nickname이 있으면 home 페이지로 이동
           if (userData.avatar && userData.nickname) {
             navigate('/home');
           } else {
-            navigate('/custom');
+            navigate('/custom'); // 없으면 custom 페이지로 이동
           }
-        } else {
-          navigate('/custom');
         }
       } else {
-        setLoading(false);
+        setLoading(false); // 로그인 상태가 아닐 때 로딩 해제
       }
     });
 
@@ -46,10 +50,9 @@ export default function Login() {
     const provider = new GoogleAuthProvider();
 
     try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
+      await signInWithRedirect(auth, provider); // 리디렉션 방식으로 로그인
     } catch (error) {
-      console.error('Google 로그인 실패 :', error);
+      console.error('Google 로그인 실패:', error);
       alert('Google 로그인 실패! 다시 시도해 주세요.');
     }
   };

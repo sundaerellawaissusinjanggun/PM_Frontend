@@ -1,5 +1,5 @@
-import BasicModal from './BasicModal';
 import { Block, Button, Text } from '../../styles/UI';
+import BasicModal from './BasicModal';
 
 export default function ConfirmModal({
   isOpen,
@@ -15,7 +15,7 @@ export default function ConfirmModal({
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       width="340px"
-      height="232px"
+      height="252px"
     >
       <Block.FlexBox direction="column" alignItems="center" gap="20px">
         {title && <Text.ModalTitle>{title}</Text.ModalTitle>}
