@@ -17,6 +17,10 @@ export default function Custombox() {
   const navigate = useNavigate();
   const [selections, setSelections] = useRecoilState(selectionsState);
 
+  // useEffect(() => {
+  // 	console.log("selectedColor => ", selectedColor);
+  // }, [selectedColor]);
+
   const handleColorChange = (color) => {
     setSelectedColor(color);
   };
@@ -70,7 +74,8 @@ export default function Custombox() {
       </Block.HeaderBox>
       <CustomizationScreen>
         <PigDisplay>
-          <ProfileAvatar color={selectedColor} item={selectedItem} />
+          {/* 값을 위에서 아래로 넘겨줄 땐 넘겨줄 값만 보내는 것이 좋다 */}
+          <ProfileAvatar color={selectedColor.image} item={selectedItem} />
         </PigDisplay>
 
         <TabContainer>
@@ -101,43 +106,43 @@ export default function Custombox() {
             {selectedTab === 'color' && (
               <>
                 {customData.colors.map((color) => (
-                  <OptionButton
+                  <OptionWrapper
                     key={color.id}
                     onClick={() => handleColorChange(color)}
                     isSelected={selectedColor.id === color.id}
                   >
-                    <Box.Wrapper>
+                    <Box.Button>
                       <img src={color.image} alt={color.name} />
-                    </Box.Wrapper>
-                  </OptionButton>
+                    </Box.Button>
+                  </OptionWrapper>
                 ))}
               </>
             )}
             {selectedTab === 'items' && (
               <>
-                <OptionButton
+                <OptionWrapper
                   onClick={handleEmptyItemSelection}
                   isSelected={selectedItem === null}
                 >
-                  <Box.Wrapper>
+                  <Box.Button>
                     <img
                       src="/none.svg"
                       alt="Empty"
                       style={{ width: '50px', height: '50px' }}
                     />
-                  </Box.Wrapper>
-                </OptionButton>
+                  </Box.Button>
+                </OptionWrapper>
 
                 {customData.items.map((item) => (
-                  <OptionButton
+                  <OptionWrapper
                     key={item.id}
                     onClick={() => handleItemChange(item)}
                     isSelected={selectedItem?.id === item.id}
                   >
-                    <Box.Wrapper>
+                    <Box.Button>
                       <img src={item.image} alt={item.name} />
-                    </Box.Wrapper>
-                  </OptionButton>
+                    </Box.Button>
+                  </OptionWrapper>
                 ))}
               </>
             )}
@@ -203,7 +208,7 @@ const OptionsContainer = styled.div`
   padding: 0 30px;
 `;
 
-const OptionButton = styled.button`
+const OptionWrapper = styled.div`
   width: 88px;
   background: none;
   border: none;
@@ -217,7 +222,7 @@ const OptionButton = styled.button`
 `;
 
 const Box = {
-  Wrapper: styled.button`
+  Button: styled.button`
     width: 88px;
     height: 83px;
     display: flex;
