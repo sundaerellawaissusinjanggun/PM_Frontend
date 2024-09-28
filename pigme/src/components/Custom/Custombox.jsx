@@ -135,9 +135,9 @@ export default function Custombox() {
                     onClick={() => handleItemChange(item)}
                     isSelected={selectedItem?.id === item.id}
                   >
-                    <Box.Wrapper>
+                    <OptionButton>
                       <img src={item.image} alt={item.name} />
-                    </Box.Wrapper>
+                    </OptionButton>
                   </OptionButton>
                 ))}
               </>
