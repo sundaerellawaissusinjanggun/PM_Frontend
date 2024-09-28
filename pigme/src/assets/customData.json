@@ -23,77 +23,64 @@
     { "id": 13, "name": "whiteblue", "image": "/colors/whiteblue-pig.svg" }
   ],
   "items": [
+    { "id": 1, "name": "none", "image": "/items/none.svg" },
     {
-      "id": 1,
+      "id": 2,
       "name": "watermelon",
       "image": "/items/watermelon.svg",
       "x": -80,
       "y": -20
     },
     {
-      "id": 2,
+      "id": 3,
       "name": "rudolph",
       "image": "/items/rudolph.svg",
       "x": -74,
       "y": -72
     },
     {
-      "id": 3,
+      "id": 4,      
       "name": "dancing",
       "image": "/items/dancing.svg",
       "x": 20,
       "y": -50
     },
     {
-      "id": 4,
+      "id": 5,
       "name": "umbrella",
       "image": "/items/umbrella.svg",
       "x": 10,
       "y": -75
     },
     {
-      "id": 5,
+      "id": 6,
       "name": "unicorn",
       "image": "/items/unicorn.svg",
       "x": -80,
       "y": -30
     },
-    { "id": 6, "name": "pie", "image": "/items/pie.svg", "x": -80, "y": -30 },
-    {
-      "id": 7,
-      "name": "winter-hat",
+    { "id": 7,"name": "pie", "image": "/items/pie.svg", "x": -80, "y": -30},
+    { "id": 8,       "name": "winter-hat",
       "image": "/items/winter-hat.svg",
       "x": -60,
-      "y": -95
-    },
-    {
-      "id": 8,
-      "name": "winter-tree",
+      "y": -95 },
+    { "id": 9,       "name": "winter-tree",
       "image": "/items/winter-tree.svg",
       "x": -25,
-      "y": -50
-    },
-    { "id": 9, "name": "glove", "image": "/items/glove.svg" },
-    {
-      "id": 10,
-      "name": "santa-hat",
+      "y": -50 },
+    { "id": 10,"name": "glove", "image": "/items/glove.svg"  },
+    { "id": 11,      "name": "santa-hat",
       "image": "/items/santa-hat.svg",
       "x": -59,
-      "y": -95
-    },
-    {
-      "id": 11,
-      "name": "mask",
+      "y": -95 },
+    { "id": 12,      "name": "mask",
       "image": "/items/mask.svg",
       "x": -53,
-      "y": -51
-    },
-    {
-      "id": 12,
-      "name": "LGUplus",
+      "y": -51 },
+    { "id": 13,       "name": "LGUplus",
       "image": "/items/LGUplus.svg",
       "x": -55,
-      "y": -95
-    }
+      "y": -95 }
+ 
   ]
 }
