@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import Fence from '/fence.svg';
 import { Block } from '../../styles/UI';
@@ -7,20 +7,22 @@ import useModal from '../../components/Hooks/useModal';
 import { useNavigate } from 'react-router-dom';
 import BankModal from '../../components/Modal/BankModal';
 import { useRecoilState } from 'recoil';
-import { userState } from '../../recoil/atoms';
+import { userState, friendsListState } from '../../recoil/atoms';
 
 export default function Home() {
   const [userData, setUserData] = useRecoilState(userState);
+  const [friendsList, setFriendsList] = useRecoilState(friendsListState);
   const confirmModal = useModal();
   const navigate = useNavigate();
 
-  console.log(userData);
-
   const handleConfirm = () => {
+    console.log('Confirm button clicked');
     confirmModal.closeModal();
     navigate('/message');
   };
+
   const handleCancel = () => {
+    console.log('Cancel button clicked');
     confirmModal.closeModal();
   };
 
@@ -46,6 +48,20 @@ export default function Home() {
         <Block.AbsoluteBox bottom="0" left="14px" alignItems="center">
           <FenceImage src={Fence} />
         </Block.AbsoluteBox>
+        {/* 친구 목록 표시 */}
+        <div>
+          <h3>친구 목록</h3>
+          {friendsList.length > 0 ? (
+            friendsList.map((friend, index) => (
+              <div key={index}>
+                <div>친구 닉네임: {friend.friendNickname}</div>
+                <div>아바타 색상: {friend.friendAvatar.color}</div>
+              </div>
+            ))
+          ) : (
+            <div>친구가 없습니다.</div>
+          )}
+        </div>
       </HomeWrapper>
     </>
   );

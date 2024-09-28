@@ -32,7 +32,11 @@ export default function Header({
       )}
       {showMyPageIcon && (
         <>
-          <MenuButton width="30px" src="/profile.svg" onClick={toggleMenu} />
+          <MenuButton
+            width="30px"
+            src="/profile.svg"
+            onMouseOver={toggleMenu}
+          />
           <DropDown isVisible={isOpen}>
             <MenuItem onClick={() => navigate('/profile')}>
               나의 프로필
