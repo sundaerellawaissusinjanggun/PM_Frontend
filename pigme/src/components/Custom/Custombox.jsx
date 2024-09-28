@@ -102,32 +102,32 @@ export default function Custombox() {
             {selectedTab === 'color' && (
               <>
                 {customData.colors.map((color) => (
-                  <OptionButton
+                  <OptionWrapper
                     key={color.id}
                     onClick={() => handleColorChange(color)}
                     isSelected={selectedColor.id === color.id}
                   >
-                    <Box.Wrapper>
+                    <OptionButton>
                       <img src={color.image} alt={color.name} />
-                    </Box.Wrapper>
-                  </OptionButton>
+                    </OptionButton>
+                  </OptionWrapper>
                 ))}
               </>
             )}
             {selectedTab === 'items' && (
               <>
-                <OptionButton
+                <OptionWrapper
                   onClick={handleEmptyItemSelection}
                   isSelected={selectedItem === null}
                 >
-                  <Box.Wrapper>
+                  <OptionButton>
                     <img
                       src="/none.svg"
                       alt="Empty"
                       style={{ width: '50px', height: '50px' }}
                     />
-                  </Box.Wrapper>
-                </OptionButton>
+                  </OptionButton>
+                </OptionWrapper>
 
                 {customData.items.map((item) => (
                   <OptionButton
@@ -206,7 +206,7 @@ const OptionsContainer = styled.div`
   padding: 0 30px;
 `;
 
-const OptionButton = styled.button`
+const OptionWrapper = styled.div`
   width: 88px;
   background: none;
   border: none;
@@ -219,12 +219,10 @@ const OptionButton = styled.button`
   }
 `;
 
-const Box = {
-  Wrapper: styled.button`
-    width: 88px;
-    height: 83px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  `,
-};
+const OptionButton = styled.button`
+  width: 88px;
+  height: 83px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;

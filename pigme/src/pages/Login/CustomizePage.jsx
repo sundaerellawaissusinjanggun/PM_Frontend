@@ -9,14 +9,7 @@ export default function CustomizePage() {
 
   return (
     <>
-      <Style.Wrapper>
-        {userData && (
-          <Custombox
-            initialColor={userData.avatar.color}
-            initialItem={userData.avatar.item}
-          />
-        )}
-      </Style.Wrapper>
+      <Style.Wrapper>{userData && <Custombox />}</Style.Wrapper>
     </>
   );
 }
