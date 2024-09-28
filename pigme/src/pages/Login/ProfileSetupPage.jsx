@@ -13,7 +13,7 @@ export default function ProfileSetupPage() {
 
   const [userData, setUserData] = useRecoilState(userState);
   const [nickname, setNickname] = useState(userData.nickname || '');
-  const [introduction, setIntroduction] = useState(userData.introduction | '');
+  const [introduction, setIntroduction] = useState(userData.introduction || '');
 
   const [nicknameError, setNicknameError] = useState(false);
 
