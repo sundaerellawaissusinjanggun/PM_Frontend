@@ -70,7 +70,7 @@ export default function Custombox() {
       </Block.HeaderBox>
       <CustomizationScreen>
         <PigDisplay>
-          <ProfileAvatar color={selectedColor} item={selectedItem} />
+          <ProfileAvatar color={selectedColor.image} item={selectedItem} />
         </PigDisplay>
 
         <TabContainer>
