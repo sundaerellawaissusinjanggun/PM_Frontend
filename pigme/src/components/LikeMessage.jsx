@@ -59,6 +59,6 @@ const MenuItem = styled.li`
   }
 
   &:hover {
-    background-color: #f0f0f0;
+    color: #ffa7a6;
   }
 `;

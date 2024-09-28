@@ -1,21 +1,22 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import customData from '../../assets/customData';
 import { Block, Text } from '../../styles/UI';
 import Header from '../Layout/Header';
 import { db, auth } from '../../firebase';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { selectionsState } from '../../recoil/atoms';
+import { userState } from '../../recoil/atoms';
 import ProfileAvatar from '../Layout/ProfileAvatar';
 
 export default function Custombox() {
+  const navigate = useNavigate();
+  const [userData, setUserData] = useRecoilState(userState);
   const [selectedTab, setSelectedTab] = useState('color');
   const [selectedColor, setSelectedColor] = useState(customData.colors[0]);
-  const [selectedItem, setSelectedItem] = useState(null);
-  const navigate = useNavigate();
-  const [selections, setSelections] = useRecoilState(selectionsState);
+  const [selectedItem, setSelectedItem] = useState(customData.items[0]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleColorChange = (color) => {
     setSelectedColor(color);
@@ -25,39 +26,78 @@ export default function Custombox() {
     setSelectedItem(item);
   };
 
-  const handleEmptyItemSelection = () => {
-    setSelectedItem(null);
-  };
-
   const handleSave = async () => {
     const userId = auth.currentUser.uid;
 
+    if (!userId) {
+      console.error('로그인을 해주세요.');
+      return;
+    }
+
+    const updatedAvatar = {
+      color: selectedColor,
+      item: selectedItem,
+    };
+
+    setUserData((prevUserData) => ({
+      ...prevUserData,
+      avatar: updatedAvatar,
+    }));
+
+    console.log('Updated User Data:', {
+      ...userData,
+      avatar: updatedAvatar,
+    });
+
     try {
-      const colorImage = selectedColor.image;
-      const itemData = selectedItem
-        ? {
-            image: selectedItem.image,
-            x: selectedItem.x || 0,
-            y: selectedItem.y || 0,
-          }
-        : null;
-
-      setSelections({
-        selectedColor: colorImage,
-        selectedItem: itemData,
-      });
-
-      await setDoc(doc(db, 'userSelections', userId), {
-        userId,
-        selectedColor: colorImage,
-        ...(itemData && { selectedItem: itemData }),
-      });
+      await setDoc(
+        doc(db, 'users', userId),
+        {
+          avatar: updatedAvatar,
+        },
+        { merge: true }
+      );
 
       navigate('/profileSetup');
     } catch (error) {
-      console.error('커스텀을 저장하지 못 했습니다.', error);
+      console.error('Firestore에 저장하지 못 했습니다.', error);
     }
   };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const userId = auth.currentUser?.uid;
+
+      if (userId) {
+        const docRef = doc(db, 'users', userId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setUserData((prevUserData) => ({
+            ...prevUserData,
+            avatar: data.avatar || { color: {}, item: {} },
+          }));
+
+          if (data.avatar) {
+            setSelectedColor(data.avatar.color || customData.colors[0]);
+            setSelectedItem(data.avatar.item || customData.items[0]);
+          }
+        } else {
+          console.error('No such document! New user, setting defaults.');
+        }
+      } else {
+        console.error('로그인 해주세요.');
+      }
+      setIsLoading(false);
+    };
+
+    fetchUserData();
+  }, [setUserData]);
+
+  if (isLoading) {
+    return <LoadingScreen>Loading...</LoadingScreen>;
+  }
 
   return (
     <>
@@ -70,7 +110,14 @@ export default function Custombox() {
       </Block.HeaderBox>
       <CustomizationScreen>
         <PigDisplay>
-          <ProfileAvatar color={selectedColor} item={selectedItem} />
+
+          <ProfileAvatar
+            selectedColor={selectedColor}
+            selectedItem={
+              selectedItem && selectedItem.id !== 1 ? selectedItem : null
+            }
+          />
+
         </PigDisplay>
 
         <TabContainer>
@@ -87,6 +134,7 @@ export default function Custombox() {
             <Text.MiniTitle1 color="pink">ITEMS</Text.MiniTitle1>
           </TabButton>
         </TabContainer>
+
         <Block.AbsoluteBox
           width="100%"
           height="60%"
@@ -101,43 +149,30 @@ export default function Custombox() {
             {selectedTab === 'color' && (
               <>
                 {customData.colors.map((color) => (
-                  <OptionButton
+                  <OptionWrapper
                     key={color.id}
                     onClick={() => handleColorChange(color)}
                     isSelected={selectedColor.id === color.id}
                   >
-                    <Box.Wrapper>
+                    <OptionButton>
                       <img src={color.image} alt={color.name} />
-                    </Box.Wrapper>
-                  </OptionButton>
+                    </OptionButton>
+                  </OptionWrapper>
                 ))}
               </>
             )}
             {selectedTab === 'items' && (
               <>
-                <OptionButton
-                  onClick={handleEmptyItemSelection}
-                  isSelected={selectedItem === null}
-                >
-                  <Box.Wrapper>
-                    <img
-                      src="/none.svg"
-                      alt="Empty"
-                      style={{ width: '50px', height: '50px' }}
-                    />
-                  </Box.Wrapper>
-                </OptionButton>
-
                 {customData.items.map((item) => (
-                  <OptionButton
+                  <OptionWrapper
                     key={item.id}
                     onClick={() => handleItemChange(item)}
-                    isSelected={selectedItem?.id === item.id}
+                    isSelected={selectedItem && selectedItem.id === item.id}
                   >
-                    <Box.Wrapper>
+                    <OptionButton>
                       <img src={item.image} alt={item.name} />
-                    </Box.Wrapper>
-                  </OptionButton>
+                    </OptionButton>
+                  </OptionWrapper>
                 ))}
               </>
             )}
@@ -147,6 +182,15 @@ export default function Custombox() {
     </>
   );
 }
+
+const LoadingScreen = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 24px;
+  color: #ff7195;
+`;
 
 const CustomizationScreen = styled.div`
   display: flex;
@@ -162,13 +206,11 @@ const PigDisplay = styled.div`
   padding: 20px 0 0 30px;
 `;
 
-const ItemImg = styled.img`
-  position: absolute;
-`;
-
 const TabContainer = styled.div`
-  width: 100%;
+  position: absolute;
+  width: 90%;
   height: 43px;
+  top: 280px;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -203,7 +245,7 @@ const OptionsContainer = styled.div`
   padding: 0 30px;
 `;
 
-const OptionButton = styled.button`
+const OptionWrapper = styled.div`
   width: 88px;
   background: none;
   border: none;
@@ -216,12 +258,10 @@ const OptionButton = styled.button`
   }
 `;
 
-const Box = {
-  Wrapper: styled.button`
-    width: 88px;
-    height: 83px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  `,
-};
+const OptionButton = styled.button`
+  width: 88px;
+  height: 83px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
