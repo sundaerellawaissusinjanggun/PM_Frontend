@@ -3,15 +3,20 @@ import { atom } from 'recoil';
 export const userState = atom({
   key: 'userState',
   default: {
-    avatar: null,
+    avatar: {
+      color: {
+        image: '',
+        x: '',
+        y: '',
+      },
+      item: {
+        image: '',
+        x: '',
+        y: '',
+      },
+    },
     nickname: '',
+    email: '',
     introduction: '',
-    color: null,
-    item: null,
   },
-});
-
-export const selectionsState = atom({
-  key: 'selectionsState',
-  default: { selectedColor: null, selectedItem: null },
 });

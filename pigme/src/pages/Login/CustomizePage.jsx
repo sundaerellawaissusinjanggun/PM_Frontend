@@ -12,8 +12,8 @@ export default function CustomizePage() {
       <Style.Wrapper>
         {userData && (
           <Custombox
-            initialColor={userData.color}
-            initialItem={userData.item}
+            initialColor={userData.avatar.color}
+            initialItem={userData.avatar.item}
           />
         )}
       </Style.Wrapper>

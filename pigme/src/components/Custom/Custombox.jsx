@@ -4,18 +4,21 @@ import customData from '../../assets/customData';
 import { Block, Text } from '../../styles/UI';
 import Header from '../Layout/Header';
 import { db, auth } from '../../firebase';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
-import { selectionsState } from '../../recoil/atoms';
-import ProfileAvatar from '../Layout/ProfileAvatar';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { userState } from '../../recoil/atoms';
 
 export default function Custombox() {
-  const [selectedTab, setSelectedTab] = useState('color');
-  const [selectedColor, setSelectedColor] = useState(customData.colors[0]);
-  const [selectedItem, setSelectedItem] = useState(null);
   const navigate = useNavigate();
-  const [selections, setSelections] = useRecoilState(selectionsState);
+  const userData = useRecoilValue(userState);
+  const [selectedTab, setSelectedTab] = useState('color');
+  const [selectedColor, setSelectedColor] = useState(
+    userData.avatar.color.image || customData.colors[0]
+  );
+  const [selectedItem, setSelectedItem] = useState(
+    userData.avatar.item.image || null
+  );
 
   const handleColorChange = (color) => {
     setSelectedColor(color);
@@ -31,6 +34,8 @@ export default function Custombox() {
 
   const handleSave = async () => {
     const userId = auth.currentUser.uid;
+    const userDoc = await getDoc(doc(db, 'users', userId));
+    console.log('저장');
 
     try {
       const colorImage = selectedColor.image;
@@ -41,11 +46,6 @@ export default function Custombox() {
             y: selectedItem.y || 0,
           }
         : null;
-
-      setSelections({
-        selectedColor: colorImage,
-        selectedItem: itemData,
-      });
 
       await setDoc(doc(db, 'userSelections', userId), {
         userId,
@@ -69,9 +69,9 @@ export default function Custombox() {
         />
       </Block.HeaderBox>
       <CustomizationScreen>
-        <PigDisplay>
+        {/* <PigDisplay>
           <ProfileAvatar color={selectedColor} item={selectedItem} />
-        </PigDisplay>
+        </PigDisplay> */}
 
         <TabContainer>
           <TabButton
@@ -87,6 +87,7 @@ export default function Custombox() {
             <Text.MiniTitle1 color="pink">ITEMS</Text.MiniTitle1>
           </TabButton>
         </TabContainer>
+
         <Block.AbsoluteBox
           width="100%"
           height="60%"
@@ -167,8 +168,10 @@ const ItemImg = styled.img`
 `;
 
 const TabContainer = styled.div`
-  width: 100%;
+  position: absolute;
+  width: 90%;
   height: 43px;
+  top: 280px;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
