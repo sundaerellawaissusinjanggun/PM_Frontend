@@ -17,7 +17,7 @@ export default function Custombox() {
     userData.avatar.color.image || customData.colors[0]
   );
   const [selectedItem, setSelectedItem] = useState(
-    userData.avatar.item.image || null
+    userData.avatar.item.image || customData.items[0]
   );
 
   const handleColorChange = (color) => {
@@ -26,10 +26,6 @@ export default function Custombox() {
 
   const handleItemChange = (item) => {
     setSelectedItem(item);
-  };
-
-  const handleEmptyItemSelection = () => {
-    setSelectedItem(null);
   };
 
   const handleSave = async () => {
@@ -116,29 +112,16 @@ export default function Custombox() {
             )}
             {selectedTab === 'items' && (
               <>
-                <OptionWrapper
-                  onClick={handleEmptyItemSelection}
-                  isSelected={selectedItem === null}
-                >
-                  <OptionButton>
-                    <img
-                      src="/none.svg"
-                      alt="Empty"
-                      style={{ width: '50px', height: '50px' }}
-                    />
-                  </OptionButton>
-                </OptionWrapper>
-
                 {customData.items.map((item) => (
-                  <OptionButton
+                  <OptionWrapper
                     key={item.id}
                     onClick={() => handleItemChange(item)}
-                    isSelected={selectedItem?.id === item.id}
+                    isSelected={selectedItem && selectedItem.id === item.id} // null 체크 추가
                   >
                     <OptionButton>
                       <img src={item.image} alt={item.name} />
                     </OptionButton>
-                  </OptionButton>
+                  </OptionWrapper>
                 ))}
               </>
             )}
