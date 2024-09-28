@@ -68,10 +68,6 @@ export default function Custombox() {
     }
   };
 
-  useEffect(() => {
-    console.log(auth.currentUser.uid);
-  });
-
   return (
     <>
       <Block.HeaderBox justifyContent="space-between">

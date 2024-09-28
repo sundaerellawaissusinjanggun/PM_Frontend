@@ -26,7 +26,7 @@ export default function ProfileSetupPage() {
     }
 
     const introductionMessage =
-      introduction.trim() === ''
+      introduction === ''
         ? '아직 한 줄 소개가 작성되지 않았어요!'
         : introduction;
 
@@ -69,26 +69,6 @@ export default function ProfileSetupPage() {
     setIntroduction(e.target.value);
   };
 
-  // 저장됐는지 확인
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const userId = auth.currentUser.uid;
-        const userDoc = await getDoc(doc(db, 'users', userId));
-        if (userDoc.exists()) {
-          const data = userDoc.data();
-          console.log('User Avatar Info:', data.avatar);
-        } else {
-          console.log('No such document!');
-        }
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
-
-    fetchUserData();
-  }, []);
-
   return (
     <>
       {/* 헤더 영역 */}
@@ -103,7 +83,10 @@ export default function ProfileSetupPage() {
         padding="0 0 0 20px"
         justifyContent="center"
       >
-        <ProfileAvatar />
+        <ProfileAvatar
+          color={userData.avatar.color.image}
+          item={userData.avatar.item.image}
+        />
       </Block.AbsoluteBox>
 
       {/* input 영역 */}
