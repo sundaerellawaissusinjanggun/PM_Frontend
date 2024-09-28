@@ -6,21 +6,17 @@ import Header from '../Layout/Header';
 import { db, auth } from '../../firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { userState } from '../../recoil/atoms';
 import ProfileAvatar from '../Layout/ProfileAvatar';
 
 export default function Custombox() {
   const navigate = useNavigate();
-
   const [userData, setUserData] = useRecoilState(userState);
   const [selectedTab, setSelectedTab] = useState('color');
-  const [selectedColor, setSelectedColor] = useState(
-    userData.avatar.color.image || customData.colors[0]
-  );
-  const [selectedItem, setSelectedItem] = useState(
-    userData.avatar.item.image || customData.items[0]
-  );
+  const [selectedColor, setSelectedColor] = useState(customData.colors[0]);
+  const [selectedItem, setSelectedItem] = useState(customData.items[0]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleColorChange = (color) => {
     setSelectedColor(color);
@@ -67,6 +63,41 @@ export default function Custombox() {
       console.error('Firestore에 저장하지 못 했습니다.', error);
     }
   };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const userId = auth.currentUser?.uid;
+
+      if (userId) {
+        const docRef = doc(db, 'users', userId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setUserData((prevUserData) => ({
+            ...prevUserData,
+            avatar: data.avatar || { color: {}, item: {} },
+          }));
+
+          if (data.avatar) {
+            setSelectedColor(data.avatar.color || customData.colors[0]);
+            setSelectedItem(data.avatar.item || customData.items[0]);
+          }
+        } else {
+          console.error('No such document! New user, setting defaults.');
+        }
+      } else {
+        console.error('로그인 해주세요.');
+      }
+      setIsLoading(false);
+    };
+
+    fetchUserData();
+  }, [setUserData]);
+
+  if (isLoading) {
+    return <LoadingScreen>Loading...</LoadingScreen>;
+  }
 
   return (
     <>
@@ -134,7 +165,7 @@ export default function Custombox() {
                   <OptionWrapper
                     key={item.id}
                     onClick={() => handleItemChange(item)}
-                    isSelected={selectedItem && selectedItem.id === item.id} // null 체크 추가
+                    isSelected={selectedItem && selectedItem.id === item.id}
                   >
                     <OptionButton>
                       <img src={item.image} alt={item.name} />
@@ -149,6 +180,15 @@ export default function Custombox() {
     </>
   );
 }
+
+const LoadingScreen = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 24px;
+  color: #ff7195;
+`;
 
 const CustomizationScreen = styled.div`
   display: flex;
