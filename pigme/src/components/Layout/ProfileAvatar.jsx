@@ -63,7 +63,6 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   position: relative;
-  border: 1px solid red;
 `;
 
 const ItemImg = styled.img`

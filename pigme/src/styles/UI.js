@@ -80,7 +80,7 @@ export const Text = {
     color: ${({ color }) =>
       color ? theme.color[color] : theme.color.grayLight};
     cursor: ${(props) => props.pointer && 'pointer'};
-    text-decoration: underline;
+    /* text-decoration: underline; */
   `,
   ModalTitle: styled.span`
     display: inline-block;

@@ -33,7 +33,7 @@ const MessageContainer = styled.div`
   border: 2px solid #ccc;
 `;
 const MessageWrapper = styled.div`
-  border: 3px solid red;
+  /* border: 3px solid red; */
   position: absolute; // 자유롭게 배치하기 위해 position: absolute 사용
   display: flex;
   align-items: center;
