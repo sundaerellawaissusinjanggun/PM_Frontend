@@ -4,9 +4,9 @@ import CustomizePage from './pages/Login/CustomizePage';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import Home from './pages/Home';
-// import Profile from './pages/Profile';
+import Profile from './pages/Profile';
 import ProfileSetupPage from './pages/Login/ProfileSetupPage';
-// import MyPiggyBankPage from './pages/Profile/MyPiggyBankPage';
+import MyPiggyBankPage from './pages/Profile/MyPiggyBankPage';
 import MessageInputPage from './pages/Message/MessageInputPage';
 import LikedMessagesPage from './pages/Profile/LikedMessagesPage';
 import MessageShowPage from './pages/Message/MessageShowPage';
@@ -30,18 +30,18 @@ export const router = createBrowserRouter([
         path: '/custom',
         element: <CustomizePage />,
       },
-      // {
-      //   path: '/profile',
-      //   element: <Profile />,
-      // },
+      {
+        path: '/profile',
+        element: <Profile />,
+      },
       {
         path: '/profileSetup',
         element: <ProfileSetupPage />,
       },
-      // {
-      //   path: '/myBank',
-      //   element: <MyPiggyBankPage />,
-      // },
+      {
+        path: '/myBank',
+        element: <MyPiggyBankPage />,
+      },
       {
         path: '/like',
         element: <LikedMessagesPage />,
