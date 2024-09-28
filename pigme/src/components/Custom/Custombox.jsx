@@ -8,6 +8,7 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { userState } from '../../recoil/atoms';
+import ProfileAvatar from '../Layout/ProfileAvatar';
 
 export default function Custombox() {
   const navigate = useNavigate();
@@ -65,9 +66,14 @@ export default function Custombox() {
         />
       </Block.HeaderBox>
       <CustomizationScreen>
-        {/* <PigDisplay>
-          <ProfileAvatar color={selectedColor} item={selectedItem} />
-        </PigDisplay> */}
+        <PigDisplay>
+          <ProfileAvatar
+            selectedColor={selectedColor}
+            selectedItem={
+              selectedItem && selectedItem.id !== 1 ? selectedItem : null
+            }
+          />
+        </PigDisplay>
 
         <TabContainer>
           <TabButton
@@ -144,10 +150,6 @@ const CustomizationScreen = styled.div`
 const PigDisplay = styled.div`
   position: relative;
   padding: 20px 0 0 30px;
-`;
-
-const ItemImg = styled.img`
-  position: absolute;
 `;
 
 const TabContainer = styled.div`
