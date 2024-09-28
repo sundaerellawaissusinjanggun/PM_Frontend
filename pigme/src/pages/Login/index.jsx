@@ -4,8 +4,6 @@ import { auth, db } from '../../firebase';
 import {
   onAuthStateChanged,
   GoogleAuthProvider,
-  signInWithRedirect,
-  signOut,
   getAuth,
   signInWithPopup,
 } from 'firebase/auth';
@@ -52,6 +50,7 @@ export default function Login() {
       const unsubscribe = onAuthStateChanged(auth, async (user) => {
         if (user) {
           console.log('로그인된 유저:', user);
+
           const userDoc = await getDoc(doc(db, 'users', user.uid));
 
           if (!userDoc.exists()) {
@@ -59,8 +58,8 @@ export default function Login() {
 
             const newUserInfo = {
               avatar: {
-                color: { image: '', x: '', y: '' },
-                item: { image: '', x: '', y: '' },
+                color: { image: '', x: 0, y: 0 },
+                item: { image: '', x: 0, y: 0 },
               },
               nickname: '',
               email: user.email,
@@ -74,6 +73,16 @@ export default function Login() {
             localStorage.setItem('user', JSON.stringify(newUserInfo));
 
             console.log('New user document created:', newUserInfo);
+          } else {
+            // 유저는 있는데 프로필 저장은 안 되어 있는 경우 !!
+            const userData = userDoc.data();
+
+            if (
+              (!userData.avatar.color.image && !userData.avatar.item.image) ||
+              !userData.nickname
+            ) {
+              navigate('/custom');
+            }
           }
         } else {
           console.log('No user is signed in.');

@@ -6,13 +6,13 @@ export const userState = atom({
     avatar: {
       color: {
         image: '',
-        x: '',
-        y: '',
+        x: 0,
+        y: 0,
       },
       item: {
         image: '',
-        x: '',
-        y: '',
+        x: 0,
+        y: 0,
       },
     },
     nickname: '',
