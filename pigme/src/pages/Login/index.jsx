@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { useEffect, useState } from 'react';
+import Skeleton from '@mui/material/Skeleton';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -61,7 +62,12 @@ export default function Login() {
   };
 
   if (loading) {
-    return <div>로딩중</div>;
+    return (
+      <>
+        <Skeleton variant="circular" width={40} height={40} />
+        {/* 로딩중 (추후에 spinner 로 변경 예정) */}
+      </>
+    );
   }
 
   return (
