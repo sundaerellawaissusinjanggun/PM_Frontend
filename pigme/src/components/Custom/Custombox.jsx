@@ -110,12 +110,14 @@ export default function Custombox() {
       </Block.HeaderBox>
       <CustomizationScreen>
         <PigDisplay>
+
           <ProfileAvatar
             selectedColor={selectedColor}
             selectedItem={
               selectedItem && selectedItem.id !== 1 ? selectedItem : null
             }
           />
+
         </PigDisplay>
 
         <TabContainer>

@@ -28,43 +28,59 @@
       "id": 2,
       "name": "watermelon",
       "image": "/items/watermelon.svg",
-      "x": -40,
-      "y": 55
+      "x": -80,
+      "y": -20
     },
     {
       "id": 3,
       "name": "rudolph",
       "image": "/items/rudolph.svg",
-      "x": -40,
-      "y": -20
+      "x": -74,
+      "y": -72
     },
     {
-      "id": 4,
+      "id": 4,      
       "name": "dancing",
       "image": "/items/dancing.svg",
-      "x": 140,
-      "y": 10
+      "x": 20,
+      "y": -50
     },
     {
       "id": 5,
       "name": "umbrella",
       "image": "/items/umbrella.svg",
-      "x": 120,
-      "y": -30
+      "x": 10,
+      "y": -75
     },
     {
       "id": 6,
       "name": "unicorn",
       "image": "/items/unicorn.svg",
-      "x": -60,
-      "y": 50
+      "x": -80,
+      "y": -30
     },
-    { "id": 7, "name": "pie", "image": "/items/pie.svg" },
-    { "id": 8, "name": "winter-hat", "image": "/items/winter-hat.svg" },
-    { "id": 9, "name": "winter-tree", "image": "/items/winter-tree.svg" },
-    { "id": 10, "name": "glove", "image": "/items/glove.svg" },
-    { "id": 11, "name": "santa-hat", "image": "/items/santa-hat.svg" },
-    { "id": 12, "name": "mask", "image": "/items/mask.svg" },
-    { "id": 13, "name": "LGUplus", "image": "/items/LGUplus.svg" }
+    { "id": 7,"name": "pie", "image": "/items/pie.svg", "x": -80, "y": -30},
+    { "id": 8,       "name": "winter-hat",
+      "image": "/items/winter-hat.svg",
+      "x": -60,
+      "y": -95 },
+    { "id": 9,       "name": "winter-tree",
+      "image": "/items/winter-tree.svg",
+      "x": -25,
+      "y": -50 },
+    { "id": 10,"name": "glove", "image": "/items/glove.svg"  },
+    { "id": 11,      "name": "santa-hat",
+      "image": "/items/santa-hat.svg",
+      "x": -59,
+      "y": -95 },
+    { "id": 12,      "name": "mask",
+      "image": "/items/mask.svg",
+      "x": -53,
+      "y": -51 },
+    { "id": 13,       "name": "LGUplus",
+      "image": "/items/LGUplus.svg",
+      "x": -55,
+      "y": -95 }
+ 
   ]
 }
