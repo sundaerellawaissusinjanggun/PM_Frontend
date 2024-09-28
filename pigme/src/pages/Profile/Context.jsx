@@ -6,14 +6,17 @@ import { db, auth } from '../../firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { Text } from '../../styles/UI';
 import { onAuthStateChanged } from 'firebase/auth';
-import ProfileAvatar from '../../components/Layout/ProfileAvatar';
+import { useRecoilState } from 'recoil';
+import { userState } from '../../recoil/atoms';
 
 export default function Context() {
   const navigate = useNavigate();
 
-  const [userEmail, setUserEmail] = useState('');
-  const [nickname, setNickname] = useState('');
-  const [introduction, setIntroduction] = useState('');
+  const [userData, setUserData] = useRecoilState(userState);
+
+  const [userEmail, setUserEmail] = useState(userData.email);
+  const [nickname, setNickname] = useState(userData.nickname);
+  const [introduction, setIntroduction] = useState(userData.introduction);
   const [coins, setCoins] = useState(0);
   const [likedMessagesCount, setLikedMessagesCount] = useState(0);
 
@@ -65,19 +68,10 @@ export default function Context() {
       <Style.ProfileTitle>나의 프로필</Style.ProfileTitle>
       <Style.ProfileContainer>
         <Style.UserInfo>
-          <Style.UserInfoContainer>
-            <Style.UserDetails>
-              <Style.InfoContainer>
-                <Text.MiniTitle1>이메일</Text.MiniTitle1>
-                <Style.InfoField>
-                  <Text.Body1>{userEmail}</Text.Body1>
-                </Style.InfoField>
-              </Style.InfoContainer>
-              <Style.ProfileImageContainer onClick={handelGoToCustom}>
-                <ProfileAvatar />
-              </Style.ProfileImageContainer>
-            </Style.UserDetails>
-          </Style.UserInfoContainer>
+          <Text.MiniTitle1>이메일</Text.MiniTitle1>
+          <Style.InfoField>
+            <Text.Body1>{userEmail}</Text.Body1>
+          </Style.InfoField>
 
           <Text.MiniTitle1>닉네임</Text.MiniTitle1>
           <Style.InfoField>
@@ -89,7 +83,7 @@ export default function Context() {
             <Text.Body1>{introduction}</Text.Body1>
           </Style.InfoField>
 
-          <Style.SaveButton onClick={() => navigate('/custom')}>
+          <Style.SaveButton onClick={handelGoToCustom}>
             프로필 수정하기
           </Style.SaveButton>
         </Style.UserInfo>

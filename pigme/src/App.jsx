@@ -1,16 +1,44 @@
 import styled from '@emotion/styled';
 import { Outlet } from 'react-router-dom';
-import { RecoilRoot } from 'recoil';
+
+import { useEffect } from 'react';
+import { auth, db } from '../src/firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
+import { useSetRecoilState } from 'recoil';
+import { userState } from '../src/recoil/atoms';
 
 export default function App() {
+  const setUser = useSetRecoilState(userState);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          setUser({
+            avatar: userData.avatar || {
+              color: { image: '', x: '', y: '' },
+              item: { image: '', x: '', y: '' },
+            },
+            nickname: userData.nickname || '',
+            email: user.email,
+            introduction: userData.introduction || '',
+          });
+        }
+      }
+    });
+
+    return () => unsubscribe();
+  }, [setUser]);
+
   return (
-    <RecoilRoot>
-      <Style.FullWrapper>
-        <Style.Wrapper>
-          <Outlet />
-        </Style.Wrapper>
-      </Style.FullWrapper>
-    </RecoilRoot>
+    <Style.FullWrapper>
+      <Style.Wrapper>
+        <Outlet />
+      </Style.Wrapper>
+    </Style.FullWrapper>
   );
 }
 

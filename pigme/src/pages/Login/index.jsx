@@ -1,68 +1,116 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
+import { auth, db } from '../../firebase';
+import {
+  onAuthStateChanged,
+  GoogleAuthProvider,
+  getAuth,
+  signInWithPopup,
+} from 'firebase/auth';
+import { useSetRecoilState } from 'recoil';
+import { userState } from '../../recoil/atoms';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import styled from '@emotion/styled';
 import Pig from '/colors/pig.svg';
 import LogoText from '/public/logo.svg';
-import {
-  GoogleAuthProvider,
-  signInWithRedirect,
-  onAuthStateChanged,
-} from 'firebase/auth';
-import { auth } from '../../firebase';
-import { useNavigate } from 'react-router';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { db } from '../../firebase';
-import { useEffect, useState } from 'react';
 
 export default function Login() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const setUser = useSetRecoilState(userState);
 
-  // 인증 상태 확인
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        console.log('현재 사용자 정보:', user);
-
-        const userDocRef = doc(db, 'users', user.uid);
-        const userDoc = await getDoc(userDocRef);
-
-        if (!userDoc.exists()) {
-          await setDoc(userDocRef, { avatar: null, nickname: null });
-          navigate('/custom');
-        } else {
-          const userData = userDoc.data();
-
-          console.log('사용자 아바타:', userData.avatar);
-          console.log('사용자 닉네임:', userData.nickname);
-          console.log('한 줄 소개:', userData.introduction);
-
-          if (userData.avatar && userData.nickname) {
-            navigate('/home');
-          } else {
-            navigate('/custom');
-          }
-        }
-      } else {
-        setLoading(false);
-      }
-    });
-
-    return () => unsubscribe();
-  }, [navigate]);
-
-  const handleGoogleSign = async () => {
+  const handleGoogleSignIn = async (e) => {
+    e.preventDefault();
     const provider = new GoogleAuthProvider();
+    const auth = getAuth();
 
     try {
-      await signInWithRedirect(auth, provider);
+      const data = await signInWithPopup(auth, provider);
+
+      const uid = data.user.uid;
+
+      // uid 콘솔에 찍어보기
+      console.log('Google Sign-in 성공! 유저의 uid:', uid);
+
+      // 유저 정보 Firestore에 저장
+      const userDoc = await getDoc(doc(db, 'users', uid));
+      if (!userDoc.exists()) {
+        const newUserInfo = {
+          userId: uid,
+          avatar: {
+            color: { image: '', x: 0, y: 0 },
+            item: { image: '', x: 0, y: 0 },
+          },
+          nickname: '',
+          email: data.user.email,
+          introduction: '',
+        };
+
+        await setDoc(doc(db, 'users', uid), newUserInfo);
+        setUser(newUserInfo);
+        localStorage.setItem('user', JSON.stringify(newUserInfo));
+
+        console.log('New user document created:', newUserInfo);
+
+        navigate('/custom');
+      } else {
+        const userData = userDoc.data();
+        setUser({ ...userData, userId: uid });
+        navigate('/custom');
+      }
     } catch (error) {
-      console.error('Google 로그인 실패:', error);
-      alert('Google 로그인 실패! 다시 시도해 주세요.');
+      console.error('Error during Google sign-in:', error);
     }
   };
 
-  if (loading) {
-    return <div>로딩중</div>;
-  }
+  useEffect(() => {
+    const checkUser = async () => {
+      const unsubscribe = onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          // 유저의 uid 콘솔에 찍기
+          console.log('로그인된 유저:', user.uid);
+
+          const userDoc = await getDoc(doc(db, 'users', user.uid));
+
+          if (!userDoc.exists()) {
+            const newUserInfo = {
+              avatar: {
+                color: { image: '', x: 0, y: 0 },
+                item: { image: '', x: 0, y: 0 },
+              },
+              nickname: '',
+              email: user.email,
+              introduction: '',
+            };
+
+            await setDoc(doc(db, 'users', user.uid), newUserInfo);
+            setUser(newUserInfo);
+            localStorage.setItem('user', JSON.stringify(newUserInfo));
+
+            console.log('New user document created:', newUserInfo);
+          } else {
+            const userData = userDoc.data();
+            setUser(userData);
+
+            if (
+              (!userData.avatar.color.image && !userData.avatar.item.image) ||
+              !userData.nickname
+            ) {
+              navigate('/custom');
+            }
+          }
+        } else {
+          console.log('No user is signed in.');
+        }
+
+        setLoading(false);
+      });
+
+      return () => unsubscribe();
+    };
+
+    checkUser();
+  }, [setUser]);
 
   return (
     <>
@@ -73,7 +121,7 @@ export default function Login() {
         <img src={LogoText} alt="Logo Text" />
       </Style.LogoWrapper>
       <Style.Footer>
-        <Style.LoginButton onClick={handleGoogleSign}>
+        <Style.LoginButton onClick={handleGoogleSignIn}>
           구글 로그인 하기
         </Style.LoginButton>
         <Style.CopyRight>

@@ -1,20 +1,22 @@
 // 친구 추가
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
+import { useRecoilState } from 'recoil';
+import { friendListState } from '../../components/Friend/FriendState';
 import { Block, Input, Button, Text, Img } from '../../styles/UI';
 import Header from '../../components/Layout/Header';
 import Pig from '/colors/pig.svg';
+import AnotherPage from '../../components/Friend/AnotherPage';
 
 export default function FollowListPage() {
   const [isAccepted, setIsAccepted] = useState(false);
+  const [friends, setFriends] = useRecoilState(friendListState); // Recoil 상태 사용
 
-  const [friends, setFriends] = useState([
-    { id: 1, name: '닉네임1', profilePic: 'url1', isAccepted: false },
-    { id: 2, name: '닉네임2', profilePic: 'url2', isAccepted: false },
-    { id: 3, name: '닉네임3', profilePic: 'url3', isAccepted: false },
-  ]);
+  // 상태가 제대로 전달되고 있는지 확인
+  useEffect(() => {
+    console.log(friends); // 상태 확인
+  }, [friends]);
 
-  // 친구 수락
   const handleAccept = (id) => {
     setFriends((prevFriends) =>
       prevFriends.map((friend) =>
@@ -23,7 +25,6 @@ export default function FollowListPage() {
     );
   };
 
-  // 친구 삭제
   const handleDelete = (id) => {
     setFriends((prevFriends) =>
       prevFriends.filter((friend) => friend.id !== id)
@@ -47,10 +48,7 @@ export default function FollowListPage() {
 
           {/* 친구 목록 개수 영역 */}
           <Block.FlexBox justifyContent="flex-end" margin="10px 0">
-            <Text.Body1 weight="bold" color="black">
-              {pendingFriends.length}개
-            </Text.Body1>
-            <Text.Body1 weight="bold">의 친구 요청</Text.Body1>
+            <AnotherPage />
           </Block.FlexBox>
 
           {/* 친구 목록 개수 확인 */}
