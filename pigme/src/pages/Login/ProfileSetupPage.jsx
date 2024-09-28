@@ -37,6 +37,7 @@ export default function ProfileSetupPage() {
       await setDoc(
         doc(db, 'users', userId),
         {
+          //   avatar: { color: selectedColor, item: selectedItem }, // 아바타 데이터를 저장
           email,
           nickname,
           introduction: introductionMessage,
