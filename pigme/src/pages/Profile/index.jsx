@@ -24,7 +24,7 @@ export default function Profile() {
       >
         <ProfileAvatar
           color={userData.avatar.color.image}
-          item={userData.avatar.color.image}
+          item={userData.avatar.item.image}
         />
       </Block.AbsoluteBox>
       <Block.AbsoluteBox bottom="0">

@@ -29,33 +29,50 @@ export default function Login() {
 
       const uid = data.user.uid;
 
-      const response = await setUser({
-        uid: uid,
-        email: data.user.email,
-        displayName: data.user.displayName,
-      });
+      // uid 콘솔에 찍어보기
+      console.log('Google Sign-in 성공! 유저의 uid:', uid);
 
-      if (response && response.payload === false) {
-        alert('회원가입을 진행해주세요');
-        navigate('/signup');
+      // 유저 정보 Firestore에 저장
+      const userDoc = await getDoc(doc(db, 'users', uid));
+      if (!userDoc.exists()) {
+        const newUserInfo = {
+          userId: uid,
+          avatar: {
+            color: { image: '', x: 0, y: 0 },
+            item: { image: '', x: 0, y: 0 },
+          },
+          nickname: '',
+          email: data.user.email,
+          introduction: '',
+        };
+
+        await setDoc(doc(db, 'users', uid), newUserInfo);
+        setUser(newUserInfo);
+        localStorage.setItem('user', JSON.stringify(newUserInfo));
+
+        console.log('New user document created:', newUserInfo);
+
+        navigate('/custom');
       } else {
+        const userData = userDoc.data();
+        setUser({ ...userData, userId: uid });
         navigate('/custom');
       }
     } catch (error) {
-      console.log(error);
+      console.error('Error during Google sign-in:', error);
     }
   };
+
   useEffect(() => {
     const checkUser = async () => {
       const unsubscribe = onAuthStateChanged(auth, async (user) => {
         if (user) {
-          console.log('로그인된 유저:', user);
+          // 유저의 uid 콘솔에 찍기
+          console.log('로그인된 유저:', user.uid);
 
           const userDoc = await getDoc(doc(db, 'users', user.uid));
 
           if (!userDoc.exists()) {
-            console.log('No user document found for uid:', user.uid);
-
             const newUserInfo = {
               avatar: {
                 color: { image: '', x: 0, y: 0 },
@@ -67,15 +84,13 @@ export default function Login() {
             };
 
             await setDoc(doc(db, 'users', user.uid), newUserInfo);
-
             setUser(newUserInfo);
-
             localStorage.setItem('user', JSON.stringify(newUserInfo));
 
             console.log('New user document created:', newUserInfo);
           } else {
-            // 유저는 있는데 프로필 저장은 안 되어 있는 경우 !!
             const userData = userDoc.data();
+            setUser(userData);
 
             if (
               (!userData.avatar.color.image && !userData.avatar.item.image) ||

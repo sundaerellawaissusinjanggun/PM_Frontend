@@ -3,7 +3,11 @@ import { atom } from 'recoil';
 // user의 정보
 export const userState = atom({
   key: 'userState',
-  default: [], // userId, avatar(color, item), nickname, email, introduction
+  default: [
+    // {
+    //   id: null,
+    // },
+  ], // userId, avatar(color, item), nickname, email, introduction
 });
 
 // user가 받은 친구 요청 목록

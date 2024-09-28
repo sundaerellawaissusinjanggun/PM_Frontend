@@ -1,13 +1,37 @@
-// AnotherPage.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
-import { friendListState } from './FriendState';
+import { friendRequestsState, userState } from '../../recoil/atoms';
 import { Block, Text } from '../../styles/UI';
 import styled from '@emotion/styled';
 
 export default function AnotherPage() {
-  const friends = useRecoilValue(friendListState); // 상태 읽기 전용
-  const pendingFriends = friends.filter((friend) => !friend.isAccepted); // 수락되지 않은 친구 필터링
+  const userData = useRecoilValue(userState);
+  const friendRequests = useRecoilValue(friendRequestsState);
+
+  const pendingFriends = friendRequests.filter(
+    (request) =>
+      request.friendReceiver === userData.uid && request.status === 'pending'
+  );
+
+  useEffect(() => {
+    console.log(userData.userId);
+    console.log('받은 친구 요청 목록:', friendRequests);
+
+    const userPendingRequests = friendRequests.filter(
+      (request) => request.friendReceiver === userData.userId
+    );
+    console.log('현재 사용자의 친구 요청 목록:', userPendingRequests);
+
+    const sentRequestsCount = friendRequests.filter(
+      (request) =>
+        request.friendSender === userData.userId && request.status === 'pending'
+    ).length;
+
+    const receivedRequestsCount = userPendingRequests.length;
+
+    console.log('보낸 친구 요청 개수:', sentRequestsCount);
+    console.log('받은 친구 요청 개수:', receivedRequestsCount);
+  }, [friendRequests, userData]);
 
   return (
     <AnotherWrapper>
@@ -18,6 +42,7 @@ export default function AnotherPage() {
     </AnotherWrapper>
   );
 }
+
 const AnotherWrapper = styled(Block.FlexBox)`
   white-space: nowrap;
 `;

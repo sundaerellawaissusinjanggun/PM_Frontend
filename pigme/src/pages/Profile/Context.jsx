@@ -6,7 +6,6 @@ import { db, auth } from '../../firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { Text } from '../../styles/UI';
 import { onAuthStateChanged } from 'firebase/auth';
-import ProfileAvatar from '../../components/Layout/ProfileAvatar';
 import { useRecoilState } from 'recoil';
 import { userState } from '../../recoil/atoms';
 
