@@ -225,7 +225,7 @@ export const Block = {
   `,
   BackgroundWhiteBox: styled.div`
     width: 100%;
-    height: ${(props) => props.height};
+    height: ${(props) => (props.height ? props.height : '625px')};
     padding: ${(props) => props.padding};
     position: absolute;
     bottom: 0;
