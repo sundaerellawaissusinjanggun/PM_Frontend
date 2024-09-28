@@ -67,7 +67,8 @@ export default function FollowPage() {
           justifyContent="space-evenly"
           // gap="100px"
         >
-          <FriendCount>
+          {/* 친구 요청 페이지 */}
+          <FriendCount onClick={() => navigate('/friendList')}>
             <AnotherPage />
           </FriendCount>
           <Block.ColumnFlexBox gap="20px">
@@ -120,4 +121,5 @@ const FriendCount = styled.div`
   top: 0;
   right: 0;
   padding: 30px;
+  cursor: pointer;
 `;
