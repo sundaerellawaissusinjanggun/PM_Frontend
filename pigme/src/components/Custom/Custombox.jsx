@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import customData from '../../assets/customData';
 import { Block, Text } from '../../styles/UI';
 import Header from '../Layout/Header';
@@ -12,7 +12,8 @@ import ProfileAvatar from '../Layout/ProfileAvatar';
 
 export default function Custombox() {
   const navigate = useNavigate();
-  const userData = useRecoilValue(userState);
+
+  const [userData, setUserData] = useRecoilState(userState);
   const [selectedTab, setSelectedTab] = useState('color');
   const [selectedColor, setSelectedColor] = useState(
     userData.avatar.color.image || customData.colors[0]
@@ -31,30 +32,45 @@ export default function Custombox() {
 
   const handleSave = async () => {
     const userId = auth.currentUser.uid;
-    const userDoc = await getDoc(doc(db, 'users', userId));
-    console.log('저장');
+
+    if (!userId) {
+      console.error('로그인을 해주세요.');
+      return;
+    }
+
+    const updatedAvatar = {
+      color: selectedColor,
+      item: selectedItem,
+    };
+
+    setUserData((prevUserData) => ({
+      ...prevUserData,
+      avatar: updatedAvatar,
+    }));
+
+    console.log('Updated User Data:', {
+      ...userData,
+      avatar: updatedAvatar,
+    });
 
     try {
-      const colorImage = selectedColor.image;
-      const itemData = selectedItem
-        ? {
-            image: selectedItem.image,
-            x: selectedItem.x || 0,
-            y: selectedItem.y || 0,
-          }
-        : null;
-
-      await setDoc(doc(db, 'userSelections', userId), {
-        userId,
-        selectedColor: colorImage,
-        ...(itemData && { selectedItem: itemData }),
-      });
+      await setDoc(
+        doc(db, 'users', userId),
+        {
+          avatar: updatedAvatar,
+        },
+        { merge: true }
+      );
 
       navigate('/profileSetup');
     } catch (error) {
-      console.error('커스텀을 저장하지 못 했습니다.', error);
+      console.error('Firestore에 저장하지 못 했습니다.', error);
     }
   };
+
+  useEffect(() => {
+    console.log(auth.currentUser.uid);
+  });
 
   return (
     <>

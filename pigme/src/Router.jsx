@@ -5,7 +5,7 @@ import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import Home from './pages/Home';
 // import Profile from './pages/Profile';
-// import ProfileSetupPage from './pages/Login/ProfileSetupPage';
+import ProfileSetupPage from './pages/Login/ProfileSetupPage';
 // import MyPiggyBankPage from './pages/Profile/MyPiggyBankPage';
 import MessageInputPage from './pages/Message/MessageInputPage';
 import LikedMessagesPage from './pages/Profile/LikedMessagesPage';
@@ -34,10 +34,10 @@ export const router = createBrowserRouter([
       //   path: '/profile',
       //   element: <Profile />,
       // },
-      // {
-      //   path: '/profileSetup',
-      //   element: <ProfileSetupPage />,
-      // },
+      {
+        path: '/profileSetup',
+        element: <ProfileSetupPage />,
+      },
       // {
       //   path: '/myBank',
       //   element: <MyPiggyBankPage />,
