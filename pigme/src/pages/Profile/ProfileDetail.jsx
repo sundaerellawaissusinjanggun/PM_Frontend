@@ -9,7 +9,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { useRecoilState } from 'recoil';
 import { userState } from '../../recoil/atoms';
 
-export default function Context() {
+export default function ProfileDetail() {
   const navigate = useNavigate();
 
   const [userData, setUserData] = useRecoilState(userState);

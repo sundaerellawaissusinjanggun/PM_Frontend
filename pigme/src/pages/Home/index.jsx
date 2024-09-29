@@ -7,7 +7,11 @@ import useModal from '../../components/Hooks/useModal';
 import { useNavigate } from 'react-router-dom';
 import BankModal from '../../components/Modal/BankModal';
 import { useRecoilState } from 'recoil';
-import { userState } from '../../recoil/atoms';
+import {
+  friendRequestsState,
+  friendsListState,
+  userState,
+} from '../../recoil/atoms';
 import { db, auth } from '../../firebase';
 import {
   collection,
@@ -19,76 +23,21 @@ import {
 } from 'firebase/firestore';
 
 export default function Home() {
-  const [userData, setUserData] = useRecoilState(userState);
   const confirmModal = useModal();
   const navigate = useNavigate();
-  const [friendsList, setFriendsList] = useState([]);
+  const [userData, setUserData] = useRecoilState(userState);
+  const [friendRequests, setFriendRequests] =
+    useRecoilState(friendRequestsState);
+  const [friendsList, setFriendsList] = useRecoilState(friendsListState);
 
   const handleConfirm = () => {
-    console.log('Confirm button clicked');
     confirmModal.closeModal();
     navigate('/message');
   };
 
   const handleCancel = () => {
-    console.log('Cancel button clicked');
     confirmModal.closeModal();
   };
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      // Firebase 인증 후 사용자 정보 가져오기
-      const user = auth.currentUser;
-      if (user) {
-        const userDoc = await getDoc(doc(db, 'users', user.uid));
-        const userDataFromDB = userDoc.data();
-        setUserData({
-          userId: user.uid,
-          ...userDataFromDB,
-        });
-      }
-    };
-
-    fetchUserData();
-  }, [setUserData]);
-
-  useEffect(() => {
-    if (userData && userData.userId) {
-      console.log('User data:', userData.userId);
-
-      const fetchFriends = async () => {
-        try {
-          const q = query(
-            collection(db, 'friendsListState'),
-            where('friendId', '==', userData.userId)
-          );
-
-          const querySnapshot = await getDocs(q);
-          const friends = [];
-
-          querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            friends.push(data.friendReceiverId);
-          });
-
-          const friendAvatars = await Promise.all(
-            friends.map(async (friendId) => {
-              const friendDoc = await getDoc(doc(db, 'users', friendId));
-              return { id: friendId, ...friendDoc.data() };
-            })
-          );
-
-          setFriendsList(friendAvatars);
-        } catch (error) {
-          console.error('친구 목록 가져오기 오류:', error);
-        }
-      };
-
-      fetchFriends();
-    } else {
-      console.log('User data is not ready yet.');
-    }
-  }, [userData]);
 
   if (!userData || !userData.avatar) {
     return <LoadingScreen>Loading...</LoadingScreen>;
@@ -124,7 +73,9 @@ export default function Home() {
               <div key={friend.id}>
                 {friend.avatar ? (
                   <>
-                    <div>아바타 색상: {friend.avatar.color}</div>
+                    <div onClick={confirmModal.openModal}>
+                      아바타 색상: {friend.avatar.color}
+                    </div>
                     <img
                       src={friend.avatar.url}
                       alt={`${friend.avatar.color} 친구 아바타`}
@@ -133,8 +84,6 @@ export default function Home() {
                 ) : (
                   <div>아바타 정보가 없습니다.</div>
                 )}
-                <div>이름: {friend.name}</div>
-                <div>아이디: {friend.id}</div>
               </div>
             ))
           ) : (

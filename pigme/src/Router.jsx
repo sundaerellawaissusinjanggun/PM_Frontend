@@ -5,14 +5,12 @@ import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
-import ProfileSetupPage from './pages/Login/ProfileSetupPage';
-// import MyPiggyBankPage from './pages/Profile/MyPiggyBankPage';
-import MessageInputPage from './pages/Message/MessageInputPage';
-import LikedMessagesPage from './pages/Profile/LikedMessagesPage';
-import MessageShowPage from './pages/Message/MessageShowPage';
-import MyMessageShowPage from './pages/Message/MyMessageShowPage';
-import FollowPage from './pages/Friend/FollowPage';
-import FollowListPage from './pages/Friend/FollowListPage';
+import SetupProfilePage from './pages/Login/SetupProfilePage';
+import WriteMessagePage from './pages/Message/WriteMessagePage';
+import ReadMessagePage from './pages/Message/ReadMessagePage';
+import RecentMessagePage from './pages/Message/RecentMessagePage';
+import AddFriendsPage from './pages/Friend/AddFriendsPage';
+import RequestFriendsListPage from './pages/Friend/RequestFriendsListPage';
 import MyPiggyBankPage from './pages/Profile/MyPiggyBankPage';
 export const router = createBrowserRouter([
   {
@@ -37,35 +35,31 @@ export const router = createBrowserRouter([
       },
       {
         path: '/profileSetup',
-        element: <ProfileSetupPage />,
+        element: <SetupProfilePage />,
       },
       {
         path: '/myBank',
         element: <MyPiggyBankPage />,
       },
       {
-        path: '/like',
-        element: <LikedMessagesPage />,
-      },
-      {
         path: '/message',
-        element: <MessageInputPage />,
+        element: <WriteMessagePage />,
       },
       {
         path: '/showMessage',
-        element: <MessageShowPage />,
+        element: <ReadMessagePage />,
       },
       {
         path: '/myMessage',
-        element: <MyMessageShowPage />,
+        element: <RecentMessagePage />,
       },
       {
         path: '/friend',
-        element: <FollowPage />,
+        element: <AddFriendsPage />,
       },
       {
         path: '/friendList',
-        element: <FollowListPage />,
+        element: <RequestFriendsListPage />,
       },
     ],
     errorElement: <NotFound />,

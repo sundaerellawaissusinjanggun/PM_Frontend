@@ -1,15 +1,13 @@
-// 남의 메세지 구경 화면
 import { Block, Text, Img } from '../../styles/UI';
 import styled from '@emotion/styled';
 import Header from '../../components/Layout/Header';
 
 import BackgroundCoin from '/background-coin.svg';
-import Pig from '/colors/pig.svg';
 import { useRecoilState } from 'recoil';
 import { userState } from '../../recoil/atoms';
 import ProfileAvatar from '../../components/Layout/ProfileAvatar';
 
-export default function MessageShowPage() {
+export default function ReadMessagePage() {
   const [userData, setUserData] = useRecoilState(userState);
 
   return (

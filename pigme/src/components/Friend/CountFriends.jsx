@@ -5,7 +5,7 @@ import { Block, Text } from '../../styles/UI';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router';
 
-export default function AnotherPage() {
+export default function CountFriends() {
   const userData = useRecoilValue(userState);
   const friendRequests = useRecoilValue(friendRequestsState);
   const navigate = useNavigate();
@@ -13,7 +13,8 @@ export default function AnotherPage() {
   // 현재 사용자가 받은 친구 요청
   const pendingFriends = friendRequests.filter(
     (request) =>
-      request.friendReceiver === userData.userId && request.status === 'pending'
+      request.friendReceiverId === userData.userId &&
+      request.status === 'pending'
   );
 
   useEffect(() => {
@@ -23,13 +24,13 @@ export default function AnotherPage() {
     // 현재 사용자의 친구 요청 목록
     const userPendingRequests = friendRequests.filter(
       (request) =>
-        request.friendReceiver === userData.userId &&
+        request.friendReceiverId === userData.userId &&
         request.status === 'pending'
     );
     console.log('현재 사용자의 친구 요청 목록:', userPendingRequests);
 
     // userPendingRequests 배열이 비어 있지 않은 경우에만 접근
-    if (userPendingRequests.length > 0) {
+    if (userPendingRequests.length == 0) {
       userPendingRequests.forEach((request) => {
         console.log('friendSenderId:', request.friendSenderId);
       });
@@ -37,14 +38,7 @@ export default function AnotherPage() {
       console.log('받은 친구 요청이 없습니다.');
     }
 
-    const sentRequestsCount = friendRequests.filter(
-      (request) =>
-        request.friendSender === userData.userId && request.status === 'pending'
-    ).length;
-
     const receivedRequestsCount = userPendingRequests.length;
-
-    console.log('보낸 친구 요청 개수:', sentRequestsCount);
     console.log('받은 친구 요청 개수:', receivedRequestsCount);
   }, [friendRequests, userData]);
 

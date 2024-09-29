@@ -1,35 +1,37 @@
+import { recoilPersist } from 'recoil-persist';
 import { atom } from 'recoil';
+const { persistAtom } = recoilPersist();
 
 // user의 정보
 export const userState = atom({
   key: 'userState',
-  default: [
-    // {
-    //   id: null,
-    // },
-  ], // userId, avatar(color, item), nickname, email, introduction
+  default: {
+    userId: '',
+    avatar: '',
+    nickname: '',
+    email: '',
+    introduction: '',
+  },
+  effects_UNSTABLE: [persistAtom], // 자동으로 LocalStorage에 저장 및 불러오기
 });
 
 // user가 받은 친구 요청 목록
 export const friendRequestsState = atom({
   key: 'friendRequestsState',
-  default: [], // friendRequestId, friendSenderId, friendReceiverId, status
+  default: [], // requestId, friendSenderId, friendReceiverId, status
+  effects_UNSTABLE: [persistAtom],
 });
 
 // user의 친구 목록
 export const friendsListState = atom({
   key: 'friendsListState',
-  default: [], // friendId, friendNickname, friendAvatar(color, item)
+  default: [], // friendId, friendNickname, friendAvatar
+  effects_UNSTABLE: [persistAtom],
 });
-
-// 로그인한 user가 좋아요를 누른 메시지 목록
-// export const likesState = atom({
-//   key: 'likesState',
-//   default: [],
-// });
 
 // 모든 user와 친구 사이의 메시지 목록
 export const messagesState = atom({
   key: 'messagesState',
-  default: [], // id, messageSenderId, messageReceiverId, content
+  default: [], // messageId, messageSenderId, messageReceiverId, content
+  effects_UNSTABLE: [persistAtom],
 });

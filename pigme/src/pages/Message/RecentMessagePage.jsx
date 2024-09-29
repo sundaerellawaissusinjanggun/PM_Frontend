@@ -5,7 +5,7 @@ import DeleteMessage from '../../components/DeleteMessge';
 import BackgroundCoin from '/background-coin.svg';
 import Pig from '/colors/pig.svg';
 
-export default function MyMessageShowPage() {
+export default function RecentMessagePage() {
   return (
     <>
       {/* 헤더 영역 */}

@@ -12,7 +12,7 @@ import CancleModal from '../../components/Modal/CancleModal';
 import { useRecoilState } from 'recoil';
 import { userState } from '../../recoil/atoms';
 
-export default function MessageInputPage() {
+export default function WriteMessagePage() {
   const successModal = useModal();
   const cancleModal = useModal();
   const navigate = useNavigate();

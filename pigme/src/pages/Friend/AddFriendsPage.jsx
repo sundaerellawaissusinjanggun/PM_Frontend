@@ -3,7 +3,7 @@ import { Block, Input, Button, Img, Text } from '../../styles/UI';
 import Header from '../../components/Layout/Header';
 import ConfirmModal from '../../components/Modal/ConfirmModal';
 import useModal from '../../components/Hooks/useModal';
-import AnotherPage from '../../components/Friend/AnotherPage';
+import AnotherPage from '../../components/Friend/CountFriends';
 import styled from '@emotion/styled';
 import { auth, db } from '../../firebase';
 import {
@@ -18,7 +18,7 @@ import {
 import { useRecoilState } from 'recoil';
 import { userState, friendRequestsState } from '../../recoil/atoms';
 
-export default function FollowPage() {
+export default function AddFriendsPage() {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState(false);
   const confirmModal = useModal();

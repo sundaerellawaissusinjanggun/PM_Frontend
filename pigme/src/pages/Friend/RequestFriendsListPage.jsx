@@ -8,59 +8,53 @@ import {
 } from '../../recoil/atoms';
 import { Block, Text, Button } from '../../styles/UI';
 import Header from '../../components/Layout/Header';
-import AnotherPage from '../../components/Friend/AnotherPage';
+import AnotherPage from '../../components/Friend/CountFriends';
 import ProfileAvatar from '../../components/Layout/ProfileAvatar';
 
-export default function FollowListPage() {
+export default function RequestFriendsListPage() {
   const [friendRequest, setFriendRequest] = useRecoilState(friendRequestsState);
   const [friendList, setFriendList] = useRecoilState(friendsListState);
   const userData = useRecoilValue(userState);
 
-  useEffect(() => {
-    console.log('현재 사용자의 친구 요청 목록:', friendRequest);
-
-    const userPendingRequests = friendRequest.filter(
-      (request) =>
-        request.friendReceiver === userData.userId &&
-        request.status === 'pending'
-    );
-
-    userPendingRequests.forEach((request) => {
-      console.log(
-        `보낸 사용자 ID: ${request.friendSenderId}, 닉네임: ${request.friendNickname}`
-      );
-    });
-  }, [friendRequest, userData]);
-
   const handleAccept = (friend) => {
     const senderId = friend.friendSenderId;
 
-    if (userData.userId === senderId) {
-      const user = userData;
+    // userData에서 senderId와 같은 ID를 가진 사용자 정보를 찾는 로직
+    const matchedUser = userData.find((user) => user.userId === senderId);
+    console.log('?????????????????????????????' + matchedUser);
 
+    if (matchedUser) {
+      console.log('친구 요청을 보낸 사용자 정보:', matchedUser);
+
+      // 친구 수락 처리
       setFriendList((prevList) => [
         ...prevList,
         {
           friendId: senderId,
-          friendNickname: user.nickname,
-          friendAvatar: user.avatar,
+          friendNickname: matchedUser.nickname,
+          friendAvatar: matchedUser.avatar,
         },
       ]);
 
       console.log(`${senderId}의 친구 요청을 수락했습니다.`);
+      console.log(friend.friendSenderId);
+      console.log(matchedUser.nickname);
+      console.log(friend.friendSenderId);
 
       setFriendRequest((prevFriends) =>
         prevFriends.map((item) =>
-          item.id === friend.id ? { ...item, status: 'isAccepted' } : item
+          item.friendRequestId === friend.friendRequestId
+            ? { ...item, status: 'isAccepted' }
+            : item
         )
       );
     } else {
-      console.error('사용자를 찾을 수 없습니다.');
+      console.error('해당 사용자 정보를 찾을 수 없습니다.');
     }
   };
 
   const pendingFriends = friendRequest.filter(
-    (friend) => !friend.isAccepted && !friend.isRejected
+    (friend) => friend.status === 'pending'
   );
 
   return (
@@ -99,7 +93,7 @@ export default function FollowListPage() {
               {/* 친구 목록 영역 */}
               {pendingFriends.map((friend) => (
                 <Block.FlexBox
-                  key={friend.id}
+                  key={friend.friendRequestId} // 수정된 부분
                   padding="20px 0 "
                   borderBottom="2px solid #E7E7E7"
                 >
@@ -108,12 +102,13 @@ export default function FollowListPage() {
                     <ProfileAvatar />
                     <Block.FlexBox>
                       {/* 친구의 닉네임 */}
-                      <Text.ModalText>{friend.name}</Text.ModalText>
+                      <Text.ModalText>{friend.friendSenderId}</Text.ModalText>
+                      {/* 친구의 닉네임이 아니라 보내는 사람의 ID를 표시합니다. 필요시 친구의 닉네임을 가져오는 로직을 추가하세요. */}
                     </Block.FlexBox>
                   </Block.FlexBox>
                   {/* 수락/거절 버튼 */}
                   <Block.FlexBox>
-                    {friend.isAccepted ? (
+                    {friend.status === 'isAccepted' ? (
                       <ButtonWrapper>
                         <Text.ButtonText color="grayDeep">
                           친구가 되었어요!

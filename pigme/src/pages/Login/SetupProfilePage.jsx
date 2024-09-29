@@ -8,7 +8,7 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { useRecoilState } from 'recoil';
 import { userState } from '../../recoil/atoms';
 
-export default function ProfileSetupPage() {
+export default function SetupProfilePage() {
   const navigate = useNavigate();
 
   const [userData, setUserData] = useRecoilState(userState);

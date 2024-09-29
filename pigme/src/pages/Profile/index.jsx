@@ -1,5 +1,5 @@
 import React from 'react';
-import Context from './Context';
+import ProfileDetail from './ProfileDetail';
 import Header from '../../components/Layout/Header';
 import { Block } from '../../styles/UI';
 import ProfileAvatar from '../../components/Layout/ProfileAvatar';
@@ -31,7 +31,7 @@ export default function Profile() {
         />
       </Block.AbsoluteBox>
       <Block.AbsoluteBox bottom="0">
-        <Context />
+        <ProfileDetail />
       </Block.AbsoluteBox>
     </>
   );
