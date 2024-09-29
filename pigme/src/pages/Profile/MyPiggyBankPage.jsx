@@ -45,9 +45,9 @@ export default function MyPiggyBankPage() {
         imageSrc="/sad-pig.svg"
       />
       <Wrapper>
-        <HeaderWrapper>
-          <Header />
-        </HeaderWrapper>
+        <Block.HeaderBox justifyContent="flex-end">
+          <Header showHomeIcon={true} />
+        </Block.HeaderBox>
         <AvatarWrapper>
           <ProfileAvatar
             color={userData.avatar.color.image}
@@ -79,13 +79,6 @@ const Wrapper = styled.div`
   width: 100%;
   height: 100vh;
   position: relative;
-`;
-const HeaderWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  position: absolute;
-  top: 0;
 `;
 
 const AvatarWrapper = styled.div`

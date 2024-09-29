@@ -16,6 +16,10 @@ export default function BankModal({
   imageSrc,
 }) {
   const [userData, setUserData] = useRecoilState(userState);
+  if (!userData || !userData.avatar) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <BasicModal
       isOpen={isOpen}

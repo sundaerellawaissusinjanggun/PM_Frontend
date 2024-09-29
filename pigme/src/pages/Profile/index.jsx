@@ -8,7 +8,9 @@ import { userState } from '../../recoil/atoms';
 
 export default function Profile() {
   const [userData, setUserData] = useRecoilState(userState);
-  console.log('userData' + userData.avatar.color.image);
+  if (!userData || !userData.avatar) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>

@@ -51,11 +51,9 @@ export default function Home() {
         </Block.AbsoluteBox>
         {/* 친구 목록 표시 */}
         <div>
-          <h3>친구 목록</h3>
           {friendsList.length > 0 ? (
             friendsList.map((friend, index) => (
               <div key={index}>
-                <div>친구 닉네임: {friend.friendNickname}</div>
                 <div>아바타 색상: {friend.friendAvatar.color}</div>
               </div>
             ))
