@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
-import { Outlet } from 'react-router-dom';
-
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { auth, db } from '../src/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -10,6 +9,7 @@ import { userState } from '../src/recoil/atoms';
 
 export default function App() {
   const setUser = useSetRecoilState(userState);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -26,12 +26,22 @@ export default function App() {
             email: user.email,
             introduction: userData.introduction || '',
           });
+
+          if (userData.avatar && userData.nickname) {
+            navigate('/home');
+          } else {
+            navigate('/custom');
+          }
+        } else {
+          navigate('/login');
         }
+      } else {
+        navigate('/login');
       }
     });
 
     return () => unsubscribe();
-  }, [setUser]);
+  }, [setUser, navigate]);
 
   return (
     <Style.FullWrapper>

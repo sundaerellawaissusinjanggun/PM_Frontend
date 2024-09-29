@@ -1,22 +1,111 @@
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Block, Input, Button, Img, Text } from '../../styles/UI';
 import Header from '../../components/Layout/Header';
 import ConfirmModal from '../../components/Modal/ConfirmModal';
 import useModal from '../../components/Hooks/useModal';
-import { useNavigate } from 'react-router';
 import AnotherPage from '../../components/Friend/AnotherPage';
 import styled from '@emotion/styled';
+import { auth, db } from '../../firebase';
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  addDoc,
+  doc,
+  getDoc,
+} from 'firebase/firestore';
+import { useRecoilState } from 'recoil';
+import { userState, friendRequestsState } from '../../recoil/atoms';
 
 export default function FollowPage() {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState(false);
   const confirmModal = useModal();
-  const navigate = useNavigate();
 
-  const handleGoToMessage = () => {
+  const [userData, setUserState] = useRecoilState(userState);
+  const [friendRequests, setFriendRequests] =
+    useRecoilState(friendRequestsState);
+
+  const fetchUserData = async (uid) => {
+    try {
+      const userRef = doc(db, 'users', uid);
+      const userDoc = await getDoc(userRef);
+
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+
+        setUserState({
+          ...userData,
+          userId: uid,
+        });
+      } else {
+        console.error('유저 데이터를 찾을 수 없습니다.');
+      }
+    } catch (error) {
+      console.error(
+        'Firestore에서 유저 데이터를 불러오는 중 오류 발생:',
+        error
+      );
+    }
+  };
+
+  useEffect(() => {
+    const currentUser = auth.currentUser;
+
+    if (currentUser) {
+      const uid = currentUser.uid;
+      fetchUserData(uid);
+    } else {
+      console.error('사용자가 로그인되어 있지 않습니다.');
+    }
+  }, []);
+  const handleGoToMessage = async () => {
     confirmModal.closeModal();
-    navigate('/friendList');
-    // 추후에 친구 요청 목록으로 이동하게 변경!!
+    alert('친구 요청을 보냈어요!');
+
+    try {
+      const q = query(collection(db, 'users'), where('email', '==', email));
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        alert('해당 이메일을 가진 유저가 없습니다.');
+        return;
+      }
+
+      let receiverId;
+      querySnapshot.forEach((doc) => {
+        receiverId = doc.id;
+      });
+
+      console.log('요청 보낸 사람:', userData.userId);
+      console.log('요청 받는 사람:', receiverId);
+      console.log('요청 상태: pending');
+
+      // 친구 요청 데이터베이스에 추가
+      const friendRequestRef = await addDoc(collection(db, 'friendRequests'), {
+        friendSenderId: userData.userId,
+        friendReceiverId: receiverId,
+        status: 'pending',
+      });
+
+      // 보낸 친구 요청 상태 업데이트
+      setFriendRequests((prevRequests) => [
+        ...prevRequests,
+        {
+          friendRequestId: friendRequestRef.userId,
+          friendSenderId: userData.uid,
+          friendReceiverId: receiverId,
+          isAccepted: false, // 요청 상태 초기화
+          isSent: true, // 보낸 요청으로 설정
+        },
+      ]);
+
+      alert('친구 요청이 성공적으로 전송되었습니다!');
+    } catch (error) {
+      console.error('친구 요청 전송 오류:', error);
+      alert('친구 요청 전송 중 문제가 발생했습니다.');
+    }
   };
 
   const validateEmail = (email) => {
@@ -116,6 +205,7 @@ export default function FollowPage() {
     </>
   );
 }
+
 const FriendCount = styled.div`
   position: absolute;
   top: 0;

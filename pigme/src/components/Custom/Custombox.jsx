@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { userState } from '../../recoil/atoms';
 import ProfileAvatar from '../Layout/ProfileAvatar';
+import { onAuthStateChanged } from 'firebase/auth';
 
 export default function Custombox() {
   const navigate = useNavigate();
@@ -16,7 +17,6 @@ export default function Custombox() {
   const [selectedTab, setSelectedTab] = useState('color');
   const [selectedColor, setSelectedColor] = useState(customData.colors[0]);
   const [selectedItem, setSelectedItem] = useState(customData.items[0]);
-  const [isLoading, setIsLoading] = useState(true);
 
   const handleColorChange = (color) => {
     setSelectedColor(color);
@@ -65,40 +65,41 @@ export default function Custombox() {
   };
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      const userId = auth.currentUser?.uid;
+    const fetchUserData = async (userId) => {
+      const docRef = doc(db, 'users', userId);
+      const docSnap = await getDoc(docRef);
 
-      if (userId) {
-        const docRef = doc(db, 'users', userId);
-        const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setUserData((prevUserData) => ({
+          ...prevUserData,
+          avatar: data.avatar || { color: {}, item: {} },
+        }));
 
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          setUserData((prevUserData) => ({
-            ...prevUserData,
-            avatar: data.avatar || { color: {}, item: {} },
-          }));
-
-          if (data.avatar) {
-            setSelectedColor(data.avatar.color || customData.colors[0]);
-            setSelectedItem(data.avatar.item || customData.items[0]);
-          }
-        } else {
-          console.error('No such document! New user, setting defaults.');
+        if (!data.avatar) {
+          setSelectedColor(userData.avatar.color.image);
+          setSelectedItem(userData.avatar.item.image);
         }
+      } else {
+        console.error('No such document! New user, setting defaults.');
+      }
+    };
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // 유저가 로그인되어 있으면 userId를 가져와서 fetchUserData 호출
+        fetchUserData(user.uid);
       } else {
         console.error('로그인 해주세요.');
       }
-      setIsLoading(false);
-    };
+    });
 
-    fetchUserData();
+    return () => unsubscribe();
   }, [setUserData]);
 
-  if (isLoading) {
+  if (!userData || !userData.avatar) {
     return <LoadingScreen>Loading...</LoadingScreen>;
   }
-
   return (
     <>
       <Block.HeaderBox justifyContent="space-between">
@@ -110,14 +111,12 @@ export default function Custombox() {
       </Block.HeaderBox>
       <CustomizationScreen>
         <PigDisplay>
-
           <ProfileAvatar
             selectedColor={selectedColor}
             selectedItem={
               selectedItem && selectedItem.id !== 1 ? selectedItem : null
             }
           />
-
         </PigDisplay>
 
         <TabContainer>

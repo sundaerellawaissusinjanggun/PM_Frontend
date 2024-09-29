@@ -2,19 +2,19 @@
 import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useRecoilState } from 'recoil';
-import { friendListState } from '../../components/Friend/FriendState';
+import { friendRequestsState } from '../../recoil/atoms';
 import { Block, Input, Button, Text, Img } from '../../styles/UI';
 import Header from '../../components/Layout/Header';
 import Pig from '/colors/pig.svg';
 import AnotherPage from '../../components/Friend/AnotherPage';
+import ProfileAvatar from '../../components/Layout/ProfileAvatar';
 
 export default function FollowListPage() {
   const [isAccepted, setIsAccepted] = useState(false);
-  const [friends, setFriends] = useRecoilState(friendListState); // Recoil 상태 사용
+  const [friends, setFriends] = useRecoilState(friendRequestsState);
 
-  // 상태가 제대로 전달되고 있는지 확인
   useEffect(() => {
-    console.log(friends); // 상태 확인
+    console.log(friends);
   }, [friends]);
 
   const handleAccept = (id) => {
@@ -30,7 +30,7 @@ export default function FollowListPage() {
       prevFriends.filter((friend) => friend.id !== id)
     );
   };
-  // 수락되지 않은 친구 요청 개수
+
   const pendingFriends = friends.filter((friend) => !friend.isAccepted);
 
   return (
@@ -57,9 +57,11 @@ export default function FollowListPage() {
               justifyContent="center"
               alignItem="center"
               height="100%"
+              direction="column"
             >
+              <TextWrapper>아직 친구가 없어요!</TextWrapper>
               <TextWrapper>
-                아직 친구가 없네요! 먼저 친구 요청을 보내서 친구를 만들어보세요.
+                먼저 친구 요청을 보내서 친구를 만들어보세요.
               </TextWrapper>
             </Block.FlexBox>
           ) : (
@@ -73,7 +75,7 @@ export default function FollowListPage() {
                 >
                   <Block.FlexBox gap="10px">
                     {/* 친구의 프로필 사진 */}
-                    <Img.AngledIcon src={Pig} width="21px" />
+                    <ProfileAvatar />
                     <Block.FlexBox>
                       {/* 친구의 닉네임 */}
                       <Text.ModalText>{friend.name}</Text.ModalText>
@@ -132,7 +134,7 @@ const TextWrapper = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 20px;
+  padding: 2px;
   font-size: 16px;
   color: #bebebe;
 `;
