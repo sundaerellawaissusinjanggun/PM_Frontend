@@ -55,7 +55,6 @@ export default function AddFriendsPage() {
 
   const handleGoToMessage = async () => {
     confirmModal.closeModal();
-    alert('친구 요청을 보냈어요!');
 
     try {
       const q = query(collection(db, 'users'), where('email', '==', email));
@@ -71,22 +70,34 @@ export default function AddFriendsPage() {
         receiverId = doc.id;
       });
 
+      const existingRequestQuery = query(
+        collection(db, 'friendRequests'),
+        where('friendSenderId', '==', userData.userId),
+        where('friendReceiverId', '==', receiverId),
+        where('status', '==', 'pending')
+      );
+
+      const existingRequestSnapshot = await getDocs(existingRequestQuery);
+
+      if (!existingRequestSnapshot.empty) {
+        alert('이미 친구 요청을 보냈습니다. 다시 요청할 수 없습니다.');
+        return;
+      }
+
       console.log('요청 보낸 사람:', userData.userId);
       console.log('요청 받는 사람:', receiverId);
       console.log('요청 상태: pending');
 
-      // 친구 요청 데이터베이스에 추가
       const friendRequestRef = await addDoc(collection(db, 'friendRequests'), {
         friendSenderId: userData.userId,
         friendReceiverId: receiverId,
         status: 'pending',
       });
 
-      // 보낸 친구 요청 상태 업데이트
       setFriendRequests((prevRequests) => [
         ...prevRequests,
         {
-          friendRequestId: friendRequestRef.id, // Use friendRequestRef.id here
+          friendRequestId: friendRequestRef.id,
           friendSenderId: userData.userId,
           friendReceiverId: receiverId,
           status: 'pending',
