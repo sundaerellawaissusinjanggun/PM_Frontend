@@ -5,11 +5,12 @@ import { Block } from '../../styles/UI';
 import ProfileAvatar from '../../components/Layout/ProfileAvatar';
 import { useRecoilState } from 'recoil';
 import { userState } from '../../recoil/atoms';
+import styled from '@emotion/styled';
 
 export default function Profile() {
   const [userData, setUserData] = useRecoilState(userState);
   if (!userData || !userData.avatar) {
-    return <div>Loading...</div>;
+    return <LoadingScreen>Loading...</LoadingScreen>;
   }
 
   return (
@@ -35,3 +36,12 @@ export default function Profile() {
     </>
   );
 }
+
+const LoadingScreen = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 24px;
+  color: #ff7195;
+`;

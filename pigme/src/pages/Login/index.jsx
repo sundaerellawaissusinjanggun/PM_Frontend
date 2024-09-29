@@ -16,7 +16,6 @@ import LogoText from '/public/logo.svg';
 
 export default function Login() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
   const setUser = useSetRecoilState(userState);
 
   const handleGoogleSignIn = async (e) => {
@@ -102,8 +101,6 @@ export default function Login() {
         } else {
           console.log('No user is signed in.');
         }
-
-        setLoading(false);
       });
 
       return () => unsubscribe();

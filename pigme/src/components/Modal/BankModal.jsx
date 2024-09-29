@@ -17,7 +17,7 @@ export default function BankModal({
 }) {
   const [userData, setUserData] = useRecoilState(userState);
   if (!userData || !userData.avatar) {
-    return <div>Loading...</div>;
+    return <LoadingScreen>Loading...</LoadingScreen>;
   }
 
   return (
@@ -75,3 +75,12 @@ export default function BankModal({
     </BasicModal>
   );
 }
+
+const LoadingScreen = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 24px;
+  color: #ff7195;
+`;

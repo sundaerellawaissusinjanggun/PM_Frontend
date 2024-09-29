@@ -16,7 +16,6 @@ export default function Custombox() {
   const [selectedTab, setSelectedTab] = useState('color');
   const [selectedColor, setSelectedColor] = useState(customData.colors[0]);
   const [selectedItem, setSelectedItem] = useState(customData.items[0]);
-  const [isLoading, setIsLoading] = useState(true);
 
   const handleColorChange = (color) => {
     setSelectedColor(color);
@@ -89,16 +88,14 @@ export default function Custombox() {
       } else {
         console.error('로그인 해주세요.');
       }
-      setIsLoading(false);
     };
 
     fetchUserData();
   }, [setUserData]);
 
-  if (isLoading) {
+  if (!userData || !userData.avatar) {
     return <LoadingScreen>Loading...</LoadingScreen>;
   }
-
   return (
     <>
       <Block.HeaderBox justifyContent="space-between">
@@ -110,14 +107,12 @@ export default function Custombox() {
       </Block.HeaderBox>
       <CustomizationScreen>
         <PigDisplay>
-
           <ProfileAvatar
             selectedColor={selectedColor}
             selectedItem={
               selectedItem && selectedItem.id !== 1 ? selectedItem : null
             }
           />
-
         </PigDisplay>
 
         <TabContainer>
