@@ -1,37 +1,55 @@
-// 친구 추가
 import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useRecoilState } from 'recoil';
-import { friendRequestsState } from '../../recoil/atoms';
-import { Block, Input, Button, Text, Img } from '../../styles/UI';
+import {
+  friendRequestsState,
+  friendsListState,
+  userState,
+} from '../../recoil/atoms';
+import { Block, Text, Button } from '../../styles/UI';
 import Header from '../../components/Layout/Header';
-import Pig from '/colors/pig.svg';
 import AnotherPage from '../../components/Friend/AnotherPage';
 import ProfileAvatar from '../../components/Layout/ProfileAvatar';
 
 export default function FollowListPage() {
-  const [isAccepted, setIsAccepted] = useState(false);
-  const [friends, setFriends] = useRecoilState(friendRequestsState);
+  const [friendRequest, setFriendRequest] = useRecoilState(friendRequestsState);
+  const [friendList, setFriendList] = useRecoilState(friendsListState);
+  const [userData] = useRecoilState(userState);
 
   useEffect(() => {
-    console.log(friends);
-  }, [friends]);
+    console.log('요청정보보봅' + friendList.friendReceiverId);
+  }, [friendRequest]);
 
-  const handleAccept = (id) => {
-    setFriends((prevFriends) =>
-      prevFriends.map((friend) =>
-        friend.id === id ? { ...friend, isAccepted: true } : friend
-      )
-    );
+  const handleAccept = (friend) => {
+    const senderId = friend.friendSenderId;
+
+    if (userData.userId === senderId) {
+      const user = userData;
+
+      setFriendList((prevList) => [
+        ...prevList,
+        {
+          friendId: senderId,
+          friendNickname: user.nickname,
+          friendAvatar: user.avatar,
+        },
+      ]);
+
+      console.log(`${senderId}의 친구 요청을 수락했습니다.`);
+
+      setFriendRequest((prevFriends) =>
+        prevFriends.map((item) =>
+          item.id === friend.id ? { ...item, status: 'isAccepted' } : item
+        )
+      );
+    } else {
+      console.error('사용자를 찾을 수 없습니다.');
+    }
   };
 
-  const handleDelete = (id) => {
-    setFriends((prevFriends) =>
-      prevFriends.filter((friend) => friend.id !== id)
-    );
-  };
-
-  const pendingFriends = friends.filter((friend) => !friend.isAccepted);
+  const pendingFriends = friendRequest.filter(
+    (friend) => !friend.isAccepted && !friend.isRejected
+  );
 
   return (
     <>
@@ -67,7 +85,7 @@ export default function FollowListPage() {
           ) : (
             <>
               {/* 친구 목록 영역 */}
-              {friends.map((friend) => (
+              {pendingFriends.map((friend) => (
                 <Block.FlexBox
                   key={friend.id}
                   padding="20px 0 "
@@ -95,7 +113,7 @@ export default function FollowListPage() {
                           width="43px"
                           height="24px"
                           bgColor="white"
-                          onClick={() => handleDelete(friend.id)}
+                          // onClick={() => handleDelete(friendRequest.friendRequestId)}
                         >
                           <Text.ButtonText color="grayDeep">
                             거절
@@ -106,7 +124,7 @@ export default function FollowListPage() {
                           height="24px"
                           bgColor="pink"
                           border="none"
-                          onClick={() => handleAccept(friend.id)}
+                          onClick={() => handleAccept(friend)}
                         >
                           <Text.ButtonText color="white">수락</Text.ButtonText>
                         </Button.FriendBtn>
@@ -122,6 +140,7 @@ export default function FollowListPage() {
     </>
   );
 }
+
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;

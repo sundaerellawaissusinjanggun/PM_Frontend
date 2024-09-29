@@ -73,6 +73,7 @@ export default function Login() {
 
           if (!userDoc.exists()) {
             const newUserInfo = {
+              userId: user.uid,
               avatar: {
                 color: { image: '', x: 0, y: 0 },
                 item: { image: '', x: 0, y: 0 },

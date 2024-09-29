@@ -23,10 +23,10 @@ export const friendsListState = atom({
 });
 
 // 로그인한 user가 좋아요를 누른 메시지 목록
-export const likesState = atom({
-  key: 'likesState',
-  default: [],
-});
+// export const likesState = atom({
+//   key: 'likesState',
+//   default: [],
+// });
 
 // 모든 user와 친구 사이의 메시지 목록
 export const messagesState = atom({

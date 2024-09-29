@@ -24,6 +24,9 @@ export default function FollowPage() {
   const confirmModal = useModal();
 
   const [userData, setUserState] = useRecoilState(userState);
+
+  console.log(userData);
+
   const [friendRequests, setFriendRequests] =
     useRecoilState(friendRequestsState);
 
@@ -50,16 +53,6 @@ export default function FollowPage() {
     }
   };
 
-  useEffect(() => {
-    const currentUser = auth.currentUser;
-
-    if (currentUser) {
-      const uid = currentUser.uid;
-      fetchUserData(uid);
-    } else {
-      console.error('사용자가 로그인되어 있지 않습니다.');
-    }
-  }, []);
   const handleGoToMessage = async () => {
     confirmModal.closeModal();
     alert('친구 요청을 보냈어요!');
@@ -93,11 +86,10 @@ export default function FollowPage() {
       setFriendRequests((prevRequests) => [
         ...prevRequests,
         {
-          friendRequestId: friendRequestRef.userId,
-          friendSenderId: userData.uid,
+          friendRequestId: friendRequestRef.id, // Use friendRequestRef.id here
+          friendSenderId: userData.userId,
           friendReceiverId: receiverId,
-          isAccepted: false, // 요청 상태 초기화
-          isSent: true, // 보낸 요청으로 설정
+          status: 'pending',
         },
       ]);
 
@@ -133,6 +125,19 @@ export default function FollowPage() {
       setEmailError(true);
     }
   };
+
+  useEffect(() => {
+    const currentUser = auth.currentUser;
+
+    console.log('아뵤' + friendRequests.friendSenderId);
+
+    if (currentUser) {
+      const uid = currentUser.uid;
+      fetchUserData(uid);
+    } else {
+      console.error('사용자가 로그인되어 있지 않습니다.');
+    }
+  }, []);
 
   return (
     <>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import Fence from '/fence.svg';
 import { Block } from '../../styles/UI';
@@ -7,13 +7,22 @@ import useModal from '../../components/Hooks/useModal';
 import { useNavigate } from 'react-router-dom';
 import BankModal from '../../components/Modal/BankModal';
 import { useRecoilState } from 'recoil';
-import { userState, friendsListState } from '../../recoil/atoms';
+import { userState } from '../../recoil/atoms';
+import { db, auth } from '../../firebase';
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  getDoc,
+  doc,
+} from 'firebase/firestore';
 
 export default function Home() {
   const [userData, setUserData] = useRecoilState(userState);
-  const [friendsList, setFriendsList] = useRecoilState(friendsListState);
   const confirmModal = useModal();
   const navigate = useNavigate();
+  const [friendsList, setFriendsList] = useState([]);
 
   const handleConfirm = () => {
     console.log('Confirm button clicked');
@@ -25,6 +34,65 @@ export default function Home() {
     console.log('Cancel button clicked');
     confirmModal.closeModal();
   };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      // Firebase 인증 후 사용자 정보 가져오기
+      const user = auth.currentUser;
+      if (user) {
+        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        const userDataFromDB = userDoc.data();
+        setUserData({
+          userId: user.uid,
+          ...userDataFromDB,
+        });
+      }
+    };
+
+    fetchUserData();
+  }, [setUserData]);
+
+  useEffect(() => {
+    if (userData && userData.userId) {
+      console.log('User data:', userData.userId);
+
+      const fetchFriends = async () => {
+        try {
+          const q = query(
+            collection(db, 'friendsListState'),
+            where('friendId', '==', userData.userId)
+          );
+
+          const querySnapshot = await getDocs(q);
+          const friends = [];
+
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            friends.push(data.friendReceiverId);
+          });
+
+          const friendAvatars = await Promise.all(
+            friends.map(async (friendId) => {
+              const friendDoc = await getDoc(doc(db, 'users', friendId));
+              return { id: friendId, ...friendDoc.data() };
+            })
+          );
+
+          setFriendsList(friendAvatars);
+        } catch (error) {
+          console.error('친구 목록 가져오기 오류:', error);
+        }
+      };
+
+      fetchFriends();
+    } else {
+      console.log('User data is not ready yet.');
+    }
+  }, [userData]);
+
+  if (!userData || !userData.avatar) {
+    return <LoadingScreen>Loading...</LoadingScreen>;
+  }
 
   return (
     <>
@@ -41,7 +109,6 @@ export default function Home() {
         imageSrc="/colors/pig.svg"
       />
       <HomeWrapper>
-        {/* 헤더 영역 */}
         <Block.HeaderBox width="100%" justifyContent="flex-end">
           <Header showMyPageIcon={true} />
         </Block.HeaderBox>
@@ -49,12 +116,25 @@ export default function Home() {
         <Block.AbsoluteBox bottom="0" left="14px" alignItems="center">
           <FenceImage src={Fence} />
         </Block.AbsoluteBox>
+
         {/* 친구 목록 표시 */}
         <div>
           {friendsList.length > 0 ? (
-            friendsList.map((friend, index) => (
-              <div key={index}>
-                <div>아바타 색상: {friend.friendAvatar.color}</div>
+            friendsList.map((friend) => (
+              <div key={friend.id}>
+                {friend.avatar ? (
+                  <>
+                    <div>아바타 색상: {friend.avatar.color}</div>
+                    <img
+                      src={friend.avatar.url}
+                      alt={`${friend.avatar.color} 친구 아바타`}
+                    />
+                  </>
+                ) : (
+                  <div>아바타 정보가 없습니다.</div>
+                )}
+                <div>이름: {friend.name}</div>
+                <div>아이디: {friend.id}</div>
               </div>
             ))
           ) : (
@@ -83,4 +163,13 @@ const FenceImage = styled.img`
   &:last-of-type {
     margin-right: 0;
   }
+`;
+
+const LoadingScreen = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 24px;
+  color: #ff7195;
 `;

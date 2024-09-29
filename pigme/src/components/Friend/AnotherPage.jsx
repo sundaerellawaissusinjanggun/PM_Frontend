@@ -10,17 +10,21 @@ export default function AnotherPage() {
   const friendRequests = useRecoilValue(friendRequestsState);
   const navigate = useNavigate();
 
+  // 현재 사용자가 받은 친구 요청
   const pendingFriends = friendRequests.filter(
     (request) =>
-      request.friendReceiver === userData.uid && request.status === 'pending'
+      request.friendReceiver === userData.userId && request.status === 'pending'
   );
 
   useEffect(() => {
     console.log(userData.userId);
     console.log('받은 친구 요청 목록:', friendRequests);
 
+    // 현재 사용자의 친구 요청 목록
     const userPendingRequests = friendRequests.filter(
-      (request) => request.friendReceiver === userData.userId
+      (request) =>
+        request.friendReceiver === userData.userId &&
+        request.status === 'pending'
     );
     console.log('현재 사용자의 친구 요청 목록:', userPendingRequests);
 
