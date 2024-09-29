@@ -3,10 +3,12 @@ import { useRecoilValue } from 'recoil';
 import { friendRequestsState, userState } from '../../recoil/atoms';
 import { Block, Text } from '../../styles/UI';
 import styled from '@emotion/styled';
+import { useNavigate } from 'react-router';
 
 export default function AnotherPage() {
   const userData = useRecoilValue(userState);
   const friendRequests = useRecoilValue(friendRequestsState);
+  const navigate = useNavigate();
 
   const pendingFriends = friendRequests.filter(
     (request) =>
@@ -34,11 +36,13 @@ export default function AnotherPage() {
   }, [friendRequests, userData]);
 
   return (
-    <AnotherWrapper>
-      <Text.Body1 color="black" weight="bold">
+    <AnotherWrapper onClick={() => navigate('/friendList')}>
+      <Text.Body1 pointer color="black" weight="bold">
         {pendingFriends.length}개
       </Text.Body1>
-      <Text.Body1 weight="bold">의 친구 요청</Text.Body1>
+      <Text.Body1 pointer weight="bold">
+        의 친구 요청
+      </Text.Body1>
     </AnotherWrapper>
   );
 }

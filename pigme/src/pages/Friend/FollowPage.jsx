@@ -60,7 +60,6 @@ export default function FollowPage() {
       console.error('사용자가 로그인되어 있지 않습니다.');
     }
   }, []);
-
   const handleGoToMessage = async () => {
     confirmModal.closeModal();
     alert('친구 요청을 보냈어요!');
@@ -83,19 +82,22 @@ export default function FollowPage() {
       console.log('요청 받는 사람:', receiverId);
       console.log('요청 상태: pending');
 
+      // 친구 요청 데이터베이스에 추가
       const friendRequestRef = await addDoc(collection(db, 'friendRequests'), {
         friendSenderId: userData.userId,
         friendReceiverId: receiverId,
         status: 'pending',
       });
 
+      // 보낸 친구 요청 상태 업데이트
       setFriendRequests((prevRequests) => [
         ...prevRequests,
         {
           friendRequestId: friendRequestRef.userId,
           friendSenderId: userData.uid,
           friendReceiverId: receiverId,
-          status: 'pending',
+          isAccepted: false, // 요청 상태 초기화
+          isSent: true, // 보낸 요청으로 설정
         },
       ]);
 

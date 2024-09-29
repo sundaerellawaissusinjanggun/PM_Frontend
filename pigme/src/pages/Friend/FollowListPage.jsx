@@ -7,6 +7,7 @@ import { Block, Input, Button, Text, Img } from '../../styles/UI';
 import Header from '../../components/Layout/Header';
 import Pig from '/colors/pig.svg';
 import AnotherPage from '../../components/Friend/AnotherPage';
+import ProfileAvatar from '../../components/Layout/ProfileAvatar';
 
 export default function FollowListPage() {
   const [isAccepted, setIsAccepted] = useState(false);
@@ -74,7 +75,7 @@ export default function FollowListPage() {
                 >
                   <Block.FlexBox gap="10px">
                     {/* 친구의 프로필 사진 */}
-                    <Img.AngledIcon src={Pig} width="21px" />
+                    <ProfileAvatar />
                     <Block.FlexBox>
                       {/* 친구의 닉네임 */}
                       <Text.ModalText>{friend.name}</Text.ModalText>
