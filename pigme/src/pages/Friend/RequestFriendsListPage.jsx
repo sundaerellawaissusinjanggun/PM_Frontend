@@ -1,61 +1,140 @@
 import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import {
-  friendRequestsState,
-  friendsListState,
-  userState,
-} from '../../recoil/atoms';
 import { Block, Text, Button } from '../../styles/UI';
 import Header from '../../components/Layout/Header';
-import AnotherPage from '../../components/Friend/CountFriends';
+import CountFriends from '../../components/Friend/CountFriends';
 import ProfileAvatar from '../../components/Layout/ProfileAvatar';
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  updateDoc,
+  setDoc,
+  arrayUnion,
+  getDoc,
+} from 'firebase/firestore';
 
 export default function RequestFriendsListPage() {
-  const [friendRequest, setFriendRequest] = useRecoilState(friendRequestsState);
-  const [friendList, setFriendList] = useRecoilState(friendsListState);
-  const userData = useRecoilValue(userState);
+  const db = getFirestore();
 
-  const handleAccept = (friend) => {
-    const senderId = friend.friendSenderId;
+  const [pendingFriends, setPendingFriends] = useState([]);
 
-    // userData에서 senderId와 같은 ID를 가진 사용자 정보를 찾는 로직
-    const matchedUser = userData.find((user) => user.userId === senderId);
-    console.log('?????????????????????????????' + matchedUser);
-
-    if (matchedUser) {
-      console.log('친구 요청을 보낸 사용자 정보:', matchedUser);
-
-      // 친구 수락 처리
-      setFriendList((prevList) => [
-        ...prevList,
-        {
-          friendId: senderId,
-          friendNickname: matchedUser.nickname,
-          friendAvatar: matchedUser.avatar,
-        },
-      ]);
-
-      console.log(`${senderId}의 친구 요청을 수락했습니다.`);
-      console.log(friend.friendSenderId);
-      console.log(matchedUser.nickname);
-      console.log(friend.friendSenderId);
-
-      setFriendRequest((prevFriends) =>
-        prevFriends.map((item) =>
-          item.friendRequestId === friend.friendRequestId
-            ? { ...item, status: 'isAccepted' }
-            : item
-        )
+  useEffect(() => {
+    const userId = JSON.parse(localStorage.getItem('user')).userId;
+    getFriendRequestsForUser(userId).then(async (requests) => {
+      const pendingRequests = requests.filter(
+        (request) => request.status === 'pending'
       );
-    } else {
-      console.error('해당 사용자 정보를 찾을 수 없습니다.');
-    }
-  };
 
-  const pendingFriends = friendRequest.filter(
-    (friend) => friend.status === 'pending'
-  );
+      const requestsWithSenderInfo = await Promise.all(
+        pendingRequests.map(async (request) => {
+          const senderInfo = await getRequestUserInfo(request.friendSenderId);
+          return { ...request, senderInfo };
+        })
+      );
+
+      setPendingFriends(requestsWithSenderInfo);
+    });
+  }, []);
+
+  // 친구신청한 사용자 정보 가져오기
+  async function getRequestUserInfo(userId) {
+    const usersRef = collection(db, 'users');
+    const q = query(usersRef, where('userId', '==', userId));
+
+    try {
+      const querySnapshot = await getDocs(q);
+      let userInfo = null;
+      querySnapshot.forEach((doc) => {
+        userInfo = doc.data();
+      });
+      return userInfo;
+    } catch (error) {
+      console.error('사용자 정보 API 호출 도중 에러 발생 ', error);
+      return null;
+    }
+  }
+
+  // 사용자에게 온 친구신청 목록 가져오기
+  async function getFriendRequestsForUser(userId) {
+    const friendRequestsRef = collection(db, 'friendRequests');
+    const q = query(friendRequestsRef, where('friendReceiverId', '==', userId));
+
+    try {
+      const querySnapshot = await getDocs(q);
+      const friendRequests = [];
+      querySnapshot.forEach((doc) => {
+        friendRequests.push({
+          id: doc.id,
+          ...doc.data(),
+        });
+      });
+
+      return friendRequests;
+    } catch (error) {
+      console.error('친구신청 API 호출 도중 에러 발생 ', error);
+      return [];
+    }
+  }
+
+  // 친구 신청 수락
+  async function handleAccept(friend, action) {
+    const friendRequestId = friend.id;
+    const friendReceiverId = friend.friendReceiverId;
+    const friendSenderId = friend.friendSenderId;
+    console.log(friendRequestId, friendReceiverId, friendSenderId);
+    try {
+      const docRef = doc(db, 'friendRequests', friendRequestId);
+      if (action === 'reject') {
+        await updateDoc(docRef, {
+          status: 'isRejected',
+        });
+        alert('친구 요청을 거절했습니다.');
+      } else if (action === 'accept') {
+        await updateDoc(docRef, {
+          status: 'isAccepted',
+        });
+        alert('친구 요청을 수락했습니다.');
+        const friendListRef = collection(db, 'friendList');
+        const myFriendList = doc(friendListRef, friendReceiverId);
+        const theirFriendList = doc(friendListRef, friendSenderId);
+        const theirFriendDocSnap = await getDoc(theirFriendList);
+        const myFriendListDocSnap = await getDoc(myFriendList); //
+        try {
+          if (!theirFriendDocSnap.exists()) {
+            await setDoc(theirFriendList, {
+              friend: arrayUnion(friendReceiverId),
+            });
+          } else {
+            await updateDoc(theirFriendList, {
+              friend: arrayUnion(friendReceiverId),
+            });
+          }
+
+          if (!myFriendListDocSnap.exists()) {
+            await setDoc(myFriendList, {
+              friend: arrayUnion(friendSenderId),
+            });
+          } else {
+            await updateDoc(myFriendList, {
+              friend: arrayUnion(friendSenderId),
+            });
+          }
+        } catch (error) {
+          console.error('친구 수락 도중 에러 발생 ', error);
+        }
+      }
+      setPendingFriends((prevFriends) =>
+        prevFriends.filter((item) => item.id !== friendRequestId)
+      );
+      console.log('친구 요청 수락 완료');
+    } catch (error) {
+      console.error('친구 수락 도중 에러 발생 ', error);
+    }
+  }
 
   return (
     <>
@@ -72,7 +151,7 @@ export default function RequestFriendsListPage() {
 
           {/* 친구 목록 개수 영역 */}
           <Block.FlexBox justifyContent="flex-end" margin="10px 0">
-            <AnotherPage />
+            <CountFriends requestCount={pendingFriends.length} />
           </Block.FlexBox>
 
           {/* 친구 목록 개수 확인 */}
@@ -102,7 +181,9 @@ export default function RequestFriendsListPage() {
                     <ProfileAvatar />
                     <Block.FlexBox>
                       {/* 친구의 닉네임 */}
-                      <Text.ModalText>{friend.friendSenderId}</Text.ModalText>
+                      <Text.ModalText>
+                        {friend.senderInfo?.nickname}
+                      </Text.ModalText>
                       {/* 친구의 닉네임이 아니라 보내는 사람의 ID를 표시합니다. 필요시 친구의 닉네임을 가져오는 로직을 추가하세요. */}
                     </Block.FlexBox>
                   </Block.FlexBox>
@@ -120,7 +201,7 @@ export default function RequestFriendsListPage() {
                           width="43px"
                           height="24px"
                           bgColor="white"
-                          // onClick={() => handleDelete(friendRequest.friendRequestId)}
+                          onClick={() => handleAccept(friend, 'reject')}
                         >
                           <Text.ButtonText color="grayDeep">
                             거절
@@ -131,7 +212,7 @@ export default function RequestFriendsListPage() {
                           height="24px"
                           bgColor="pink"
                           border="none"
-                          onClick={() => handleAccept(friend)}
+                          onClick={() => handleAccept(friend, 'accept')}
                         >
                           <Text.ButtonText color="white">수락</Text.ButtonText>
                         </Button.FriendBtn>

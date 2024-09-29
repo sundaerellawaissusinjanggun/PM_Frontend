@@ -1,5 +1,6 @@
 import { recoilPersist } from 'recoil-persist';
 import { atom } from 'recoil';
+
 const { persistAtom } = recoilPersist();
 
 // user의 정보
