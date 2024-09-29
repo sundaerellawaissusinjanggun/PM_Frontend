@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 import { useEffect } from 'react';
 import { auth, db } from '../src/firebase';
@@ -10,6 +10,7 @@ import { userState } from '../src/recoil/atoms';
 
 export default function App() {
   const setUser = useSetRecoilState(userState);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -32,6 +33,10 @@ export default function App() {
 
     return () => unsubscribe();
   }, [setUser]);
+
+  useEffect(() => {
+    navigate('/login');
+  }, []);
 
   return (
     <Style.FullWrapper>

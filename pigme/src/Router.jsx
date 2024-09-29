@@ -13,6 +13,7 @@ import MessageShowPage from './pages/Message/MessageShowPage';
 import MyMessageShowPage from './pages/Message/MyMessageShowPage';
 import FollowPage from './pages/Friend/FollowPage';
 import FollowListPage from './pages/Friend/FollowListPage';
+import MyPiggyBankPage from './pages/Profile/MyPiggyBankPage';
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -38,10 +39,10 @@ export const router = createBrowserRouter([
         path: '/profileSetup',
         element: <ProfileSetupPage />,
       },
-      // {
-      //   path: '/myBank',
-      //   element: <MyPiggyBankPage />,
-      // },
+      {
+        path: '/myBank',
+        element: <MyPiggyBankPage />,
+      },
       {
         path: '/like',
         element: <LikedMessagesPage />,
