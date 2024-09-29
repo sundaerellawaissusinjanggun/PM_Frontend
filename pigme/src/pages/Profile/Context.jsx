@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import Background from '../../components/Layout/Background';
 import { db, auth } from '../../firebase';
 import { doc, getDoc } from 'firebase/firestore';
-import { Text } from '../../styles/UI';
+import { Block, Text } from '../../styles/UI';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useRecoilState } from 'recoil';
 import { userState } from '../../recoil/atoms';
@@ -83,9 +83,11 @@ export default function Context() {
             <Text.Body1>{introduction}</Text.Body1>
           </Style.InfoField>
 
-          <Style.SaveButton onClick={handelGoToCustom}>
-            프로필 수정하기
-          </Style.SaveButton>
+          <Block.FlexBox justifyContent="flex-end">
+            <Style.SaveButton onClick={handelGoToCustom}>
+              프로필 수정하기
+            </Style.SaveButton>
+          </Block.FlexBox>
         </Style.UserInfo>
         <Style.UserStatsContainer>
           <Style.StatsButton onClick={handelGoToMyBank}>
@@ -108,9 +110,8 @@ const Style = {
     gap: 10px;
   `,
   SaveButton: styled.button`
-    display: flex;
-    justify-content: flex-end;
     font-size: 12px;
+    width: 80px;
     color: #808080;
     text-decoration: underline;
   `,
