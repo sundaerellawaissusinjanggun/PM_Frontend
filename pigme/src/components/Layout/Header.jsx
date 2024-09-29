@@ -58,8 +58,9 @@ export default function Header({
             <MenuItem onClick={() => navigate('/profile')}>
               나의 프로필
             </MenuItem>
+ 
             <MenuItem onClick={() => navigate('/friend')}>친구 추가</MenuItem>
-            <MenuItem>나의 즐겨찾기</MenuItem>
+            <MenuItem onClick={() => navigate('/like')}>나의 즐겨찾기</MenuItem>
             <MenuItem onClick={() => navigate('/myBank')}>나의 저금통</MenuItem>
           </DropDown>
         </>
@@ -93,6 +94,7 @@ const MenuButton = styled(Img.AngledIcon)`
   }
 `;
 
+
 const DropDown = styled.ul`
   padding: 19px;
   border: 1px solid #e7e7e7;
@@ -120,6 +122,6 @@ const MenuItem = styled.li`
   }
 
   &:hover {
-    color: #da9b9b;
+    color: #ffa7a6;
   }
 `;

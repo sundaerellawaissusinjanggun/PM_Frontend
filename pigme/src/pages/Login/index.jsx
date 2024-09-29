@@ -13,6 +13,7 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import styled from '@emotion/styled';
 import Pig from '/colors/pig.svg';
 import LogoText from '/public/logo.svg';
+import GoogleLogin from '/google-login.svg';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -122,7 +123,7 @@ export default function Login() {
       </Style.LogoWrapper>
       <Style.Footer>
         <Style.LoginButton onClick={handleGoogleSignIn}>
-          구글 로그인 하기
+          <img src={GoogleLogin} />
         </Style.LoginButton>
         <Style.CopyRight>
           Copyright ⓒ 2024. 순대렐라와이쑤신장군. All rights reserved.
