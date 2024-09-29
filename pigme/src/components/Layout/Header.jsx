@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-import { Text, Img } from '../../styles/UI';
+import { Text, Img, Block } from '../../styles/UI';
 
 export default function Header({
   showHomeIcon,
@@ -14,8 +14,13 @@ export default function Header({
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
+    setIsOpen(true);
   };
+
+  const closeMenu = () => {
+    setIsOpen(false);
+  };
+
   return (
     <>
       {showBackIcon && (
@@ -32,16 +37,27 @@ export default function Header({
       )}
       {showMyPageIcon && (
         <>
-          <MenuButton
-            width="30px"
-            src="/profile.svg"
+          <Block.FlexBox
+            justifyContent="flex-end"
+            height="20px"
+            margin="0 0 50px 0"
+          >
+            <MenuButtonWrapper
+              onMouseOver={toggleMenu}
+              onMouseLeave={closeMenu}
+            >
+              <MenuButton width="30px" src="/profile.svg" />
+            </MenuButtonWrapper>
+          </Block.FlexBox>
+          <DropDown
+            isVisible={isOpen}
+            onMouseLeave={closeMenu}
             onMouseOver={toggleMenu}
-          />
-          <DropDown isVisible={isOpen}>
+          >
             <MenuItem onClick={() => navigate('/profile')}>
               나의 프로필
             </MenuItem>
-            <MenuItem onClick={() => navigate('/friend')}>나의 친구</MenuItem>
+            <MenuItem onClick={() => navigate('/friend')}>친구 추가</MenuItem>
             <MenuItem>나의 즐겨찾기</MenuItem>
             <MenuItem>나의 저금통</MenuItem>
           </DropDown>
@@ -56,28 +72,35 @@ export default function Header({
   );
 }
 
+const MenuButtonWrapper = styled.div`
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`;
+
 const MenuButton = styled(Img.AngledIcon)`
   color: #838383;
   font-size: 12px;
   list-style-type: none;
-  padding: 0 0 10px;
+  padding: 0 0 30px 0;
   &:last-child {
     padding: 0;
   }
-
-  &:hover {
-    background-color: #f0f0f0;
-  }
 `;
+
 const DropDown = styled.ul`
-  margin: 45px 0 0;
   padding: 19px;
   border: 1px solid #e7e7e7;
   border-radius: 14px;
   position: absolute;
   flex-direction: column;
-  display: ${({ isVisible }) =>
-    isVisible ? 'block' : 'none'}; /* 상태에 따른 가시성 제어 */
+  background-color: white;
+  top: 30px;
+
+  display: ${({ isVisible }) => (isVisible ? 'block' : 'none')};
 `;
 
 const MenuItem = styled.li`
@@ -85,12 +108,16 @@ const MenuItem = styled.li`
   font-size: 12px;
   list-style-type: none;
   padding: 0 0 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &:last-child {
     padding: 0;
   }
 
   &:hover {
-    background-color: #f0f0f0;
+    color: #da9b9b;
   }
 `;

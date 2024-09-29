@@ -1,6 +1,9 @@
 import BasicModal from './BasicModal';
 import { Block, Button, Text } from '../../styles/UI';
 import styled from '@emotion/styled';
+import ProfileAvatar from '../Layout/ProfileAvatar';
+import { useRecoilState } from 'recoil';
+import { userState } from '../../recoil/atoms';
 
 export default function BankModal({
   isOpen,
@@ -12,6 +15,7 @@ export default function BankModal({
   nickname,
   imageSrc,
 }) {
+  const [userData, setUserData] = useRecoilState(userState);
   return (
     <BasicModal
       isOpen={isOpen}
@@ -26,11 +30,24 @@ export default function BankModal({
           <Text.ModalTitle>{nickname}</Text.ModalTitle>
           <Text.ModalTitle2>님의 저금통</Text.ModalTitle2>
         </Block.FlexBox>
-        {imageSrc && <img src={imageSrc} alt="모달 이미지" />}
-        <Text.ModalText style={{ whiteSpace: 'pre-line', textAlign: 'center' }}>
-          {message}
-        </Text.ModalText>
-        <Block.FlexBox padding="20px" height="220px">
+        <ProfileAvatar
+          color={userData.avatar.color.image}
+          item={userData.avatar.item.image}
+        />
+        <Block.FlexBox justifyContent="center" margin="70px 0 0 0 ">
+          <Text.ModalText
+            style={{ whiteSpace: 'pre-line', textAlign: 'center' }}
+          >
+            {message}
+          </Text.ModalText>
+        </Block.FlexBox>
+        <Block.FlexBox
+          width="90%"
+          border="1px solid #e7e7e7"
+          borderRadius="20px"
+          padding="20px"
+          height="260px"
+        >
           메시지 랜덤으로 보이는 곳
         </Block.FlexBox>
         <Block.FlexBox justifyContent="space-evenly">
