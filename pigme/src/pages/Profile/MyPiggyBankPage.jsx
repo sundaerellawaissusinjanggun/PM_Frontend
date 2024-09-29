@@ -11,9 +11,12 @@ import useModal from '../../components/Hooks/useModal';
 
 import { useNavigate } from 'react-router-dom';
 import WarningModal from '../../components/Modal/WarningModal';
+import { useRecoilState } from 'recoil';
+import { userState } from '../../recoil/atoms';
 
 export default function MyPiggyBankPage() {
   const [messages, setMessages] = useState([]);
+  const [userData, setUserData] = useRecoilState(userState);
 
   // 메시지를 추가하는 함수
   const addMessage = (messageText) => {
@@ -46,7 +49,10 @@ export default function MyPiggyBankPage() {
           <Header />
         </HeaderWrapper>
         <AvatarWrapper>
-          <ProfileAvatar />
+          <ProfileAvatar
+            color={userData.avatar.color.image}
+            item={userData.avatar.item.image}
+          />
         </AvatarWrapper>
         <Block.AbsoluteBox bottom="0">
           <Background>
