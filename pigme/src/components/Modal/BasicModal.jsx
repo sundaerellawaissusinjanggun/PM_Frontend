@@ -62,7 +62,7 @@ export default function BasicModal({
               padding="0 20px 0 0"
               justifyContent="flex-end"
             >
-              <Img.AngledIcon width="20px" src="/cancel.svg" />
+              <Img.AngledIcon pointer width="20px" src="/cancel.svg" />
             </Block.FlexBox>
           )}
 

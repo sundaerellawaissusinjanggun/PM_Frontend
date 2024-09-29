@@ -4,7 +4,7 @@ import CustomizePage from './pages/Login/CustomizePage';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import Home from './pages/Home';
-// import Profile from './pages/Profile';
+import Profile from './pages/Profile';
 import ProfileSetupPage from './pages/Login/ProfileSetupPage';
 // import MyPiggyBankPage from './pages/Profile/MyPiggyBankPage';
 import MessageInputPage from './pages/Message/MessageInputPage';
@@ -13,6 +13,7 @@ import MessageShowPage from './pages/Message/MessageShowPage';
 import MyMessageShowPage from './pages/Message/MyMessageShowPage';
 import FollowPage from './pages/Friend/FollowPage';
 import FollowListPage from './pages/Friend/FollowListPage';
+import MyPiggyBankPage from './pages/Profile/MyPiggyBankPage';
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -30,18 +31,18 @@ export const router = createBrowserRouter([
         path: '/custom',
         element: <CustomizePage />,
       },
-      // {
-      //   path: '/profile',
-      //   element: <Profile />,
-      // },
+      {
+        path: '/profile',
+        element: <Profile />,
+      },
       {
         path: '/profileSetup',
         element: <ProfileSetupPage />,
       },
-      // {
-      //   path: '/myBank',
-      //   element: <MyPiggyBankPage />,
-      // },
+      {
+        path: '/myBank',
+        element: <MyPiggyBankPage />,
+      },
       {
         path: '/like',
         element: <LikedMessagesPage />,
