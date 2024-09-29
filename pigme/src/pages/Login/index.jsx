@@ -149,10 +149,27 @@ const Style = {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     width: 100%;
+    height: 150px;
   `,
-  LoginButton: styled.button`
-    padding: 0 0 30px;
+  LoginButton: styled.div`
+    width: 300px;
+    height: 50px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 30px;
+    background-color: white;
+    color: #808080;
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    &:hover {
+      background-color: #ff7195;
+      color: white;
+    }
   `,
   CopyRight: styled.div`
     color: #dadada;
