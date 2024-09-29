@@ -93,10 +93,6 @@ export default function Context() {
           <Style.StatsButton onClick={handelGoToMyBank}>
             현재 보유 코인 <Style.StatsCount>{coins}개</Style.StatsCount>
           </Style.StatsButton>
-          <Style.StatsButton onClick={handelGoToLike}>
-            즐겨찾는 메세지
-            <Style.StatsCount> {likedMessagesCount}개</Style.StatsCount>
-          </Style.StatsButton>
         </Style.UserStatsContainer>
       </Style.ProfileContainer>
     </Background>

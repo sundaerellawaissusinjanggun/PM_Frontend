@@ -59,7 +59,7 @@ export default function Header({
               나의 프로필
             </MenuItem>
             <MenuItem onClick={() => navigate('/friend')}>친구 추가</MenuItem>
-            <MenuItem>나의 즐겨찾기</MenuItem>
+            {/* <MenuItem>나의 즐겨찾기</MenuItem> */}
             <MenuItem onClick={() => navigate('/myBank')}>나의 저금통</MenuItem>
           </DropDown>
         </>
