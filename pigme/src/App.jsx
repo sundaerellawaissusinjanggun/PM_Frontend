@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { Outlet, useNavigate } from 'react-router-dom';
-
 import { useEffect } from 'react';
 import { auth, db } from '../src/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -27,16 +26,22 @@ export default function App() {
             email: user.email,
             introduction: userData.introduction || '',
           });
+
+          if (userData.avatar && userData.nickname) {
+            navigate('/home');
+          } else {
+            navigate('/custom');
+          }
+        } else {
+          navigate('/login');
         }
+      } else {
+        navigate('/login');
       }
     });
 
     return () => unsubscribe();
-  }, [setUser]);
-
-  useEffect(() => {
-    navigate('/login');
-  }, []);
+  }, [setUser, navigate]);
 
   return (
     <Style.FullWrapper>
