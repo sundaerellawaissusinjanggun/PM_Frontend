@@ -9,6 +9,8 @@ import Coin from '/coin.svg';
 import CoinPig from '/pig-coin.svg';
 import SadPig from '/sad-pig.svg';
 import CancleModal from '../../components/Modal/CancleModal';
+import { useRecoilState } from 'recoil';
+import { userState } from '../../recoil/atoms';
 
 export default function MessageInputPage() {
   const successModal = useModal();
@@ -17,8 +19,7 @@ export default function MessageInputPage() {
   const handleGoToMainHome = () => navigate(-1);
   const handleGoToShowMessage = () => navigate('/showMessage');
 
-  const userNickname = '닉네임';
-
+  const [userData, setUserData] = useRecoilState(userState);
   return (
     <>
       {/* 메세지 작성 완료 모달 */}
@@ -31,7 +32,7 @@ export default function MessageInputPage() {
           <MessageText>
             따뜻한 메세지가 저장된 코인이
             <br />
-            <ColoredNickname>{userNickname}</ColoredNickname>님의 저금통에
+            <ColoredNickname>{userData.nickname}</ColoredNickname>님의 저금통에
             들어갔어요!
           </MessageText>
         }
@@ -69,7 +70,7 @@ export default function MessageInputPage() {
       <Block.BackgroundWhiteBox padding="30px">
         <Block.FlexBox direction="column">
           <InlineTextWrapper>
-            <Text.Title>닉네임</Text.Title>
+            <Text.Title>{userData.nickname}</Text.Title>
             <Text.Title color="grayLight">님에게</Text.Title>
           </InlineTextWrapper>
           <Text.Title color="grayLight">따뜻한 메세지를 남겨주세요!</Text.Title>

@@ -30,6 +30,7 @@ export default function Header({
       )}
       {showHomeIcon && (
         <Img.AngledIcon
+          pointer
           width="20px"
           src="/home-button.svg"
           onClick={() => navigate('/home')}
@@ -83,6 +84,7 @@ const MenuButtonWrapper = styled.div`
 
 const MenuButton = styled(Img.AngledIcon)`
   color: #838383;
+  cursor: pointer;
   font-size: 12px;
   list-style-type: none;
   padding: 0 0 30px 0;
