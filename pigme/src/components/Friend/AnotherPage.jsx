@@ -28,6 +28,15 @@ export default function AnotherPage() {
     );
     console.log('현재 사용자의 친구 요청 목록:', userPendingRequests);
 
+    // userPendingRequests 배열이 비어 있지 않은 경우에만 접근
+    if (userPendingRequests.length > 0) {
+      userPendingRequests.forEach((request) => {
+        console.log('friendSenderId:', request.friendSenderId);
+      });
+    } else {
+      console.log('받은 친구 요청이 없습니다.');
+    }
+
     const sentRequestsCount = friendRequests.filter(
       (request) =>
         request.friendSender === userData.userId && request.status === 'pending'

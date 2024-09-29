@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   friendRequestsState,
   friendsListState,
@@ -14,11 +14,23 @@ import ProfileAvatar from '../../components/Layout/ProfileAvatar';
 export default function FollowListPage() {
   const [friendRequest, setFriendRequest] = useRecoilState(friendRequestsState);
   const [friendList, setFriendList] = useRecoilState(friendsListState);
-  const [userData] = useRecoilState(userState);
+  const userData = useRecoilValue(userState);
 
   useEffect(() => {
-    console.log('요청정보보봅' + friendList.friendReceiverId);
-  }, [friendRequest]);
+    console.log('현재 사용자의 친구 요청 목록:', friendRequest);
+
+    const userPendingRequests = friendRequest.filter(
+      (request) =>
+        request.friendReceiver === userData.userId &&
+        request.status === 'pending'
+    );
+
+    userPendingRequests.forEach((request) => {
+      console.log(
+        `보낸 사용자 ID: ${request.friendSenderId}, 닉네임: ${request.friendNickname}`
+      );
+    });
+  }, [friendRequest, userData]);
 
   const handleAccept = (friend) => {
     const senderId = friend.friendSenderId;
