@@ -6,13 +6,7 @@ import Header from '../../components/Layout/Header';
 import useModal from '../../components/Hooks/useModal';
 import { useNavigate } from 'react-router-dom';
 import BankModal from '../../components/Modal/BankModal';
-import { useRecoilState } from 'recoil';
-import {
-  friendRequestsState,
-  friendsListState,
-  userState,
-} from '../../recoil/atoms';
-import { db, auth } from '../../firebase';
+import { db } from '../../firebase';
 import {
   collection,
   query,
@@ -25,10 +19,39 @@ import {
 export default function Home() {
   const confirmModal = useModal();
   const navigate = useNavigate();
-  const [userData, setUserData] = useRecoilState(userState);
-  const [friendRequests, setFriendRequests] =
-    useRecoilState(friendRequestsState);
-  const [friendsList, setFriendsList] = useRecoilState(friendsListState);
+  const [userData, setUserData] = useState(null);
+  const [friendsList, setFriendsList] = useState([]);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const userId = JSON.parse(localStorage.getItem('user')).userId;
+
+      try {
+        const userDoc = await getDoc(doc(db, 'users', userId));
+        if (userDoc.exists()) {
+          setUserData(userDoc.data());
+        } else {
+          console.log('No such user!');
+        }
+
+        const q = query(
+          collection(db, 'friendList'),
+          where('friend', 'array-contains', userId)
+        );
+        const querySnapshot = await getDocs(q);
+
+        const friends = [];
+        querySnapshot.forEach((doc) => {
+          friends.push(doc.data());
+        });
+        setFriendsList(friends);
+      } catch (error) {
+        console.error('Error fetching user data or friends list: ', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const handleConfirm = () => {
     confirmModal.closeModal();
@@ -69,8 +92,8 @@ export default function Home() {
         {/* 친구 목록 표시 */}
         <div>
           {friendsList.length > 0 ? (
-            friendsList.map((friend) => (
-              <div key={friend.id}>
+            friendsList.map((friend, index) => (
+              <div key={index}>
                 {friend.avatar ? (
                   <>
                     <div onClick={confirmModal.openModal}>
