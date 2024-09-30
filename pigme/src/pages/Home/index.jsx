@@ -109,18 +109,19 @@ export default function Home() {
 
   return (
     <>
-      <BankModal
-        isOpen={confirmModal.isOpen}
-        setIsOpen={confirmModal.setIsOpen}
-        nickname={selectedAvatar.nickname}
-        message="사람들이 주고 간 코인을 클릭하면
-        메세지를 구경할 수 있어요!"
-        confirmText="나도 저금할래!"
-        cancelText="취소"
-        onConfirm={handleConfirm}
-        onCancel={handleCancel}
-        imageSrc={selectedAvatar.avatar}
-      />
+      {selectedAvatar && (
+        <BankModal
+          isOpen={confirmModal.isOpen}
+          setIsOpen={confirmModal.setIsOpen}
+          nickname={selectedAvatar.nickname}
+          message="사람들이 주고 간 코인을 클릭하면 메세지를 구경할 수 있어요!"
+          confirmText="나도 저금할래!"
+          cancelText="취소"
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+          imageSrc={selectedAvatar.avatar}
+        />
+      )}
       <HomeWrapper>
         <Block.HeaderBox width="100%" justifyContent="flex-end">
           <Header showMyPageIcon={true} />
