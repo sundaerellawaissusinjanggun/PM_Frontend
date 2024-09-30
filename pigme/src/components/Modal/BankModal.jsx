@@ -35,8 +35,8 @@ export default function BankModal({
           <Text.ModalTitle2>님의 저금통</Text.ModalTitle2>
         </Block.FlexBox>
         <ProfileAvatar
-          color={userData.avatar.color.image}
-          item={userData.avatar.item.image}
+          color={imageSrc.color.image}
+          item={imageSrc.item.image}
         />
         <Block.FlexBox justifyContent="center" margin="70px 0 0 0 ">
           <Text.ModalText

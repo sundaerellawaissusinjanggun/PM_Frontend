@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled from '@emotion/styled';
 import Fence from '/fence.svg';
 import { Block } from '../../styles/UI';
@@ -23,6 +23,8 @@ export default function Home() {
   const [userData, setUserData] = useState(null);
   const [friendsList, setFriendsList] = useState([]);
   const [friendDetails, setFriendDetails] = useState([]);
+  const [selectedAvatar, setSelectedAvatar] = useState(null);
+  const containerRef = useRef(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -55,17 +57,15 @@ export default function Home() {
         });
         setFriendsList(friends);
 
-        // Firebase에서 사용자 정보를 가져오는 부분
-        const friendDetailsArray = []; // 친구 세부 정보를 저장할 배열
+        const friendDetailsArray = [];
         for (const friendObj of friends) {
-          const friendId = friendObj.friend[0]; // 첫 번째 친구 ID 저장
+          const friendId = friendObj.friend[0];
           console.log(`Fetching user data for friendId: ${friendId}`);
 
           try {
-            // Firebase에서 해당 사용자 정보 가져오기
             const userDoc = await getDoc(doc(db, 'users', friendId));
             if (userDoc.exists()) {
-              const friendDetail = { id: friendId, ...userDoc.data() }; // ID 포함
+              const friendDetail = { id: friendId, ...userDoc.data() };
               friendDetailsArray.push(friendDetail);
               console.log('User data found:', friendDetail);
             } else {
@@ -98,6 +98,11 @@ export default function Home() {
     confirmModal.closeModal();
   };
 
+  const handleAvatarClick = (friendDetail) => {
+    setSelectedAvatar(friendDetail);
+    confirmModal.openModal();
+  };
+
   if (!userData || !userData.avatar) {
     return <LoadingScreen>Loading...</LoadingScreen>;
   }
@@ -107,14 +112,14 @@ export default function Home() {
       <BankModal
         isOpen={confirmModal.isOpen}
         setIsOpen={confirmModal.setIsOpen}
-        nickname={userData.nickname}
-        message="사람들이 주고 간 코인을 클릭하면 
+        nickname={selectedAvatar.nickname}
+        message="사람들이 주고 간 코인을 클릭하면
         메세지를 구경할 수 있어요!"
         confirmText="나도 저금할래!"
         cancelText="취소"
         onConfirm={handleConfirm}
         onCancel={handleCancel}
-        imageSrc="/colors/pig.svg"
+        imageSrc={selectedAvatar.avatar}
       />
       <HomeWrapper>
         <Block.HeaderBox width="100%" justifyContent="flex-end">
@@ -126,7 +131,7 @@ export default function Home() {
         </Block.AbsoluteBox>
 
         {/* 친구 목록 표시 */}
-        <div>
+        <FriendContainer ref={containerRef}>
           {friendsList.length > 0 ? (
             friendsList.map((friend, index) => {
               const friendId = friend.friend[0];
@@ -134,32 +139,39 @@ export default function Home() {
                 (detail) => detail.id === friendId
               );
 
+              const containerWidth = containerRef.current?.offsetWidth || 0;
+              const containerHeight = containerRef.current?.offsetHeight || 0;
+
+              const randomTop = Math.random() * (containerHeight - 100);
+              const randomLeft = Math.random() * (containerWidth - 100);
+
               return (
-                <div
+                <Block.FlexBox
                   key={index}
                   style={{
                     position: 'absolute',
-                    top: `${Math.random() * 80}vh`,
-                    left: `${Math.random() * 80}vw`,
+                    top: `${randomTop}px`,
+                    left: `${randomLeft}px`,
+                    cursor: 'pointer',
                   }}
                 >
                   {friendDetail && friendDetail.avatar ? (
-                    <>
+                    <div onClick={() => handleAvatarClick(friendDetail)}>
                       <ProfileAvatar
                         color={friendDetail.avatar.color.image}
                         item={friendDetail.avatar.item.image}
                       />
-                    </>
+                    </div>
                   ) : (
                     <div>아바타 정보가 없습니다.</div>
                   )}
-                </div>
+                </Block.FlexBox>
               );
             })
           ) : (
             <div>친구가 없습니다.</div>
           )}
-        </div>
+        </FriendContainer>
       </HomeWrapper>
     </>
   );
@@ -191,4 +203,10 @@ const LoadingScreen = styled.div`
   height: 100vh;
   font-size: 24px;
   color: #ff7195;
+`;
+
+const FriendContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 600px;
 `;
