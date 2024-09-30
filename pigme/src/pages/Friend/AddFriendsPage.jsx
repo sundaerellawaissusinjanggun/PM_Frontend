@@ -3,7 +3,7 @@ import { Block, Input, Button, Img, Text } from '../../styles/UI';
 import Header from '../../components/Layout/Header';
 import ConfirmModal from '../../components/Modal/ConfirmModal';
 import useModal from '../../components/Hooks/useModal';
-import AnotherPage from '../../components/Friend/CountFriends';
+import CountFriends from '../../components/Friend/CountFriends';
 import styled from '@emotion/styled';
 import { auth, db } from '../../firebase';
 import {
@@ -17,11 +17,13 @@ import {
 } from 'firebase/firestore';
 import { useRecoilState } from 'recoil';
 import { userState, friendRequestsState } from '../../recoil/atoms';
+import { useNavigate } from 'react-router';
 
 export default function AddFriendsPage() {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState(false);
   const confirmModal = useModal();
+  const navigate = useNavigate();
 
   const [userData, setUserState] = useRecoilState(userState);
 
@@ -168,9 +170,10 @@ export default function AddFriendsPage() {
 
       <Block.BackgroundWhiteBox height="758px">
         <Block.ColumnFlexBox height="95%" justifyContent="space-evenly">
-          <FriendCount>
-            <AnotherPage />
-          </FriendCount>
+          {/* <FriendCount>
+           
+          </FriendCount> */}
+
           <Block.ColumnFlexBox gap="20px">
             <Img.AngledIcon width="120px" src="/friends-pig.svg" />
 
@@ -210,6 +213,14 @@ export default function AddFriendsPage() {
             >
               <Text.Body2 color="white">나랑 친구하자!</Text.Body2>
             </Button.SubmitBtn>
+            <Text.LinkText
+              pointer
+              onClick={() => {
+                navigate('/friendList');
+              }}
+            >
+              친구 요청 보러가기
+            </Text.LinkText>
           </Block.ColumnFlexBox>
         </Block.ColumnFlexBox>
       </Block.BackgroundWhiteBox>
@@ -217,9 +228,10 @@ export default function AddFriendsPage() {
   );
 }
 
-const FriendCount = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 30px;
-`;
+// const FriendCount = styled.div`
+//   position: absolute;
+//   top: 0;
+//   right: 0;
+//   padding: 30px 30px 0 0;
+//   cursor: pointer;
+// `;

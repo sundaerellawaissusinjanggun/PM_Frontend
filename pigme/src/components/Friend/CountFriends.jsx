@@ -5,7 +5,7 @@ import { Block, Text } from '../../styles/UI';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router';
 
-export default function CountFriends() {
+export default function CountFriends({ requestCount }) {
   const userData = useRecoilValue(userState);
   const friendRequests = useRecoilValue(friendRequestsState);
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ export default function CountFriends() {
   return (
     <AnotherWrapper onClick={() => navigate('/friendList')}>
       <Text.Body1 pointer color="black" weight="bold">
-        {pendingFriends.length}개
+        {requestCount}개
       </Text.Body1>
       <Text.Body1 pointer weight="bold">
         의 친구 요청
