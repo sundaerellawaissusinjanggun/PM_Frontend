@@ -135,7 +135,14 @@ export default function Home() {
               );
 
               return (
-                <div key={index}>
+                <div
+                  key={index}
+                  style={{
+                    position: 'absolute',
+                    top: `${Math.random() * 80}vh`,
+                    left: `${Math.random() * 80}vw`,
+                  }}
+                >
                   {friendDetail && friendDetail.avatar ? (
                     <>
                       <ProfileAvatar

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 
 export default function ProfileAvatar({
@@ -10,9 +10,11 @@ export default function ProfileAvatar({
   return (
     <Wrapper>
       {selectedColor && <ItemImg src={selectedColor.image} alt="Color" />}
-      {selectedItem && <ItemImg src={selectedItem.image} alt="Item" />}
+      {selectedItem && selectedItem.image !== '/items/none.svg' && (
+        <ItemImg src={selectedItem.image} alt="Item" />
+      )}
       {color && <ItemImg src={color} alt="Color" />}
-      {item && <ItemImg src={item} alt="Item" />}
+      {item && item !== '/items/none.svg' && <ItemImg src={item} alt="Item" />}
     </Wrapper>
   );
 }
