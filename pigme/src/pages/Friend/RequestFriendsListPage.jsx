@@ -178,7 +178,7 @@ export default function RequestFriendsListPage() {
                   padding="20px 0 "
                   borderBottom="2px solid #E7E7E7"
                 >
-                  <Block.FlexBox gap="10px">
+                  <Block.FlexBox>
                     {/* 친구의 프로필 사진 */}
                     <ProfileAvatar />
                     <Block.FlexBox>

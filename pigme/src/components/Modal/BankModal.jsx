@@ -69,10 +69,12 @@ export default function BankModal({
           <Text.ModalTitle>{nickname}</Text.ModalTitle>
           <Text.ModalTitle2>님의 저금통</Text.ModalTitle2>
         </Block.FlexBox>
-        <ProfileAvatar
-          color={imageSrc.color.image}
-          item={imageSrc.item.image}
-        />
+        <AvatarWrapper>
+          <ProfileAvatar
+            color={imageSrc.color.image}
+            item={imageSrc.item.image}
+          />
+        </AvatarWrapper>
         <Block.FlexBox justifyContent="center" margin="70px 0 0 0 ">
           <Text.ModalText
             style={{ whiteSpace: 'pre-line', textAlign: 'center' }}
@@ -134,4 +136,7 @@ const LoadingScreen = styled.div`
   height: 100vh;
   font-size: 24px;
   color: #ff7195;
+`;
+const AvatarWrapper = styled.div`
+  margin-top: 45px;
 `;
