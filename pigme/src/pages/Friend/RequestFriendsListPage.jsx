@@ -23,7 +23,8 @@ export default function RequestFriendsListPage() {
   const [pendingFriends, setPendingFriends] = useState([]);
 
   useEffect(() => {
-    const userId = JSON.parse(localStorage.getItem('user')).userId;
+    const userId = JSON.parse(localStorage.getItem('user')).uid;
+
     getFriendRequestsForUser(userId).then(async (requests) => {
       const pendingRequests = requests.filter(
         (request) => request.status === 'pending'
@@ -39,7 +40,6 @@ export default function RequestFriendsListPage() {
       setPendingFriends(requestsWithSenderInfo);
     });
   }, []);
-
   // 친구신청한 사용자 정보 가져오기
   async function getRequestUserInfo(userId) {
     const usersRef = collection(db, 'users');
@@ -62,10 +62,12 @@ export default function RequestFriendsListPage() {
   async function getFriendRequestsForUser(userId) {
     const friendRequestsRef = collection(db, 'friendRequests');
     const q = query(friendRequestsRef, where('friendReceiverId', '==', userId));
+    console.log('me', userId);
 
     try {
       const querySnapshot = await getDocs(q);
       const friendRequests = [];
+
       querySnapshot.forEach((doc) => {
         friendRequests.push({
           id: doc.id,
@@ -75,7 +77,7 @@ export default function RequestFriendsListPage() {
 
       return friendRequests;
     } catch (error) {
-      console.error('친구신청 API 호출 도중 에러 발생 ', error);
+      console.error('친구신청 API 호출 도중 에러 발생: ', error.message); // 에러 메시지 출력
       return [];
     }
   }

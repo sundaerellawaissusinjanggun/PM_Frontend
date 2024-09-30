@@ -36,7 +36,7 @@ export default function Login() {
       const userDoc = await getDoc(doc(db, 'users', uid));
       if (!userDoc.exists()) {
         const newUserInfo = {
-          userId: uid,
+          uid,
           avatar: {
             color: { image: '', x: 0, y: 0 },
             item: { image: '', x: 0, y: 0 },
@@ -68,9 +68,7 @@ export default function Login() {
       const unsubscribe = onAuthStateChanged(auth, async (user) => {
         if (user) {
           // 유저의 uid 콘솔에 찍기
-          console.log('로그인된 유저:', user.uid);
           localStorage.setItem('user', JSON.stringify(user));
-
           const userDoc = await getDoc(doc(db, 'users', user.uid));
 
           if (!userDoc.exists()) {
