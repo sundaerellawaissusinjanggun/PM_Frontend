@@ -15,16 +15,25 @@ import {
   getDoc,
   doc,
 } from 'firebase/firestore';
+import ProfileAvatar from '../../components/Layout/ProfileAvatar';
 
 export default function Home() {
   const confirmModal = useModal();
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
   const [friendsList, setFriendsList] = useState([]);
+  const [friendDetails, setFriendDetails] = useState([]);
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const userId = JSON.parse(localStorage.getItem('user')).userId;
+      const storedUser = JSON.parse(localStorage.getItem('user'));
+      const userId = storedUser?.userId;
+      console.log('userID', userId);
+
+      if (!userId) {
+        console.error('No userId found');
+        return;
+      }
 
       try {
         const userDoc = await getDoc(doc(db, 'users', userId));
@@ -45,6 +54,33 @@ export default function Home() {
           friends.push(doc.data());
         });
         setFriendsList(friends);
+
+        // Firebase에서 사용자 정보를 가져오는 부분
+        const friendDetailsArray = []; // 친구 세부 정보를 저장할 배열
+        for (const friendObj of friends) {
+          const friendId = friendObj.friend[0]; // 첫 번째 친구 ID 저장
+          console.log(`Fetching user data for friendId: ${friendId}`);
+
+          try {
+            // Firebase에서 해당 사용자 정보 가져오기
+            const userDoc = await getDoc(doc(db, 'users', friendId));
+            if (userDoc.exists()) {
+              const friendDetail = { id: friendId, ...userDoc.data() }; // ID 포함
+              friendDetailsArray.push(friendDetail);
+              console.log('User data found:', friendDetail);
+            } else {
+              console.log('No user data found for friendId:', friendId);
+            }
+          } catch (error) {
+            console.error(
+              `Error fetching user data for friendId ${friendId}:`,
+              error
+            );
+          }
+        }
+
+        setFriendDetails(friendDetailsArray);
+        console.log('Friend Details:', friendDetailsArray);
       } catch (error) {
         console.error('Error fetching user data or friends list: ', error);
       }
@@ -92,23 +128,27 @@ export default function Home() {
         {/* 친구 목록 표시 */}
         <div>
           {friendsList.length > 0 ? (
-            friendsList.map((friend, index) => (
-              <div key={index}>
-                {friend.avatar ? (
-                  <>
-                    <div onClick={confirmModal.openModal}>
-                      아바타 색상: {friend.avatar.color}
-                    </div>
-                    <img
-                      src={friend.avatar.url}
-                      alt={`${friend.avatar.color} 친구 아바타`}
-                    />
-                  </>
-                ) : (
-                  <div>아바타 정보가 없습니다.</div>
-                )}
-              </div>
-            ))
+            friendsList.map((friend, index) => {
+              const friendId = friend.friend[0];
+              const friendDetail = friendDetails.find(
+                (detail) => detail.id === friendId
+              );
+
+              return (
+                <div key={index}>
+                  {friendDetail && friendDetail.avatar ? (
+                    <>
+                      <ProfileAvatar
+                        color={friendDetail.avatar.color.image}
+                        item={friendDetail.avatar.item.image}
+                      />
+                    </>
+                  ) : (
+                    <div>아바타 정보가 없습니다.</div>
+                  )}
+                </div>
+              );
+            })
           ) : (
             <div>친구가 없습니다.</div>
           )}
