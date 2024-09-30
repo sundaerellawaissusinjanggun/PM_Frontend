@@ -8,9 +8,9 @@ import Coin from '/coin.svg';
 import CoinPig from '/pig-coin.svg';
 import SadPig from '/sad-pig.svg';
 import CancleModal from '../../components/Modal/CancleModal';
-import { useRecoilState } from 'recoil';
-import { userState } from '../../recoil/atoms';
 import { useState } from 'react'; // Import useState
+import { addDoc, collection } from 'firebase/firestore';
+import { db } from '../../firebase';
 
 export default function WriteMessagePage() {
   const successModal = useModal();
@@ -35,6 +35,27 @@ export default function WriteMessagePage() {
         message, // Pass the message content here
       },
     });
+  };
+
+  const handleSaveMessage = async () => {
+    try {
+      // Firestore의 컬렉션에 메시지 저장
+      const docRef = await addDoc(collection(db, 'messages'), {
+        senderId: userData.uid, // 메세지 작성자 ID
+        senderNickname: userData.nickname, // 메세지 작성자 닉네임
+        // receiverId: friendId, // 메세지 받는 사람 ID
+        receiverNickname: friendNickname, // 메세지 받는 사람 닉네임
+        message: message, // 작성한 메세지
+        timestamp: new Date(), // 메시지 작성 시간
+      });
+
+      console.log('메세지 저장 성공: ', docRef.id);
+
+      // 메시지 저장 후 성공 모달 열기
+      successModal.openModal();
+    } catch (e) {
+      console.error('메세지 저장 실패: ', e);
+    }
   };
 
   return (
@@ -107,7 +128,7 @@ export default function WriteMessagePage() {
             <Button.SubmitBtn
               height="50px"
               bgColor="grayLight"
-              onClick={successModal.openModal}
+              onClick={handleSaveMessage}
             >
               작성완료
             </Button.SubmitBtn>
