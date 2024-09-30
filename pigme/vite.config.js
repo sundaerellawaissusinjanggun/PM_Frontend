@@ -7,4 +7,15 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['js-big-decimal'],
   },
+  base: '/',
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      },
+    },
+  },
+  server: {
+    historyApiFallback: true, // 클라이언트 라우팅 지원
+  },
 });

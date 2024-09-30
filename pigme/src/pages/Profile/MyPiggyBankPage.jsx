@@ -52,10 +52,10 @@ export default function MyPiggyBankPage() {
   }, []);
 
   const handleCoinClick = () => {
-    if (messages.length <= 2) {
+    if (messages.length == -1) {
       warningModal.openModal();
     } else {
-      console.log('You have enough messages!');
+      navigate('/readMessage', { state: { messageData: messages[0] } });
     }
   };
 
