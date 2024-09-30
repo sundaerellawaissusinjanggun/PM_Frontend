@@ -63,7 +63,7 @@ export default function WriteMessagePage() {
       console.log('메세지 저장 성공: ', docRef.id);
       // 저장한 메시지 데이터 콘솔에 출력
       console.log('저장된 메시지 데이터: ', {
-        senderId: userData.uid,
+        senderId: auth.currentUser.uid,
         senderNickname: userData.nickname,
         receiverId: friendId,
         receiverNickname: friendNickname,

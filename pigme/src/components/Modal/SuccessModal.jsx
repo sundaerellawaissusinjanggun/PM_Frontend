@@ -33,7 +33,6 @@ export default function SuccessModal({
             textAlign: 'center',
             padding: '0 25px',
             color: '#BDBDBD',
-            width: '290px',
           }}
         >
           {message}
