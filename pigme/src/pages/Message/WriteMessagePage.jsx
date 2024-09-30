@@ -162,6 +162,7 @@ export default function WriteMessagePage() {
 const InlineTextWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
+  margin-bottom: 5px;
 `;
 const ColoredNickname = styled.span`
   color: black;
