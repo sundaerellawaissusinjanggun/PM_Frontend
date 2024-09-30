@@ -10,6 +10,7 @@ import SadPig from '/sad-pig.svg';
 import CancleModal from '../../components/Modal/CancleModal';
 import { useRecoilState } from 'recoil';
 import { userState } from '../../recoil/atoms';
+import { useState } from 'react'; // Import useState
 
 export default function WriteMessagePage() {
   const successModal = useModal();
@@ -19,8 +20,22 @@ export default function WriteMessagePage() {
 
   const { userData, selectedAvatar, friendNickname } = location.state || {};
 
+  // State for message input
+  const [message, setMessage] = useState('');
+
   const handleGoToMainHome = () => navigate(-1);
-  const handleGoToShowMessage = () => navigate('/showMessage');
+
+  const handleGoToShowMessage = () => {
+    // Pass the message data along with other data
+    navigate('/showMessage', {
+      state: {
+        userData,
+        selectedAvatar,
+        friendNickname,
+        message, // Pass the message content here
+      },
+    });
+  };
 
   return (
     <>
@@ -40,7 +55,7 @@ export default function WriteMessagePage() {
         cancelText={'메인으로'}
         confirmText={'내용확인하기'}
         onCancle={handleGoToMainHome}
-        onConfirm={handleGoToShowMessage}
+        onConfirm={handleGoToShowMessage} // Use updated function
       />
 
       <CancleModal
@@ -78,6 +93,8 @@ export default function WriteMessagePage() {
             margin="40px 0"
             placeholder="내용을 작성해주세요."
             fontSize="large"
+            value={message} // Bind the state
+            onChange={(e) => setMessage(e.target.value)} // Update state on change
           ></Input.TextAreaInput>
           <Block.FlexBox direction="row" gap="27px" fontSize="medium">
             <Button.SubmitBtn
