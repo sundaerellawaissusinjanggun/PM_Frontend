@@ -84,8 +84,8 @@ export default function MyPiggyBankPage() {
         <AvatarWrapper>
           {userData?.avatar && (
             <ProfileAvatar
-              color={userData.avatar.color.image}
-              item={userData.avatar.item.image}
+              myPiggyBankColor={userData.avatar.color.image}
+              myPiggyBankItem={userData.avatar.item.image}
             />
           )}
         </AvatarWrapper>
