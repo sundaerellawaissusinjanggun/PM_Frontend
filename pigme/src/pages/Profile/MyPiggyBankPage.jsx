@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { Block, Img } from '../../styles/UI';
+import { Block, Img, Text } from '../../styles/UI';
 import Background from '../../components/Layout/Background';
 import Header from '../../components/Layout/Header';
 import ProfileAvatar from '../../components/Layout/ProfileAvatar';
@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import WarningModal from '../../components/Modal/WarningModal';
 import { useRecoilState } from 'recoil';
 import { userState } from '../../recoil/atoms';
-import { doc, getDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase';
 
 export default function MyPiggyBankPage() {
@@ -24,7 +24,7 @@ export default function MyPiggyBankPage() {
   const handleGoToMainHome = () => navigate('/home');
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchMessages = async () => {
       const storedUser = JSON.parse(localStorage.getItem('user'));
       const userId = storedUser?.uid;
 
@@ -34,21 +34,23 @@ export default function MyPiggyBankPage() {
       }
 
       try {
-        const userDoc = await getDoc(doc(db, 'users', userId));
-        if (userDoc.exists()) {
-          setUserData(userDoc.data());
-        } else {
-          console.log('No such user!');
-        }
-      } catch (error) {
-        console.error(
-          `Error fetching user data for friendId ${userId}:`,
-          error
+        // receiverId가 현재 사용자 ID인 메시지들을 가져오는 쿼리
+        const q = query(
+          collection(db, 'messages'),
+          where('receiverId', '==', userId) // receiverId 필터
         );
+        const querySnapshot = await getDocs(q);
+        const messagesArray = [];
+        querySnapshot.forEach((doc) => {
+          messagesArray.push({ id: doc.id, ...doc.data() });
+        });
+        setMessages(messagesArray); // 메시지 상태 업데이트
+      } catch (error) {
+        console.error('Error fetching messages:', error);
       }
     };
 
-    fetchUserData();
+    fetchMessages(); // 컴포넌트가 마운트될 때 메시지 불러오기
   }, []);
 
   const handleCoinClick = () => {
@@ -58,6 +60,8 @@ export default function MyPiggyBankPage() {
       navigate('/readMessage', { state: { messageData: messages[0] } });
     }
   };
+
+  console.log(messages.length);
 
   return (
     <>
@@ -76,10 +80,12 @@ export default function MyPiggyBankPage() {
           <Header showHomeIcon={true} />
         </Block.HeaderBox>
         <AvatarWrapper>
-          <ProfileAvatar
-            color={userData.avatar.color.image}
-            item={userData.avatar.item.image}
-          />
+          {userData?.avatar && (
+            <ProfileAvatar
+              color={userData.avatar.color.image}
+              item={userData.avatar.item.image}
+            />
+          )}
         </AvatarWrapper>
         <Block.AbsoluteBox bottom="0">
           <Background>
@@ -93,11 +99,17 @@ export default function MyPiggyBankPage() {
               </StatsDisplay>
             </UserStatsContainer>
 
-            <Img.RoundIcon
-              width="50px"
-              src="/coin.svg"
-              onClick={handleCoinClick} // 코인 클릭 시 함수 호출
-            />
+            {messages.length > 0 ? (
+              <Img.RoundIcon
+                width="50px"
+                src="/coin.svg"
+                onClick={handleCoinClick} // 코인 클릭 시 함수 호출
+              />
+            ) : (
+              <Block.ColumnFlexBox height="80%" gap="5px">
+                <Text.Body2>아직 받은 메세지가 없어요!</Text.Body2>
+              </Block.ColumnFlexBox>
+            )}
           </Background>
         </Block.AbsoluteBox>
       </Wrapper>
