@@ -56,7 +56,7 @@ export default function Login() {
       } else {
         const userData = userDoc.data();
         setUser({ ...userData, userId: uid });
-        navigate('/custom');
+        navigate('/home');
       }
     } catch (error) {
       console.error('Error during Google sign-in:', error);

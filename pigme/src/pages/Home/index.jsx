@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styled from '@emotion/styled';
 import Fence from '/fence.svg';
-import { Block } from '../../styles/UI';
+import { Block, Text } from '../../styles/UI';
 import Header from '../../components/Layout/Header';
 import useModal from '../../components/Hooks/useModal';
 import { useNavigate } from 'react-router-dom';
@@ -16,6 +16,7 @@ import {
   doc,
 } from 'firebase/firestore';
 import ProfileAvatar from '../../components/Layout/ProfileAvatar';
+import Skeleton from '@mui/material/Skeleton';
 
 export default function Home() {
   const confirmModal = useModal();
@@ -168,13 +169,16 @@ export default function Home() {
                       />
                     </div>
                   ) : (
-                    <div>아바타 정보가 없습니다.</div>
+                    <Skeleton />
                   )}
                 </Block.FlexBox>
               );
             })
           ) : (
-            <div>친구가 없습니다.</div>
+            <Block.ColumnFlexBox height="100%" gap="5px">
+              <Text.Body2>아직 친구가 없네요.</Text.Body2>
+              <Text.Body2>먼저 친구 요청을 해보시는 건 어떨까요?</Text.Body2>
+            </Block.ColumnFlexBox>
           )}
         </FriendContainer>
       </HomeWrapper>

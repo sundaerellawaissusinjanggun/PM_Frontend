@@ -7,7 +7,7 @@ import ProfileAvatar from '../../components/Layout/ProfileAvatar';
 import Coin from '/coin.svg';
 import useModal from '../../components/Hooks/useModal';
 
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import WarningModal from '../../components/Modal/WarningModal';
 import { useRecoilState } from 'recoil';
 import { userState } from '../../recoil/atoms';
@@ -52,10 +52,10 @@ export default function MyPiggyBankPage() {
   }, []);
 
   const handleCoinClick = () => {
-    if (messages.length <= 2) {
+    if (messages.length == -1) {
       warningModal.openModal();
     } else {
-      console.log('You have enough messages!');
+      navigate('/readMessage', { state: { messageData: messages[0] } });
     }
   };
 
