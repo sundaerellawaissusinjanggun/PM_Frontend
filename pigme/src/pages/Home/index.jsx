@@ -36,50 +36,44 @@ export default function Home() {
         return;
       }
 
-      try {
-        const userDoc = await getDoc(doc(db, 'users', userId));
-        if (userDoc.exists()) {
-          setUserData(userDoc.data());
-        } else {
-          console.log('No such user!');
-        }
-
-        const q = query(
-          collection(db, 'friendList'),
-          where('friend', 'array-contains', userId)
-        );
-        const querySnapshot = await getDocs(q);
-
-        const friends = [];
-        querySnapshot.forEach((doc) => {
-          friends.push(doc.data());
-        });
-        setFriendsList(friends);
-
-        const friendDetailsArray = [];
-        for (const friendObj of friends) {
-          const friendId = friendObj.friend[0];
-
-          try {
-            const userDoc = await getDoc(doc(db, 'users', friendId));
-            if (userDoc.exists()) {
-              const friendDetail = { id: friendId, ...userDoc.data() };
-              friendDetailsArray.push(friendDetail);
-            } else {
-              console.log('No user data found for friendId:', friendId);
-            }
-          } catch (error) {
-            console.error(
-              `Error fetching user data for friendId ${friendId}:`,
-              error
-            );
-          }
-        }
-
-        setFriendDetails(friendDetailsArray);
-      } catch (error) {
-        console.error('Error fetching user data or friends list: ', error);
+      const userDoc = await getDoc(doc(db, 'users', userId));
+      if (userDoc.exists()) {
+        setUserData(userDoc.data());
+      } else {
+        console.log('No such user!');
       }
+
+      // const friendListRef = collection(db, 'friendList', userId); // 'friendList' 컬렉션 참조
+      const friendIdListDoc = await getDoc(doc(db, 'friendList', userId));
+
+      const friendIdList = friendIdListDoc.data().friend;
+
+      // const q = query(friendListRef, where('userId', '==', userId));
+
+      // const querySnapshot = await getDocs(q);
+      // console.log(querySnapshot);
+
+      // const friends = [];
+      // querySnapshot.forEach((doc) => {
+      //   friends.push(doc.data());
+      // });
+      // console.log(friends);
+      // setFriendsList(friends);
+
+      // const friendDetailsArray = [];
+      for (const friendId of friendIdList) {
+        // const friendId = friendObj.friend[0];
+
+        const userDoc = await getDoc(doc(db, 'users', friendId));
+        if (userDoc.exists()) {
+          const friendDetail = userDoc.data();
+          // friendDetailsArray.push(friendDetail);
+          setFriendDetails((prev) => [...prev, friendDetail]);
+        } else {
+          console.log('No user data found for friendId:', friendId);
+        }
+      }
+      // setFriendDetails(friendDetailsArray);
     };
 
     fetchUserData();
@@ -136,12 +130,9 @@ export default function Home() {
 
         {/* 친구 목록 표시 */}
         <FriendContainer ref={containerRef}>
-          {friendsList.length > 0 ? (
-            friendsList.map((friend, index) => {
-              const friendId = friend.friend[0];
-              const friendDetail = friendDetails.find(
-                (detail) => detail.id === friendId
-              );
+          {friendDetails.length > 0 ? (
+            friendDetails.map((friend, index) => {
+              const friendId = friend.userId;
 
               const containerWidth = containerRef.current?.offsetWidth || 0;
               const containerHeight = containerRef.current?.offsetHeight || 0;
@@ -159,11 +150,11 @@ export default function Home() {
                     cursor: 'pointer',
                   }}
                 >
-                  {friendDetail && friendDetail.avatar ? (
-                    <div onClick={() => handleAvatarClick(friendDetail)}>
+                  {friend && friend.avatar ? (
+                    <div onClick={() => handleAvatarClick(friend)}>
                       <ProfileAvatar
-                        color={friendDetail.avatar.color.image}
-                        item={friendDetail.avatar.item.image}
+                        color={friend.avatar.color.image}
+                        item={friend.avatar.item.image}
                       />
                     </div>
                   ) : (
