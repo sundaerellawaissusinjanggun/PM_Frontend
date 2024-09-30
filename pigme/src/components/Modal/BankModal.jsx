@@ -1,9 +1,12 @@
+import React, { useEffect, useState } from 'react';
 import BasicModal from './BasicModal';
 import { Block, Button, Text } from '../../styles/UI';
 import styled from '@emotion/styled';
 import ProfileAvatar from '../Layout/ProfileAvatar';
 import { useRecoilState } from 'recoil';
 import { userState } from '../../recoil/atoms';
+import { db } from '../../firebase'; // Ensure you have this import
+import { collection, query, where, getDocs } from 'firebase/firestore';
 
 export default function BankModal({
   isOpen,
@@ -16,6 +19,33 @@ export default function BankModal({
   imageSrc,
 }) {
   const [userData, setUserData] = useRecoilState(userState);
+  const [messages, setMessages] = useState([]);
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      if (nickname) {
+        try {
+          const q = query(
+            collection(db, 'messages'), // Replace 'messages' with your actual collection name
+            where('receiverNickname', '==', nickname) // Adjust the field name as necessary
+          );
+          const querySnapshot = await getDocs(q);
+          const messagesArray = [];
+          querySnapshot.forEach((doc) => {
+            messagesArray.push({ id: doc.id, ...doc.data() });
+          });
+          setMessages(messagesArray);
+        } catch (error) {
+          console.error('Error fetching messages:', error);
+        }
+      }
+    };
+
+    if (isOpen) {
+      fetchMessages();
+    }
+  }, [isOpen, nickname]);
+
   if (!userData || !userData.avatar) {
     return <LoadingScreen>Loading...</LoadingScreen>;
   }
@@ -29,7 +59,6 @@ export default function BankModal({
       showCloseIcon={false}
     >
       <Block.ColumnFlexBox gap="30px">
-        {/* 닉네임 부분 스타일링 */}
         <Block.FlexBox justifyContent="center">
           <Text.ModalTitle>{nickname}</Text.ModalTitle>
           <Text.ModalTitle2>님의 저금통</Text.ModalTitle2>
@@ -52,7 +81,13 @@ export default function BankModal({
           padding="20px"
           height="260px"
         >
-          메시지 랜덤으로 보이는 곳
+          {messages.length > 0 ? (
+            messages.map((msg) => (
+              <Text.ModalText key={msg.id}>{msg.content}</Text.ModalText> // Adjust 'content' to your actual message field
+            ))
+          ) : (
+            <Text.ModalText>메시지가 없습니다.</Text.ModalText>
+          )}
         </Block.FlexBox>
         <Block.FlexBox justifyContent="space-evenly">
           <Button.SubmitBtn

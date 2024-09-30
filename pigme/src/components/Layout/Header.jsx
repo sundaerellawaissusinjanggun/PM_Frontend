@@ -101,7 +101,7 @@ const DropDown = styled.ul`
   flex-direction: column;
   background-color: white;
   top: 30px;
-
+  z-index: 1;
   display: ${({ isVisible }) => (isVisible ? 'block' : 'none')};
 `;
 
