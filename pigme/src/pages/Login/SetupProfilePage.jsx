@@ -84,8 +84,8 @@ export default function SetupProfilePage() {
         justifyContent="center"
       >
         <ProfileAvatar
-          color={userData.avatar.color.image}
-          item={userData.avatar.item.image}
+          colorSetup={userData.avatar.color.image}
+          itemSetup={userData.avatar.item.image}
         />
       </Block.AbsoluteBox>
 

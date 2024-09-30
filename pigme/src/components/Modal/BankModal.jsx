@@ -61,7 +61,7 @@ export default function BankModal({
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       width="340px"
-      height="651px"
+      height="681px"
       showCloseIcon={false}
     >
       <Block.ColumnFlexBox gap="30px">
@@ -69,10 +69,12 @@ export default function BankModal({
           <Text.ModalTitle>{nickname}</Text.ModalTitle>
           <Text.ModalTitle2>님의 저금통</Text.ModalTitle2>
         </Block.FlexBox>
-        <ProfileAvatar
-          color={imageSrc.color.image}
-          item={imageSrc.item.image}
-        />
+        <div style={{ marginBottom: '40px' }}>
+          <ProfileAvatar
+            bankmodalColor={imageSrc.color.image}
+            bankmodalItem={imageSrc.item.image}
+          />
+        </div>
         <Block.FlexBox justifyContent="center" margin="70px 0 0 0 ">
           <Text.ModalText
             style={{ whiteSpace: 'pre-line', textAlign: 'center' }}

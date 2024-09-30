@@ -26,8 +26,8 @@ export default function Profile() {
         justifyContent="center"
       >
         <ProfileAvatar
-          color={userData.avatar.color.image}
-          item={userData.avatar.item.image}
+          profileSelectedColor={userData.avatar.color.image}
+          profileSelectedItem={userData.avatar.item.image}
         />
       </Block.AbsoluteBox>
       <Block.AbsoluteBox bottom="0">

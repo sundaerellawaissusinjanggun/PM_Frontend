@@ -53,11 +53,13 @@ export default function MyPiggyBankPage() {
     fetchMessages(); // 컴포넌트가 마운트될 때 메시지 불러오기
   }, []);
 
-  const handleCoinClick = () => {
-    if (messages.length == -1) {
+  const handleCoinClick = (messageId) => {
+    if (messages.length < 3) {
+      // 동전이 2개인 경우
       warningModal.openModal();
     } else {
-      navigate('/readMessage', { state: { messageData: messages[0] } });
+      const selectedMessage = messages.find((msg) => msg.id === messageId);
+      navigate('/readMessage', { state: { messageData: selectedMessage } });
     }
   };
 
@@ -82,8 +84,8 @@ export default function MyPiggyBankPage() {
         <AvatarWrapper>
           {userData?.avatar && (
             <ProfileAvatar
-              color={userData.avatar.color.image}
-              item={userData.avatar.item.image}
+              myPiggyBankColor={userData.avatar.color.image}
+              myPiggyBankItem={userData.avatar.item.image}
             />
           )}
         </AvatarWrapper>
@@ -98,13 +100,37 @@ export default function MyPiggyBankPage() {
                 현재 보유 코인 <StatsCount> {messages.length}개</StatsCount>
               </StatsDisplay>
             </UserStatsContainer>
-
             {messages.length > 0 ? (
-              <Img.RoundIcon
-                width="50px"
-                src="/coin.svg"
-                onClick={handleCoinClick} // 코인 클릭 시 함수 호출
-              />
+              <>
+                <div
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                    height: '80%',
+                  }}
+                >
+                  {messages.map((message) => {
+                    const randomX = Math.floor(Math.random() * 90);
+                    const randomY = Math.floor(Math.random() * 90);
+
+                    return (
+                      <Img.RoundIcon
+                        pointer
+                        key={message.id}
+                        width="50px"
+                        src="/coin.svg"
+                        onClick={() => handleCoinClick(message.id)}
+                        style={{
+                          position: 'absolute',
+                          zIndex: '2',
+                          left: `${randomX}%`,
+                          top: `${randomY}%`,
+                        }}
+                      />
+                    );
+                  })}
+                </div>
+              </>
             ) : (
               <Block.ColumnFlexBox height="80%" gap="5px">
                 <Text.Body2>아직 받은 메세지가 없어요!</Text.Body2>

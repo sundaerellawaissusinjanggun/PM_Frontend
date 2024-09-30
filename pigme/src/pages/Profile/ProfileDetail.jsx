@@ -25,50 +25,6 @@ export default function ProfileDetail() {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    const fetchUserData = async (userId) => {
-      try {
-        const userDoc = await getDoc(doc(db, 'users', userId));
-
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          setUserAvatar(userData.avatar);
-          setUserEmail(userData.email);
-          setNickname(userData.nickname);
-          setIntroduction(userData.introduction);
-          setCoins(userData.messages);
-
-          console.log('사용자 이메일??????:', userEmail);
-          console.log('닉네임:', nickname);
-          console.log('한 줄 소개:', introduction);
-          console.log('현재 보유 코인:', coins);
-          console.log('아바타 color ', userAvatar.color.image);
-          console.log('아바타 item ', userAvatar.item.image);
-
-          await fetchUserMessages(userId);
-        }
-      } catch (error) {
-        console.error('사용자 정보 가져오기 실패:', error);
-      }
-    };
-
-    const fetchUserMessages = async (userId) => {
-      try {
-        const messagesRef = collection(db, 'messages');
-        const q = query(messagesRef, where('userId', '==', userId));
-        const querySnapshot = await getDocs(q);
-        const userMessages = [];
-
-        querySnapshot.forEach((doc) => {
-          userMessages.push({ id: doc.id, ...doc.data() });
-        });
-
-        setMessages(userMessages);
-        console.log('사용자의 메시지:', userMessages);
-      } catch (error) {
-        console.error('메시지 데이터 가져오기 실패:', error);
-      }
-    };
-
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         fetchUserData(user.uid);
@@ -80,6 +36,43 @@ export default function ProfileDetail() {
 
     return () => unsubscribe();
   }, [navigate]);
+
+  const fetchUserData = async (userId) => {
+    try {
+      const userDoc = await getDoc(doc(db, 'users', userId));
+
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        setUserAvatar(userData.avatar);
+        setUserEmail(userData.email);
+        setNickname(userData.nickname);
+        setIntroduction(userData.introduction);
+        setCoins(userData.messages); // 코인 개수 업데이트
+
+        await fetchUserMessages(userId);
+      }
+    } catch (error) {
+      console.error('사용자 정보 가져오기 실패:', error);
+    }
+  };
+
+  const fetchUserMessages = async (userId) => {
+    try {
+      const messagesRef = collection(db, 'messages');
+      const q = query(messagesRef, where('receiverId', '==', userId));
+      const querySnapshot = await getDocs(q);
+      const userMessages = [];
+
+      querySnapshot.forEach((doc) => {
+        userMessages.push({ id: doc.id, ...doc.data() });
+      });
+
+      setMessages(userMessages);
+      console.log('사용자의 메시지:', userMessages.length);
+    } catch (error) {
+      console.error('메시지 데이터 가져오기 실패:', error);
+    }
+  };
 
   const handelGoToCustom = () => {
     navigate('/custom', {
@@ -158,8 +151,8 @@ export default function ProfileDetail() {
         </Style.UserInfo>
         <Style.UserStatsContainer>
           <Style.StatsButton onClick={handelGoToMyBank}>
-            현재 보유 코인{' '}
-            <Style.StatsCount>{messages.length}개</Style.StatsCount>
+            현재 보유 코인
+            <Style.StatsCount> {messages.length}개</Style.StatsCount>
           </Style.StatsButton>
         </Style.UserStatsContainer>
       </Style.ProfileContainer>

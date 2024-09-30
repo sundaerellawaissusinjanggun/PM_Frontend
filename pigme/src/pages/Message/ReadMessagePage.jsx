@@ -69,10 +69,13 @@ const SenderTextWrapper = styled.div`
 `;
 
 const MessageWrapper = styled(Block.FlexBox)`
-  height: 100%;
+  width: 100%;
+  height: 80%;
+  margin-top: 35px;
   display: flex;
   justify-content: center;
   align-items: center;
   color: #838383;
   font-size: 20px;
+  overflow: scroll;
 `;
