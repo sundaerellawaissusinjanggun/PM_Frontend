@@ -45,9 +45,9 @@ export default function ProfileAvatar({
         <BankPigImg src={myPiggyBankItem} alt="Item" />
       )}
 
-      {bankmodalColor && <ProfilePigImg src={bankmodalColor} alt="Color" />}
+      {bankmodalColor && <BankModalPigImg src={bankmodalColor} alt="Color" />}
       {bankmodalItem && bankmodalItem !== '/items/none.svg' && (
-        <ProfilePigImg src={bankmodalItem} alt="Item" />
+        <BankModalPigImg src={bankmodalItem} alt="Item" />
       )}
     </Wrapper>
   );
@@ -73,6 +73,12 @@ const ProfilePigImg = styled.img`
   margin-bottom: 200px;
 `;
 const BankPigImg = styled.img`
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  margin-top: 100px;
+`;
+const BankModalPigImg = styled.img`
   position: absolute;
   width: 130px;
   height: 130px;

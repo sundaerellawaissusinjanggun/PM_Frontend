@@ -115,6 +115,7 @@ export default function MyPiggyBankPage() {
 
                     return (
                       <Img.RoundIcon
+                        pointer
                         key={message.id}
                         width="50px"
                         src="/coin.svg"
