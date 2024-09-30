@@ -7,6 +7,7 @@ import {
   getAuth,
   signInWithPopup,
   signOut,
+  signInWithRedirect,
 } from 'firebase/auth';
 import { useSetRecoilState } from 'recoil';
 import { userState } from '../../recoil/atoms';
@@ -22,10 +23,16 @@ export default function Login() {
   const handleGoogleSignIn = async (e) => {
     e.preventDefault();
     const provider = new GoogleAuthProvider();
+
+    provider.setCustomParameters({
+      prompt: 'select_account', // 이 옵션을 추가해 계정 선택 창을 강제로 띄우기
+    });
+
     const auth = getAuth();
 
     try {
       const data = await signInWithPopup(auth, provider);
+      // const data = signInWithRedirect(auth, provider);
 
       const uid = data.user.uid;
 

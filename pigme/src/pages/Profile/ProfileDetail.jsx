@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import Background from '../../components/Layout/Background';
-import { db, auth } from '../../firebase';
+import { db, auth, handleLogout } from '../../firebase';
 import {
   doc,
   getDoc,
@@ -100,17 +100,6 @@ export default function ProfileDetail() {
         messages,
       },
     });
-  };
-
-  const handleLogout = async () => {
-    const auth = getAuth();
-    try {
-      await signOut(auth);
-      console.log('User signed out.');
-      localStorage.removeItem('user');
-    } catch (error) {
-      console.error('Sign out error:', error);
-    }
   };
 
   return (
