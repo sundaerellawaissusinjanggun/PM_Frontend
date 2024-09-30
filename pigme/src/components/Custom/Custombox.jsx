@@ -207,7 +207,7 @@ const CustomizationScreen = styled.div`
   align-items: center;
   justify-content: space-around;
   height: 35%;
-  margin-bottom: 370px;
+  margin-bottom: 550px;
 `;
 
 const PigDisplay = styled.div`
