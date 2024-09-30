@@ -128,10 +128,9 @@ const Wrapper = styled.div`
 const AvatarWrapper = styled.div`
   width: 100%;
   position: absolute;
-  width: '100%';
-  top: '15%';
-  padding: '0 0 0 20px';
-  justifycontent: 'center';
+  width: 100%;
+  top: 15%;
+  padding: 0 0 0 20px;
 `;
 
 const ProfileTitle = styled.p`

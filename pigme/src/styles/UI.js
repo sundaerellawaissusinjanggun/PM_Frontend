@@ -181,7 +181,7 @@ export const Block = {
     cursor: ${(props) => props.pointer && 'pointer'};
     gap: ${(props) => props.gap};
     white-space: ${(props) => props.whiteSpace};
-    border: 1px solid red;
+    /* border: 1px solid red; */
   `,
   ColumnFlexBox: styled.div`
     display: flex;
