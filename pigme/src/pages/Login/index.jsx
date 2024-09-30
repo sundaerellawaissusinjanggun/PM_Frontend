@@ -6,6 +6,7 @@ import {
   GoogleAuthProvider,
   getAuth,
   signInWithPopup,
+  signOut,
 } from 'firebase/auth';
 import { useSetRecoilState } from 'recoil';
 import { userState } from '../../recoil/atoms';
@@ -68,6 +69,7 @@ export default function Login() {
         if (user) {
           // 유저의 uid 콘솔에 찍기
           console.log('로그인된 유저:', user.uid);
+          localStorage.setItem('user', JSON.stringify(user));
 
           const userDoc = await getDoc(doc(db, 'users', user.uid));
 

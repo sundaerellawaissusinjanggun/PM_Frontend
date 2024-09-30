@@ -5,7 +5,7 @@ import Background from '../../components/Layout/Background';
 import { db, auth } from '../../firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { Block, Text } from '../../styles/UI';
-import { onAuthStateChanged } from 'firebase/auth';
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { useRecoilState } from 'recoil';
 import { userState } from '../../recoil/atoms';
 
@@ -63,9 +63,35 @@ export default function ProfileDetail() {
   const handelGoToMyBank = () => navigate('/myBank');
   const handelGoToLike = () => navigate('/like');
 
+  const handleLogout = async () => {
+    const auth = getAuth();
+    try {
+      await signOut(auth);
+      console.log('User signed out.');
+      localStorage.removeItem('user'); // 로컬 스토리지에서 사용자 데이터 삭제
+    } catch (error) {
+      console.error('Sign out error:', error);
+    }
+  };
+
   return (
     <Background>
-      <Style.ProfileTitle>나의 프로필</Style.ProfileTitle>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          borderBottom: '1px solid #bebebe',
+          padding: '0 0 20px 0',
+        }}
+      >
+        <Text.Body4>나의 프로필</Text.Body4>
+
+        <Block.FlexBox width="50px" onClick={handleLogout}>
+          <Text.Body1 color="grayLight">로그아웃</Text.Body1>
+        </Block.FlexBox>
+      </div>
+
       <Style.ProfileContainer>
         <Style.UserInfo>
           <Text.MiniTitle1>이메일</Text.MiniTitle1>
@@ -83,7 +109,7 @@ export default function ProfileDetail() {
             <Text.Body1>{introduction}</Text.Body1>
           </Style.InfoField>
 
-          <Block.FlexBox justifyContent="flex-end">
+          <Block.FlexBox justifyContent="center">
             <Style.SaveButton onClick={handelGoToCustom}>
               프로필 수정하기
             </Style.SaveButton>
@@ -107,9 +133,14 @@ const Style = {
   `,
   SaveButton: styled.button`
     font-size: 12px;
-    width: 80px;
-    color: #808080;
-    text-decoration: underline;
+    padding: 0 10px;
+    margin-top: 20px;
+    width: 30%;
+    height: 25px;
+    background-color: white;
+    border-radius: 20px;
+    color: #8c8c8c;
+    border: 1px solid #bebebe;
   `,
   UserDetails: styled.div`
     display: flex;
@@ -122,12 +153,7 @@ const Style = {
     display: flex;
     flex-direction: row;
   `,
-  ProfileTitle: styled.p`
-    padding: 16px 0;
-    font-size: 22px;
-    font-weight: bold;
-    border-bottom: 1px solid #bebebe;
-  `,
+
   ProfileImageContainer: styled.button`
     display: flex;
     align-items: center;
@@ -190,13 +216,13 @@ const Style = {
     border-radius: 10px;
   `,
   UserStatsContainer: styled.div`
-    padding: 30px 0;
+    padding: 30px 0 0 0;
+    margin: 100px 0 0 0;
     border-top: 1px solid #bebebe;
     display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
+    align-items: center;
     flex-direction: column;
-    gap: 10px;
+    /* border: 1px solid red; */
   `,
   StatsButton: styled.button`
     font-size: 14px;

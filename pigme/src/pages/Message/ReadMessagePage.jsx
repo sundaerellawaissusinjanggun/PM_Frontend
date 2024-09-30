@@ -6,47 +6,29 @@ import BackgroundCoin from '/background-coin.svg';
 import { useRecoilState } from 'recoil';
 import { userState } from '../../recoil/atoms';
 import ProfileAvatar from '../../components/Layout/ProfileAvatar';
+import { useLocation } from 'react-router';
 
 export default function ReadMessagePage() {
-  const [userData, setUserData] = useRecoilState(userState);
+  // const [userData, setUserData] = useRecoilState(userState);
+  const location = useLocation();
+  const { userData, selectedAvatar, friendNickname, message } =
+    location.state || {};
 
   return (
     <>
-      {/* 헤더 영역 */}
       <Block.HeaderBox width="100%" justifyContent="flex-end">
         <Header showHomeIcon={true} />
       </Block.HeaderBox>
 
-      {/* 돼지 영역 */}
-      <Block.AbsoluteBox
-        width="100%"
-        top="10%"
-        padding="0 0 0 20px"
-        justifyContent="center"
-      >
-        <ProfileAvatar
-          color={userData.avatar.color.image}
-          item={userData.avatar.item.image}
-        />
-        {/* ❌ 받는 사람의 image로 수정하기 */}
-      </Block.AbsoluteBox>
-
-      {/* input 영역 */}
       <BackgroundBox padding="30px">
         <Block.FlexBox direction="column" height="100%">
-          {/* 받는 사람 */}
           <ReceiverTextWrapper>
             <Text.Title color="grayLight">To.&nbsp;</Text.Title>
-            <Text.Title>받는사람</Text.Title>
-            {/* ❌ 받는 사람의 nickname으로 수정하기 */}
+            <Text.Title>{friendNickname}</Text.Title>
           </ReceiverTextWrapper>
 
-          {/* 메세지 영역 */}
-          <MessageWrapper>
-            {'senderId가 receiverId에게 남긴 content'}
-            {/* ❌ senderId가 receiverId인 메세지 보여주도록 수정하기 */}
-          </MessageWrapper>
-          {/* 보낸 사람 */}
+          <MessageWrapper>{message}</MessageWrapper>
+
           <SenderTextWrapper>
             <Text.Title color="grayLight">From.&nbsp;</Text.Title>
             <Text.Title>{userData.nickname}</Text.Title>
@@ -60,6 +42,7 @@ const BackgroundBox = styled(Block.BackgroundWhiteBox)`
   background-image: url(${BackgroundCoin});
   background-repeat: no-repeat;
   background-position: center;
+  height: 85%;
 `;
 const ReceiverTextWrapper = styled.div`
   display: flex;
@@ -75,7 +58,8 @@ const SenderTextWrapper = styled.div`
 `;
 const MessageWrapper = styled(Block.FlexBox)`
   height: 100%;
-  padding: 30px 50px;
+  display: flex;
+  justify-content: center;
   align-items: center;
   color: #838383;
   font-size: 20px;

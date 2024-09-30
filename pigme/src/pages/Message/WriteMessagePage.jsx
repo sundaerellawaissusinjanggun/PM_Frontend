@@ -1,8 +1,7 @@
 import { Block, Text, Img, Input, Button } from '../../styles/UI';
 import styled from '@emotion/styled';
 import useModal from '../../components/Hooks/useModal';
-
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import SuccessModal from '../../components/Modal/SuccessModal';
 import Header from '../../components/Layout/Header';
 import Coin from '/coin.svg';
@@ -11,18 +10,35 @@ import SadPig from '/sad-pig.svg';
 import CancleModal from '../../components/Modal/CancleModal';
 import { useRecoilState } from 'recoil';
 import { userState } from '../../recoil/atoms';
+import { useState } from 'react'; // Import useState
 
 export default function WriteMessagePage() {
   const successModal = useModal();
   const cancleModal = useModal();
   const navigate = useNavigate();
-  const handleGoToMainHome = () => navigate(-1);
-  const handleGoToShowMessage = () => navigate('/showMessage');
+  const location = useLocation();
 
-  const [userData, setUserData] = useRecoilState(userState);
+  const { userData, selectedAvatar, friendNickname } = location.state || {};
+
+  // State for message input
+  const [message, setMessage] = useState('');
+
+  const handleGoToMainHome = () => navigate(-1);
+
+  const handleGoToShowMessage = () => {
+    // Pass the message data along with other data
+    navigate('/showMessage', {
+      state: {
+        userData,
+        selectedAvatar,
+        friendNickname,
+        message, // Pass the message content here
+      },
+    });
+  };
+
   return (
     <>
-      {/* 메세지 작성 완료 모달 */}
       <SuccessModal
         isOpen={successModal.isOpen}
         setIsOpen={successModal.setIsOpen}
@@ -32,16 +48,16 @@ export default function WriteMessagePage() {
           <MessageText>
             따뜻한 메세지가 저장된 코인이
             <br />
-            <ColoredNickname>{userData.nickname}</ColoredNickname>님의 저금통에
+            <ColoredNickname>{friendNickname}</ColoredNickname>님의 저금통에
             들어갔어요!
           </MessageText>
         }
         cancelText={'메인으로'}
         confirmText={'내용확인하기'}
         onCancle={handleGoToMainHome}
-        onConfirm={handleGoToShowMessage}
+        onConfirm={handleGoToShowMessage} // Use updated function
       />
-      {/* 메세지 작성 도중 취소 모달 */}
+
       <CancleModal
         isOpen={cancleModal.isOpen}
         setIsOpen={cancleModal.setIsOpen}
@@ -51,12 +67,11 @@ export default function WriteMessagePage() {
         confirmText={'네, 돌아갈래요'}
         onConfirm={handleGoToMainHome}
       />
-      {/* 헤더 영역 */}
+
       <Block.HeaderBox width="100%" justifyContent="flex-end">
         <Header showHomeIcon={true} />
       </Block.HeaderBox>
 
-      {/* 코인 영역 */}
       <Block.AbsoluteBox
         width="100%"
         top="10%"
@@ -66,11 +81,10 @@ export default function WriteMessagePage() {
         <Img.AngledIcon width="90px" src={Coin} />
       </Block.AbsoluteBox>
 
-      {/* input 영역 */}
       <Block.BackgroundWhiteBox padding="30px">
         <Block.FlexBox direction="column">
           <InlineTextWrapper>
-            <Text.Title>{userData.nickname}</Text.Title>
+            <Text.Title>{friendNickname}</Text.Title>{' '}
             <Text.Title color="grayLight">님에게</Text.Title>
           </InlineTextWrapper>
           <Text.Title color="grayLight">따뜻한 메세지를 남겨주세요!</Text.Title>
@@ -79,6 +93,8 @@ export default function WriteMessagePage() {
             margin="40px 0"
             placeholder="내용을 작성해주세요."
             fontSize="large"
+            value={message} // Bind the state
+            onChange={(e) => setMessage(e.target.value)} // Update state on change
           ></Input.TextAreaInput>
           <Block.FlexBox direction="row" gap="27px" fontSize="medium">
             <Button.SubmitBtn
@@ -102,67 +118,14 @@ export default function WriteMessagePage() {
   );
 }
 
-const SuccessModalWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-`;
 const InlineTextWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
 `;
 const ColoredNickname = styled.span`
   color: black;
-  text-overflow: ellipsis; // 너무 길 경우 ... 처리
+  text-overflow: ellipsis;
 `;
 const MessageText = styled.div`
-  white-space: nowrap; // 줄바꿈을 방지하여 한 줄로 표시
+  white-space: nowrap;
 `;
-// 대충 데이터 입력 창 (나중에 삭제예정)
-// export default function MessageInputPage({ addMessage }) {
-//   const [messageText, setMessageText] = useState('');
-//   const navigate = useNavigate();
-
-//   const handleSubmit = () => {
-//     if (messageText.trim() !== '') {
-//       addMessage(messageText); // 메시지를 추가하는 함수 호출
-//       setMessageText(''); // 입력 필드 초기화
-//       navigate('/piggy-bank'); // 저금통 화면으로 이동
-//     }
-//   };
-
-//   return (
-//     <MessageInputContainer>
-//       <h2>메시지 입력</h2>
-//       <TextInput
-//         value={messageText}
-//         onChange={(e) => setMessageText(e.target.value)}
-//         placeholder="메시지를 입력하세요"
-//       />
-//       <SubmitButton onClick={handleSubmit}>저장</SubmitButton>
-//     </MessageInputContainer>
-//   );
-// }
-
-// // 스타일 컴포넌트
-// const MessageInputContainer = styled.div`
-//   padding: 20px;
-//   display: flex;
-//   flex-direction: column;
-//   gap: 10px;
-// `;
-
-// const TextInput = styled.textarea`
-//   width: 100%;
-//   height: 100px;
-//   padding: 10px;
-//   font-size: 16px;
-// `;
-
-// const SubmitButton = styled.button`
-//   padding: 10px;
-//   font-size: 16px;
-//   background-color: #f08;
-//   color: white;
-//   border: none;
-//   cursor: pointer;
-// `;

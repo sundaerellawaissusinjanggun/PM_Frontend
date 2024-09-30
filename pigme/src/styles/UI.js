@@ -62,6 +62,16 @@ export const Text = {
     color: ${({ color }) => (color ? theme.color[color] : theme.color.black)};
     cursor: ${(props) => props.pointer && 'pointer'};
   `,
+  Body4: styled.span`
+    display: inline-block;
+    width: 100%;
+    font-weight: ${({ weight }) =>
+      weight ? theme.fontWeight[weight] : theme.fontWeight.bold};
+    font-size: ${({ size }) =>
+      size ? theme.fontSize[size] : theme.fontSize.title};
+    color: ${({ color }) => (color ? theme.color[color] : theme.color.black)};
+    cursor: ${(props) => props.pointer && 'pointer'};
+  `,
   Warning: styled.span`
     display: inline-block;
     font-weight: ${({ weight }) =>

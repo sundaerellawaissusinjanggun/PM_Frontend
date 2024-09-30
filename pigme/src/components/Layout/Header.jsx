@@ -11,7 +11,7 @@ export default function Header({
   onComplete,
 }) {
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   const toggleMenu = () => {
     setIsOpen(true);
@@ -101,7 +101,7 @@ const DropDown = styled.ul`
   flex-direction: column;
   background-color: white;
   top: 30px;
-
+  z-index: 3;
   display: ${({ isVisible }) => (isVisible ? 'block' : 'none')};
 `;
 
