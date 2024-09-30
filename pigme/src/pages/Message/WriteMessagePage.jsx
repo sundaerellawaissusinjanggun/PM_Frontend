@@ -26,14 +26,24 @@ export default function WriteMessagePage() {
 
   const handleGoToMainHome = () => navigate(-1);
 
-  const handleGoToShowMessage = () => {
-    // Pass the message data along with other data
-    navigate('/showMessage', {
+  const handleGoToReadMessage = () => {
+    // Prepare the additional message data to pass along
+    const messageData = {
+      senderId: auth.currentUser.uid,
+      senderNickname: userData.nickname,
+      receiverId: friendId,
+      receiverNickname: friendNickname,
+      message: message,
+      timestamp: new Date(),
+    };
+
+    // Navigate to the readMessage page and pass all relevant data
+    navigate('/readMessage', {
       state: {
         userData,
         selectedAvatar,
         friendNickname,
-        message, // Pass the message content here
+        messageData, // Pass the message data object
       },
     });
   };
@@ -86,7 +96,7 @@ export default function WriteMessagePage() {
         cancelText={'메인으로'}
         confirmText={'내용확인하기'}
         onCancle={handleGoToMainHome}
-        onConfirm={handleGoToShowMessage} // Use updated function
+        onConfirm={handleGoToReadMessage} // Use updated function
       />
 
       <CancleModal
