@@ -7,7 +7,7 @@ import ProfileAvatar from '../../components/Layout/ProfileAvatar';
 import Coin from '/coin.svg';
 import useModal from '../../components/Hooks/useModal';
 
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import WarningModal from '../../components/Modal/WarningModal';
 import { useRecoilState } from 'recoil';
 import { userState } from '../../recoil/atoms';

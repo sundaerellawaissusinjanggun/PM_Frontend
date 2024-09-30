@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import ProfileAvatar from '../Layout/ProfileAvatar';
 import { useRecoilState } from 'recoil';
 import { userState } from '../../recoil/atoms';
-import { db } from '../../firebase'; // Ensure you have this import
+import { db } from '../../firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { useNavigate } from 'react-router';
 
@@ -24,7 +24,7 @@ export default function BankModal({
   const navigate = useNavigate();
 
   const handleReadMessage = (messageData) => {
-    navigate('/readMessage', { state: { messageData } }); // 상태로 메시지 정보 전달
+    navigate('/readMessage', { state: { messageData } });
   };
 
   useEffect(() => {
@@ -32,8 +32,8 @@ export default function BankModal({
       if (nickname) {
         try {
           const q = query(
-            collection(db, 'messages'), // Replace 'messages' with your actual collection name
-            where('receiverNickname', '==', nickname) // Adjust the field name as necessary
+            collection(db, 'messages'),
+            where('receiverNickname', '==', nickname)
           );
           const querySnapshot = await getDocs(q);
           const messagesArray = [];
@@ -90,16 +90,17 @@ export default function BankModal({
           height="260px"
         >
           {messages.length > 0 ? (
-            <>
+            messages.map((msg, index) => (
               <Img.RoundIcon
-                onClick={() => handleReadMessage(messages[0])}
+                key={msg.id}
+                onClick={() => handleReadMessage(msg)}
                 pointer
                 width="50px"
                 src="/coin.svg"
                 alt="메세지"
-              />{' '}
-              {/* 첫 번째 메시지로 예시 */}
-            </>
+                style={{ margin: '0 5px' }} // 아이콘 사이의 간격을 주기 위해 스타일 추가
+              />
+            ))
           ) : (
             <Text.ModalText>메시지가 없습니다.</Text.ModalText>
           )}

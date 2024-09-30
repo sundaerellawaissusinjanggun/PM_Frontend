@@ -10,7 +10,7 @@ export default function RecentMessagePage() {
     <>
       {/* 헤더 영역 */}
       <Block.HeaderBox width="100%" justifyContent="flex-end">
-        <Header showHomeIcon={true} />
+        <Header showHomeIcon={true} showBackIcon={true} />
       </Block.HeaderBox>
 
       {/* 돼지 영역 */}

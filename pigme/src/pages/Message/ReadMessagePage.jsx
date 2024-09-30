@@ -12,8 +12,8 @@ export default function ReadMessagePage() {
 
   return (
     <>
-      <Block.HeaderBox width="100%" justifyContent="flex-end">
-        <Header showHomeIcon={true} />
+      <Block.HeaderBox width="100%" justifyContent="space-between">
+        <Header showHomeIcon={true} showBackIcon={true} />
       </Block.HeaderBox>
 
       <BackgroundBox padding="30px">

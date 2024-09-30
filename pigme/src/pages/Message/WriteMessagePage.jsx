@@ -109,8 +109,8 @@ export default function WriteMessagePage() {
         onConfirm={handleGoToMainHome}
       />
 
-      <Block.HeaderBox width="100%" justifyContent="flex-end">
-        <Header showHomeIcon={true} />
+      <Block.HeaderBox width="100%" justifyContent="space-between">
+        <Header showHomeIcon={true} showBackIcon={true} />
       </Block.HeaderBox>
 
       <Block.AbsoluteBox
