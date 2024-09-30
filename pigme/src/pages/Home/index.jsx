@@ -30,7 +30,6 @@ export default function Home() {
     const fetchUserData = async () => {
       const storedUser = JSON.parse(localStorage.getItem('user'));
       const userId = storedUser?.userId;
-      console.log('userID', userId);
 
       if (!userId) {
         console.error('No userId found');
@@ -60,14 +59,12 @@ export default function Home() {
         const friendDetailsArray = [];
         for (const friendObj of friends) {
           const friendId = friendObj.friend[0];
-          console.log(`Fetching user data for friendId: ${friendId}`);
 
           try {
             const userDoc = await getDoc(doc(db, 'users', friendId));
             if (userDoc.exists()) {
               const friendDetail = { id: friendId, ...userDoc.data() };
               friendDetailsArray.push(friendDetail);
-              console.log('User data found:', friendDetail);
             } else {
               console.log('No user data found for friendId:', friendId);
             }
@@ -80,7 +77,6 @@ export default function Home() {
         }
 
         setFriendDetails(friendDetailsArray);
-        console.log('Friend Details:', friendDetailsArray);
       } catch (error) {
         console.error('Error fetching user data or friends list: ', error);
       }
@@ -91,7 +87,13 @@ export default function Home() {
 
   const handleConfirm = () => {
     confirmModal.closeModal();
-    navigate('/message');
+    navigate('/message', {
+      state: {
+        userData,
+        selectedAvatar,
+        friendNickname: selectedAvatar.nickname,
+      },
+    }); // Pass friend's nickname
   };
 
   const handleCancel = () => {

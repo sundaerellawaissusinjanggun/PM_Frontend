@@ -29,9 +29,6 @@ export default function AddFriendsPage() {
 
   console.log(userData);
 
-  const [friendRequests, setFriendRequests] =
-    useRecoilState(friendRequestsState);
-
   const fetchUserData = async (uid) => {
     try {
       const userRef = doc(db, 'users', uid);
@@ -96,16 +93,6 @@ export default function AddFriendsPage() {
         status: 'pending',
       });
 
-      setFriendRequests((prevRequests) => [
-        ...prevRequests,
-        {
-          friendRequestId: friendRequestRef.id,
-          friendSenderId: userData.userId,
-          friendReceiverId: receiverId,
-          status: 'pending',
-        },
-      ]);
-
       alert('친구 요청이 성공적으로 전송되었습니다!');
     } catch (error) {
       console.error('친구 요청 전송 오류:', error);
@@ -141,8 +128,6 @@ export default function AddFriendsPage() {
 
   useEffect(() => {
     const currentUser = auth.currentUser;
-
-    console.log('아뵤' + friendRequests.friendSenderId);
 
     if (currentUser) {
       const uid = currentUser.uid;
