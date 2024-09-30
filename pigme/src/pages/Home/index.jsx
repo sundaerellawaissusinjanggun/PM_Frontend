@@ -114,7 +114,8 @@ export default function Home() {
           isOpen={confirmModal.isOpen}
           setIsOpen={confirmModal.setIsOpen}
           nickname={selectedAvatar.nickname}
-          message="사람들이 주고 간 코인을 클릭하면 메세지를 구경할 수 있어요!"
+          message="사람들이 주고 간 코인을 클릭하면
+          메세지를 구경할 수 있어요!"
           confirmText="나도 저금할래!"
           cancelText="취소"
           onConfirm={handleConfirm}
@@ -126,7 +127,7 @@ export default function Home() {
         <Block.HeaderBox width="100%" justifyContent="flex-end">
           <Header showMyPageIcon={true} />
         </Block.HeaderBox>
-        <div onClick={confirmModal.openModal}>돼지</div>
+
         <Block.AbsoluteBox bottom="0" left="14px" alignItems="center">
           <FenceImage src={Fence} />
         </Block.AbsoluteBox>
