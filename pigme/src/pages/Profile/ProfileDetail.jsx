@@ -40,7 +40,7 @@ export default function ProfileDetail() {
           console.log('사용자 이메일??????:', userEmail);
           console.log('닉네임:', nickname);
           console.log('한 줄 소개:', introduction);
-          console.log('현재 보유 코인:', coins);
+          console.log('현재 보유 코인:', userData.messages);
           console.log('아바타 color ', userAvatar.color.image);
           console.log('아바타 item ', userAvatar.item.image);
 
@@ -54,7 +54,7 @@ export default function ProfileDetail() {
     const fetchUserMessages = async (userId) => {
       try {
         const messagesRef = collection(db, 'messages');
-        const q = query(messagesRef, where('userId', '==', userId));
+        const q = query(messagesRef, where('receiverId', '==', userId));
         const querySnapshot = await getDocs(q);
         const userMessages = [];
 
@@ -63,7 +63,7 @@ export default function ProfileDetail() {
         });
 
         setMessages(userMessages);
-        console.log('사용자의 메시지:', userMessages);
+        console.log('사용자의 메시지:', userMessages.length);
       } catch (error) {
         console.error('메시지 데이터 가져오기 실패:', error);
       }
