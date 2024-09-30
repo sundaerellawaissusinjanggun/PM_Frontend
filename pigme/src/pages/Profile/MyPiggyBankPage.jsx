@@ -4,7 +4,6 @@ import { Block, Img } from '../../styles/UI';
 import Background from '../../components/Layout/Background';
 import Header from '../../components/Layout/Header';
 import ProfileAvatar from '../../components/Layout/ProfileAvatar';
-// import PiggyBankMessages from '../../components/Hooks/PiggyBankMessages';
 import Coin from '/coin.svg';
 import useModal from '../../components/Hooks/useModal';
 
@@ -52,12 +51,10 @@ export default function MyPiggyBankPage() {
     fetchUserData();
   }, []);
 
-  // 코인 클릭 핸들러
   const handleCoinClick = () => {
     if (messages.length <= 2) {
       warningModal.openModal();
     } else {
-      // 메시지가 3개 이상일 때 처리할 로직 추가 가능
       console.log('You have enough messages!');
     }
   };
@@ -101,7 +98,6 @@ export default function MyPiggyBankPage() {
               src="/coin.svg"
               onClick={handleCoinClick} // 코인 클릭 시 함수 호출
             />
-            {/* <PiggyBankMessages messages={messages} /> */}
           </Background>
         </Block.AbsoluteBox>
       </Wrapper>
