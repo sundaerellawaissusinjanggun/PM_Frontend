@@ -29,7 +29,7 @@ export default function Home() {
   useEffect(() => {
     const fetchUserData = async () => {
       const storedUser = JSON.parse(localStorage.getItem('user'));
-      const userId = storedUser?.userId;
+      const userId = storedUser?.uid;
 
       if (!userId) {
         console.error('No userId found');
