@@ -48,7 +48,7 @@ export default function Header({
               onMouseOver={toggleMenu}
               onMouseLeave={closeMenu}
             >
-              <MenuButton width="30px" src="/profile.svg" />
+              <MenuButton width="30px" src="/pig-nose.svg" />
             </MenuButtonWrapper>
           </Block.FlexBox>
           <DropDown
