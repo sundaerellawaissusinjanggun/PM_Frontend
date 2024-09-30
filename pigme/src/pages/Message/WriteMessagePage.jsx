@@ -109,8 +109,8 @@ export default function WriteMessagePage() {
         onConfirm={handleGoToMainHome}
       />
 
-      <Block.HeaderBox width="100%" justifyContent="flex-end">
-        <Header showHomeIcon={true} />
+      <Block.HeaderBox width="100%" justifyContent="space-between">
+        <Header showHomeIcon={true} showBackIcon={true} />
       </Block.HeaderBox>
 
       <Block.AbsoluteBox
@@ -162,6 +162,7 @@ export default function WriteMessagePage() {
 const InlineTextWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
+  margin-bottom: 5px;
 `;
 const ColoredNickname = styled.span`
   color: black;
