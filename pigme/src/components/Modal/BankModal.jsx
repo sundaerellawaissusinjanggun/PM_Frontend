@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import BasicModal from './BasicModal';
-import { Block, Button, Text } from '../../styles/UI';
+import { Block, Button, Img, Text } from '../../styles/UI';
 import styled from '@emotion/styled';
 import ProfileAvatar from '../Layout/ProfileAvatar';
 import { useRecoilState } from 'recoil';
 import { userState } from '../../recoil/atoms';
 import { db } from '../../firebase'; // Ensure you have this import
 import { collection, query, where, getDocs } from 'firebase/firestore';
+import { useNavigate } from 'react-router';
 
 export default function BankModal({
   isOpen,
@@ -20,6 +21,11 @@ export default function BankModal({
 }) {
   const [userData, setUserData] = useRecoilState(userState);
   const [messages, setMessages] = useState([]);
+  const navigate = useNavigate();
+
+  const handleReadMessage = (messageData) => {
+    navigate('/readMessage', { state: { messageData } }); // 상태로 메시지 정보 전달
+  };
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -76,15 +82,24 @@ export default function BankModal({
         </Block.FlexBox>
         <Block.FlexBox
           width="90%"
+          justifyContent="center"
+          alignItems="center"
           border="1px solid #e7e7e7"
           borderRadius="20px"
           padding="20px"
           height="260px"
         >
           {messages.length > 0 ? (
-            messages.map((msg) => (
-              <Text.ModalText key={msg.id}>{msg.content}</Text.ModalText> // Adjust 'content' to your actual message field
-            ))
+            <>
+              <Img.RoundIcon
+                onClick={() => handleReadMessage(messages[0])}
+                pointer
+                width="50px"
+                src="/coin.svg"
+                alt="메세지"
+              />{' '}
+              {/* 첫 번째 메시지로 예시 */}
+            </>
           ) : (
             <Text.ModalText>메시지가 없습니다.</Text.ModalText>
           )}

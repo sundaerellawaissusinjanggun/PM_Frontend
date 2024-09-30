@@ -8,9 +8,9 @@ import Coin from '/coin.svg';
 import CoinPig from '/pig-coin.svg';
 import SadPig from '/sad-pig.svg';
 import CancleModal from '../../components/Modal/CancleModal';
-import { useRecoilState } from 'recoil';
-import { userState } from '../../recoil/atoms';
 import { useState } from 'react'; // Import useState
+import { addDoc, collection } from 'firebase/firestore';
+import { auth, db } from '../../firebase';
 
 export default function WriteMessagePage() {
   const successModal = useModal();
@@ -18,23 +18,64 @@ export default function WriteMessagePage() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { userData, selectedAvatar, friendNickname } = location.state || {};
+  const { userData, selectedAvatar, friendNickname, friendId } =
+    location.state || {};
 
   // State for message input
   const [message, setMessage] = useState('');
 
   const handleGoToMainHome = () => navigate(-1);
 
-  const handleGoToShowMessage = () => {
-    // Pass the message data along with other data
-    navigate('/showMessage', {
+  const handleGoToReadMessage = () => {
+    // Prepare the additional message data to pass along
+    const messageData = {
+      senderId: auth.currentUser.uid,
+      senderNickname: userData.nickname,
+      receiverId: friendId,
+      receiverNickname: friendNickname,
+      message: message,
+      timestamp: new Date(),
+    };
+
+    // Navigate to the readMessage page and pass all relevant data
+    navigate('/readMessage', {
       state: {
         userData,
         selectedAvatar,
         friendNickname,
-        message, // Pass the message content here
+        messageData, // Pass the message data object
       },
     });
+  };
+
+  const handleSaveMessage = async () => {
+    try {
+      // Firestore의 컬렉션에 메시지 저장
+      const docRef = await addDoc(collection(db, 'messages'), {
+        senderId: auth.currentUser.uid, // 메세지 작성자 ID
+        senderNickname: userData.nickname, // 메세지 작성자 닉네임
+        receiverId: friendId, // 메세지 받는 사람 ID
+        receiverNickname: friendNickname, // 메세지 받는 사람 닉네임
+        message: message, // 작성한 메세지
+        timestamp: new Date(), // 메시지 작성 시간
+      });
+
+      console.log('메세지 저장 성공: ', docRef.id);
+      // 저장한 메시지 데이터 콘솔에 출력
+      console.log('저장된 메시지 데이터: ', {
+        senderId: userData.uid,
+        senderNickname: userData.nickname,
+        receiverId: friendId,
+        receiverNickname: friendNickname,
+        message: message,
+        timestamp: new Date(),
+      });
+
+      // 메시지 저장 후 성공 모달 열기
+      successModal.openModal();
+    } catch (e) {
+      console.error('메세지 저장 실패: ', e);
+    }
   };
 
   return (
@@ -55,7 +96,7 @@ export default function WriteMessagePage() {
         cancelText={'메인으로'}
         confirmText={'내용확인하기'}
         onCancle={handleGoToMainHome}
-        onConfirm={handleGoToShowMessage} // Use updated function
+        onConfirm={handleGoToReadMessage} // Use updated function
       />
 
       <CancleModal
@@ -107,7 +148,7 @@ export default function WriteMessagePage() {
             <Button.SubmitBtn
               height="50px"
               bgColor="grayLight"
-              onClick={successModal.openModal}
+              onClick={handleSaveMessage}
             >
               작성완료
             </Button.SubmitBtn>

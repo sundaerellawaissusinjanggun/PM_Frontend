@@ -11,12 +11,13 @@ import { userState } from '../../recoil/atoms';
 import ProfileAvatar from '../Layout/ProfileAvatar';
 import { onAuthStateChanged } from 'firebase/auth';
 
-export default function Custombox() {
+export default function Custombox({ color, item }) {
+  console.log('color', color);
   const navigate = useNavigate();
   const [userData, setUserData] = useRecoilState(userState);
   const [selectedTab, setSelectedTab] = useState('color');
-  const [selectedColor, setSelectedColor] = useState(customData.colors[0]);
-  const [selectedItem, setSelectedItem] = useState(customData.items[0]);
+  const [selectedColor, setSelectedColor] = useState('');
+  const [selectedItem, setSelectedItem] = useState('');
 
   const handleColorChange = (color) => {
     setSelectedColor(color);
@@ -77,8 +78,8 @@ export default function Custombox() {
         }));
 
         if (!data.avatar) {
-          setSelectedColor(userData.avatar.color.image);
-          setSelectedItem(userData.avatar.item.image);
+          setSelectedColor(customData.colors[0]);
+          setSelectedItem(customData.items[0]);
         }
       } else {
         console.error('No such document! New user, setting defaults.');
@@ -100,6 +101,15 @@ export default function Custombox() {
   if (!userData || !userData.avatar) {
     return <LoadingScreen>Loading...</LoadingScreen>;
   }
+
+  useEffect(() => {
+    // color 값이 있을 경우 selectedColor를 업데이트
+    if (color && item) {
+      setSelectedColor(color);
+      setSelectedItem(item);
+    }
+  }, []);
+
   return (
     <>
       <Block.HeaderBox justifyContent="space-between">

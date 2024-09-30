@@ -3,22 +3,26 @@ import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import Background from '../../components/Layout/Background';
 import { db, auth } from '../../firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import {
+  doc,
+  getDoc,
+  collection,
+  getDocs,
+  query,
+  where,
+} from 'firebase/firestore';
 import { Block, Text } from '../../styles/UI';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
-import { useRecoilState } from 'recoil';
-import { userState } from '../../recoil/atoms';
 
 export default function ProfileDetail() {
   const navigate = useNavigate();
 
-  const [userData, setUserData] = useRecoilState(userState);
-
-  const [userEmail, setUserEmail] = useState(userData.email);
-  const [nickname, setNickname] = useState(userData.nickname);
-  const [introduction, setIntroduction] = useState(userData.introduction);
+  const [userEmail, setUserEmail] = useState('');
+  const [userAvatar, setUserAvatar] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [introduction, setIntroduction] = useState('');
   const [coins, setCoins] = useState(0);
-  const [likedMessagesCount, setLikedMessagesCount] = useState(0);
+  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     const fetchUserData = async (userId) => {
@@ -27,23 +31,41 @@ export default function ProfileDetail() {
 
         if (userDoc.exists()) {
           const userData = userDoc.data();
-          setUserEmail(auth.currentUser.email);
+          setUserAvatar(userData.avatar);
+          setUserEmail(userData.email);
           setNickname(userData.nickname);
           setIntroduction(userData.introduction);
-          setCoins(userData.coins || 0);
-          setLikedMessagesCount(userData.likedMessages?.length || 0);
+          setCoins(userData.messages);
 
-          console.log('사용자 이메일:', auth.currentUser.email);
-          console.log('닉네임:', userData.nickname);
-          console.log('한 줄 소개:', userData.introduction);
-          console.log('현재 보유 코인:', userData.coins || 0);
-          console.log(
-            '즐겨찾는 메세지 개수:',
-            userData.likedMessages?.length || 0
-          );
+          console.log('사용자 이메일??????:', userEmail);
+          console.log('닉네임:', nickname);
+          console.log('한 줄 소개:', introduction);
+          console.log('현재 보유 코인:', coins);
+          console.log('아바타 color ', userAvatar.color.image);
+          console.log('아바타 item ', userAvatar.item.image);
+
+          await fetchUserMessages(userId);
         }
       } catch (error) {
         console.error('사용자 정보 가져오기 실패:', error);
+      }
+    };
+
+    const fetchUserMessages = async (userId) => {
+      try {
+        const messagesRef = collection(db, 'messages');
+        const q = query(messagesRef, where('userId', '==', userId));
+        const querySnapshot = await getDocs(q);
+        const userMessages = [];
+
+        querySnapshot.forEach((doc) => {
+          userMessages.push({ id: doc.id, ...doc.data() });
+        });
+
+        setMessages(userMessages);
+        console.log('사용자의 메시지:', userMessages);
+      } catch (error) {
+        console.error('메시지 데이터 가져오기 실패:', error);
       }
     };
 
@@ -59,16 +81,33 @@ export default function ProfileDetail() {
     return () => unsubscribe();
   }, [navigate]);
 
-  const handelGoToCustom = () => navigate('/custom');
-  const handelGoToMyBank = () => navigate('/myBank');
-  const handelGoToLike = () => navigate('/like');
+  const handelGoToCustom = () => {
+    navigate('/custom', {
+      state: {
+        userAvatar,
+        userEmail,
+        nickname,
+        introduction,
+        coins,
+        messages,
+      },
+    });
+  };
+
+  const handelGoToMyBank = () => {
+    navigate('/myBank', {
+      state: {
+        messages,
+      },
+    });
+  };
 
   const handleLogout = async () => {
     const auth = getAuth();
     try {
       await signOut(auth);
       console.log('User signed out.');
-      localStorage.removeItem('user'); // 로컬 스토리지에서 사용자 데이터 삭제
+      localStorage.removeItem('user');
     } catch (error) {
       console.error('Sign out error:', error);
     }
@@ -88,7 +127,9 @@ export default function ProfileDetail() {
         <Text.Body4>나의 프로필</Text.Body4>
 
         <Block.FlexBox width="50px" onClick={handleLogout}>
-          <Text.Body1 color="grayLight">로그아웃</Text.Body1>
+          <Text.Body1 pointer color="grayLight">
+            로그아웃
+          </Text.Body1>
         </Block.FlexBox>
       </div>
 
@@ -117,7 +158,8 @@ export default function ProfileDetail() {
         </Style.UserInfo>
         <Style.UserStatsContainer>
           <Style.StatsButton onClick={handelGoToMyBank}>
-            현재 보유 코인 <Style.StatsCount>{coins}개</Style.StatsCount>
+            현재 보유 코인{' '}
+            <Style.StatsCount>{messages.length}개</Style.StatsCount>
           </Style.StatsButton>
         </Style.UserStatsContainer>
       </Style.ProfileContainer>
@@ -222,7 +264,6 @@ const Style = {
     display: flex;
     align-items: center;
     flex-direction: column;
-    /* border: 1px solid red; */
   `,
   StatsButton: styled.button`
     font-size: 14px;

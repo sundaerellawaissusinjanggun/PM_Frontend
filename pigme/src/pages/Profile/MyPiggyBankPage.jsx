@@ -1,36 +1,63 @@
-// 나의 저금통
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { Block } from '../../styles/UI';
+import { Block, Img } from '../../styles/UI';
 import Background from '../../components/Layout/Background';
 import Header from '../../components/Layout/Header';
 import ProfileAvatar from '../../components/Layout/ProfileAvatar';
-import PiggyBankMessages from '../../components/Hooks/PiggyBankMessages';
 import Coin from '/coin.svg';
 import useModal from '../../components/Hooks/useModal';
 
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import WarningModal from '../../components/Modal/WarningModal';
 import { useRecoilState } from 'recoil';
 import { userState } from '../../recoil/atoms';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../firebase';
 
 export default function MyPiggyBankPage() {
   const [messages, setMessages] = useState([]);
   const [userData, setUserData] = useRecoilState(userState);
 
-  // 메시지를 추가하는 함수
-  const addMessage = (messageText) => {
-    const newMessage = {
-      id: messages.length + 1,
-      text: messageText,
-    };
-    setMessages([...messages, newMessage]); // 새로운 메시지를 추가
-  };
-
   // 경고 모달
   const warningModal = useModal();
   const navigate = useNavigate();
   const handleGoToMainHome = () => navigate('/home');
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const storedUser = JSON.parse(localStorage.getItem('user'));
+      const userId = storedUser?.uid;
+
+      if (!userId) {
+        console.error('No userId found');
+        return;
+      }
+
+      try {
+        const userDoc = await getDoc(doc(db, 'users', userId));
+        if (userDoc.exists()) {
+          setUserData(userDoc.data());
+        } else {
+          console.log('No such user!');
+        }
+      } catch (error) {
+        console.error(
+          `Error fetching user data for friendId ${userId}:`,
+          error
+        );
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  const handleCoinClick = () => {
+    if (messages.length <= 2) {
+      warningModal.openModal();
+    } else {
+      console.log('You have enough messages!');
+    }
+  };
 
   return (
     <>
@@ -62,12 +89,15 @@ export default function MyPiggyBankPage() {
             </ProfileTitle>
             <UserStatsContainer>
               <StatsDisplay>
-                현재 보유 코인 <StatsCount>12개</StatsCount>
+                현재 보유 코인 <StatsCount> {messages.length}개</StatsCount>
               </StatsDisplay>
             </UserStatsContainer>
-            <MessageWrapper onClick={warningModal.openModal}>
-              <PiggyBankMessages messages={messages} />
-            </MessageWrapper>
+
+            <Img.RoundIcon
+              width="50px"
+              src="/coin.svg"
+              onClick={handleCoinClick} // 코인 클릭 시 함수 호출
+            />
           </Background>
         </Block.AbsoluteBox>
       </Wrapper>
@@ -114,7 +144,6 @@ const StatsCount = styled.span`
   font-weight: bold;
   color: black;
 `;
-const CoinContainer = styled.div``;
 
 const MessageWrapper = styled.div`
   position: absolute;
