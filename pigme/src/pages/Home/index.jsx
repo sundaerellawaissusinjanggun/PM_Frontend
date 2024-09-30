@@ -92,6 +92,7 @@ export default function Home() {
         userData,
         selectedAvatar,
         friendNickname: selectedAvatar.nickname,
+        friendId: selectedAvatar.id,
       },
     }); // Pass friend's nickname
   };

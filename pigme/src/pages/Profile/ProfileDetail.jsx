@@ -12,13 +12,11 @@ import { userState } from '../../recoil/atoms';
 export default function ProfileDetail() {
   const navigate = useNavigate();
 
-  const [userData, setUserData] = useRecoilState(userState);
-
-  const [userEmail, setUserEmail] = useState(userData.email);
-  const [nickname, setNickname] = useState(userData.nickname);
-  const [introduction, setIntroduction] = useState(userData.introduction);
+  const [userEmail, setUserEmail] = useState('');
+  const [userAvatar, setUserAvatar] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [introduction, setIntroduction] = useState('');
   const [coins, setCoins] = useState(0);
-  const [likedMessagesCount, setLikedMessagesCount] = useState(0);
 
   useEffect(() => {
     const fetchUserData = async (userId) => {
@@ -27,20 +25,18 @@ export default function ProfileDetail() {
 
         if (userDoc.exists()) {
           const userData = userDoc.data();
+          setUserAvatar(userData.avatar);
           setUserEmail(auth.currentUser.email);
           setNickname(userData.nickname);
           setIntroduction(userData.introduction);
-          setCoins(userData.coins || 0);
-          setLikedMessagesCount(userData.likedMessages?.length || 0);
+          setCoins(userData.coins);
 
-          console.log('사용자 이메일:', auth.currentUser.email);
-          console.log('닉네임:', userData.nickname);
-          console.log('한 줄 소개:', userData.introduction);
-          console.log('현재 보유 코인:', userData.coins || 0);
-          console.log(
-            '즐겨찾는 메세지 개수:',
-            userData.likedMessages?.length || 0
-          );
+          console.log('사용자 이메일??????:', userEmail);
+          console.log('닉네임:', nickname);
+          console.log('한 줄 소개:', introduction);
+          console.log('현재 보유 코인:', coins);
+          console.log('아바타 color ', userAvatar.color.image);
+          console.log('아바타 item ', userAvatar.item.image);
         }
       } catch (error) {
         console.error('사용자 정보 가져오기 실패:', error);
@@ -59,9 +55,18 @@ export default function ProfileDetail() {
     return () => unsubscribe();
   }, [navigate]);
 
-  const handelGoToCustom = () => navigate('/custom');
+  const handelGoToCustom = () => {
+    navigate('/custom', {
+      state: {
+        userAvatar,
+        userEmail,
+        nickname,
+        introduction,
+        coins,
+      },
+    });
+  };
   const handelGoToMyBank = () => navigate('/myBank');
-  const handelGoToLike = () => navigate('/like');
 
   const handleLogout = async () => {
     const auth = getAuth();
@@ -88,7 +93,9 @@ export default function ProfileDetail() {
         <Text.Body4>나의 프로필</Text.Body4>
 
         <Block.FlexBox width="50px" onClick={handleLogout}>
-          <Text.Body1 color="grayLight">로그아웃</Text.Body1>
+          <Text.Body1 pointer color="grayLight">
+            로그아웃
+          </Text.Body1>
         </Block.FlexBox>
       </div>
 

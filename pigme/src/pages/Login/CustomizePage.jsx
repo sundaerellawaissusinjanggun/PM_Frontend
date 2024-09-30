@@ -1,15 +1,19 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import Custombox from '../../components/Custom/Custombox';
-import { useRecoilValue } from 'recoil';
-import { userState } from '../../recoil/atoms';
+import { useLocation } from 'react-router';
 
 export default function CustomizePage() {
-  const userData = useRecoilValue(userState);
+  const location = useLocation();
+  const { userAvatar } = location.state || {};
 
   return (
     <>
-      <Style.Wrapper>{userData && <Custombox />}</Style.Wrapper>
+      <Style.Wrapper>
+        {userAvatar && (
+          <Custombox color={userAvatar.color} item={userAvatar.item} />
+        )}
+      </Style.Wrapper>
     </>
   );
 }

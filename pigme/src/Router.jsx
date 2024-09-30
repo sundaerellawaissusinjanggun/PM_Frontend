@@ -46,7 +46,7 @@ export const router = createBrowserRouter([
         element: <WriteMessagePage />,
       },
       {
-        path: '/showMessage',
+        path: '/readMessage',
         element: <ReadMessagePage />,
       },
       {
