@@ -67,7 +67,6 @@ export default function ProfileDetail() {
     });
   };
   const handelGoToMyBank = () => navigate('/myBank');
-  // const handelGoToLike = () => navigate('/like');
 
   const handleLogout = async () => {
     const auth = getAuth();

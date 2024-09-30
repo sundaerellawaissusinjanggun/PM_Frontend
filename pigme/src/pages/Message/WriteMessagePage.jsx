@@ -10,7 +10,7 @@ import SadPig from '/sad-pig.svg';
 import CancleModal from '../../components/Modal/CancleModal';
 import { useState } from 'react'; // Import useState
 import { addDoc, collection } from 'firebase/firestore';
-import { db } from '../../firebase';
+import { auth, db } from '../../firebase';
 
 export default function WriteMessagePage() {
   const successModal = useModal();
@@ -18,7 +18,8 @@ export default function WriteMessagePage() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { userData, selectedAvatar, friendNickname } = location.state || {};
+  const { userData, selectedAvatar, friendNickname, friendId } =
+    location.state || {};
 
   // State for message input
   const [message, setMessage] = useState('');
@@ -41,15 +42,24 @@ export default function WriteMessagePage() {
     try {
       // Firestore의 컬렉션에 메시지 저장
       const docRef = await addDoc(collection(db, 'messages'), {
-        senderId: userData.uid, // 메세지 작성자 ID
+        senderId: auth.currentUser.uid, // 메세지 작성자 ID
         senderNickname: userData.nickname, // 메세지 작성자 닉네임
-        // receiverId: friendId, // 메세지 받는 사람 ID
+        receiverId: friendId, // 메세지 받는 사람 ID
         receiverNickname: friendNickname, // 메세지 받는 사람 닉네임
         message: message, // 작성한 메세지
         timestamp: new Date(), // 메시지 작성 시간
       });
 
       console.log('메세지 저장 성공: ', docRef.id);
+      // 저장한 메시지 데이터 콘솔에 출력
+      console.log('저장된 메시지 데이터: ', {
+        senderId: userData.uid,
+        senderNickname: userData.nickname,
+        receiverId: friendId,
+        receiverNickname: friendNickname,
+        message: message,
+        timestamp: new Date(),
+      });
 
       // 메시지 저장 후 성공 모달 열기
       successModal.openModal();
