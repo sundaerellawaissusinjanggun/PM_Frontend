@@ -79,7 +79,7 @@ export default function SetupProfilePage() {
       {/* 돼지 영역 */}
       <Block.AbsoluteBox
         width="100%"
-        top="10%"
+        top="15%"
         padding="0 0 0 20px"
         justifyContent="center"
       >
