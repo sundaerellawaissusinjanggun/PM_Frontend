@@ -158,8 +158,8 @@ export default function ProfileDetail() {
         </Style.UserInfo>
         <Style.UserStatsContainer>
           <Style.StatsButton onClick={handelGoToMyBank}>
-            현재 보유 코인{' '}
-            <Style.StatsCount>{messages.length}개</Style.StatsCount>
+            현재 보유 코인
+            <Style.StatsCount> {messages.length}개</Style.StatsCount>
           </Style.StatsButton>
         </Style.UserStatsContainer>
       </Style.ProfileContainer>
