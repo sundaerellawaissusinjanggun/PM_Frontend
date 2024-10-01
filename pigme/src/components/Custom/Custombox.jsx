@@ -31,7 +31,7 @@ export default function Custombox({ color, item }) {
     const userId = auth.currentUser.uid;
 
     if (!userId) {
-      console.error('로그인을 해주세요.');
+      console.log('로그인을 해주세요.');
       return;
     }
 
@@ -61,7 +61,7 @@ export default function Custombox({ color, item }) {
 
       navigate('/profileSetup');
     } catch (error) {
-      console.error('Firestore에 저장하지 못 했습니다.', error);
+      console.log('실패');
     }
   };
 
@@ -82,16 +82,15 @@ export default function Custombox({ color, item }) {
           setSelectedItem(customData.items[0]);
         }
       } else {
-        console.error('No such document! New user, setting defaults.');
+        console.log('실패');
       }
     };
 
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        // 유저가 로그인되어 있으면 userId를 가져와서 fetchUserData 호출
         fetchUserData(user.uid);
       } else {
-        console.error('로그인 해주세요.');
+        console.log('로그인을 해주세요');
       }
     });
 
@@ -103,7 +102,6 @@ export default function Custombox({ color, item }) {
   }
 
   useEffect(() => {
-    // color 값이 있을 경우 selectedColor를 업데이트
     if (color && item) {
       setSelectedColor(color);
       setSelectedItem(item);

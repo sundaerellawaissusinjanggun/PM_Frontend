@@ -40,6 +40,7 @@ export default function RequestFriendsListPage() {
       setPendingFriends(requestsWithSenderInfo);
     });
   }, []);
+
   // 친구신청한 사용자 정보 가져오기
   async function getRequestUserInfo(userId) {
     const usersRef = collection(db, 'users');
@@ -53,7 +54,8 @@ export default function RequestFriendsListPage() {
       });
       return userInfo;
     } catch (error) {
-      console.error('사용자 정보 API 호출 도중 에러 발생 ', error);
+      console.log('사용자 정보 API 호출 도중 에러 발생');
+
       return null;
     }
   }
@@ -77,7 +79,8 @@ export default function RequestFriendsListPage() {
 
       return friendRequests;
     } catch (error) {
-      console.error('친구신청 API 호출 도중 에러 발생: ', error.message); // 에러 메시지 출력
+      console.log('친구신청 API 호출 도중 에러 발생');
+
       return [];
     }
   }
@@ -126,7 +129,7 @@ export default function RequestFriendsListPage() {
             });
           }
         } catch (error) {
-          console.error('친구 수락 도중 에러 발생 ', error);
+          console.log('친구 수락 도중 에러 발생 ');
         }
       }
       setPendingFriends((prevFriends) =>
@@ -134,7 +137,7 @@ export default function RequestFriendsListPage() {
       );
       console.log('친구 요청 수락 완료');
     } catch (error) {
-      console.error('친구 수락 도중 에러 발생 ', error);
+      console.log('친구 수락 도중 에러 발생 ');
     }
   }
 

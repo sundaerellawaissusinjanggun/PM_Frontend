@@ -6,11 +6,19 @@ const GlobalStyles = () => {
   return (
     <Global
       styles={css`
+        @font-face {
+          font-family: 'Pretendard-Regular';
+          src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')
+            format('woff');
+          font-weight: 400;
+          font-style: normal;
+        }
         ${emotionNormalize}
         * {
+          font-family: 'Pretendard-Regular';
           box-sizing: border-box;
-          scrollbar-width: none; // 스크롤의 기본 스타일은 지우고 스크롤의 기능만 사용
-          overscroll-behavior: none; // 스크롤이 오버되는 것을 막아준다.
+          scrollbar-width: none;
+          overscroll-behavior: none;
         }
         html,
         body {
@@ -38,7 +46,8 @@ const GlobalStyles = () => {
         input {
           border: none;
         }
-        ul, li {
+        ul,
+        li {
           padding: 0;
         }
       `}

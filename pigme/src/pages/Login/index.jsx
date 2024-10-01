@@ -59,7 +59,7 @@ export default function Login() {
         navigate('/home');
       }
     } catch (error) {
-      console.error('Error during Google sign-in:', error);
+      console.log('Error during Google sign-in');
     }
   };
 

@@ -29,7 +29,7 @@ export default function MyPiggyBankPage() {
       const userId = storedUser?.uid;
 
       if (!userId) {
-        console.error('No userId found');
+        console.log('No userId found');
         return;
       }
 
@@ -46,7 +46,7 @@ export default function MyPiggyBankPage() {
         });
         setMessages(messagesArray); // 메시지 상태 업데이트
       } catch (error) {
-        console.error('Error fetching messages:', error);
+        console.log('Error fetching messages');
       }
     };
 

@@ -46,7 +46,7 @@ export default function SetupProfilePage() {
 
       navigate('/home');
     } catch (error) {
-      console.error('프로필 저장 실패:', error);
+      console.log('프로필 저장 실패');
       alert('프로필 저장 중 문제가 발생했습니다. 다시 시도해 주세요.');
     }
   };

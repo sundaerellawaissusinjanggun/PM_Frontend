@@ -74,7 +74,7 @@ export default function WriteMessagePage() {
       // 메시지 저장 후 성공 모달 열기
       successModal.openModal();
     } catch (e) {
-      console.error('메세지 저장 실패: ', e);
+      console.log('메세지 저장 실패');
     }
   };
 

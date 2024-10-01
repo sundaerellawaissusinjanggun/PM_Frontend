@@ -42,7 +42,7 @@ export default function BankModal({
           });
           setMessages(messagesArray);
         } catch (error) {
-          console.error('Error fetching messages:', error);
+          console.log('message fetching');
         }
       }
     };
@@ -88,24 +88,43 @@ export default function BankModal({
           alignItems="center"
           border="1px solid #e7e7e7"
           borderRadius="20px"
-          padding="20px"
+          padding="10px"
           height="260px"
         >
-          {messages.length > 0 ? (
-            messages.map((msg, index) => (
-              <Img.RoundIcon
-                key={msg.id}
-                onClick={() => handleReadMessage(msg)}
-                pointer
-                width="50px"
-                src="/coin.svg"
-                alt="메세지"
-                style={{ margin: '0 5px' }} // 아이콘 사이의 간격을 주기 위해 스타일 추가
-              />
-            ))
-          ) : (
-            <Text.ModalText>메시지가 없습니다.</Text.ModalText>
-          )}
+          <div
+            style={{
+              position: 'relative',
+              width: '359px',
+              height: '259px',
+              overflow: 'hidden',
+            }}
+          >
+            {messages.length > 0 ? (
+              messages.map((msg, index) => {
+                const randomTop = Math.floor(Math.random() * 200); // 랜덤으로 top 위치 설정 (범위 조정 가능)
+                const randomLeft = Math.floor(Math.random() * 200); // 랜덤으로 left 위치 설정 (범위 조정 가능)
+
+                return (
+                  <Img.RoundIcon
+                    key={msg.id}
+                    onClick={() => handleReadMessage(msg)}
+                    pointer
+                    width="50px"
+                    src="/coin.svg"
+                    alt="메세지"
+                    style={{
+                      margin: '0 5px',
+                      position: 'absolute', // 절대 위치 지정
+                      top: `${randomTop}px`, // 랜덤 top 위치
+                      left: `${randomLeft}px`, // 랜덤 left 위치
+                    }}
+                  />
+                );
+              })
+            ) : (
+              <Text.ModalText>메시지가 없습니다.</Text.ModalText>
+            )}
+          </div>
         </Block.FlexBox>
         <Block.FlexBox justifyContent="space-evenly">
           <Button.SubmitBtn
