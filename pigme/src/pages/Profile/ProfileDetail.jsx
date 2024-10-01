@@ -29,7 +29,7 @@ export default function ProfileDetail() {
       if (user) {
         fetchUserData(user.uid);
       } else {
-        console.error('사용자가 로그인되어 있지 않습니다.');
+        console.log('사용자가 로그인되어 있지 않습니다.');
         navigate('/login');
       }
     });
@@ -52,7 +52,7 @@ export default function ProfileDetail() {
         await fetchUserMessages(userId);
       }
     } catch (error) {
-      console.error('사용자 정보 가져오기 실패:', error);
+      console.log('사용자 정보 가져오기 실패');
     }
   };
 
@@ -70,7 +70,7 @@ export default function ProfileDetail() {
       setMessages(userMessages);
       console.log('사용자의 메시지:', userMessages.length);
     } catch (error) {
-      console.error('메시지 데이터 가져오기 실패:', error);
+      console.log('메시지 데이터 가져오기 실패');
     }
   };
 
@@ -102,7 +102,7 @@ export default function ProfileDetail() {
       console.log('User signed out.');
       localStorage.removeItem('user');
     } catch (error) {
-      console.error('Sign out error:', error);
+      console.log('Sign out error');
     }
   };
 

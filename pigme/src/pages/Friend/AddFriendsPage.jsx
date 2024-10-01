@@ -42,13 +42,10 @@ export default function AddFriendsPage() {
           userId: uid,
         });
       } else {
-        console.error('유저 데이터를 찾을 수 없습니다.');
+        console.log('유저 데이터를 찾을 수 없습니다.');
       }
     } catch (error) {
-      console.error(
-        'Firestore에서 유저 데이터를 불러오는 중 오류 발생:',
-        error
-      );
+      console.log('Firestore에서 유저 데이터를 불러오는 중 오류 발생');
     }
   };
 
@@ -95,7 +92,6 @@ export default function AddFriendsPage() {
 
       alert('친구 요청이 성공적으로 전송되었습니다!');
     } catch (error) {
-      console.error('친구 요청 전송 오류:', error);
       alert('친구 요청 전송 중 문제가 발생했습니다.');
     }
   };
@@ -133,7 +129,7 @@ export default function AddFriendsPage() {
       const uid = currentUser.uid;
       fetchUserData(uid);
     } else {
-      console.error('사용자가 로그인되어 있지 않습니다.');
+      console.log('사용자가 로그인되어 있지 않습니다.');
     }
   }, []);
 
@@ -155,10 +151,6 @@ export default function AddFriendsPage() {
 
       <Block.BackgroundWhiteBox height="758px">
         <Block.ColumnFlexBox height="95%" justifyContent="space-evenly">
-          {/* <FriendCount>
-           
-          </FriendCount> */}
-
           <Block.ColumnFlexBox gap="20px">
             <Img.AngledIcon width="120px" src="/friends-pig.svg" />
 
@@ -212,11 +204,3 @@ export default function AddFriendsPage() {
     </>
   );
 }
-
-// const FriendCount = styled.div`
-//   position: absolute;
-//   top: 0;
-//   right: 0;
-//   padding: 30px 30px 0 0;
-//   cursor: pointer;
-// `;
