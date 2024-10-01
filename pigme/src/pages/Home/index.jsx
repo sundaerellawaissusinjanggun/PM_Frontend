@@ -33,7 +33,7 @@ export default function Home() {
       const userId = storedUser?.uid;
 
       if (!userId) {
-        console.error('No userId found');
+        console.log('No userId found');
         return;
       }
 
