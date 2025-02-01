@@ -21,7 +21,7 @@
 React, Javascript, Emotion, Vite, Firebase
 
 ### 역할 분담
-김윤일 : 웹 디자인, 퍼블리싱
+김윤일 : 웹 디자인, 퍼블리싱  
 고주희 : 디자인시스템 제작, Figma를 이용한 PIGME 모바일웹 UI 기획, 화면 구현, Firebase를 이용한 DB 구성 및 API 연결
 
 ### 결과물
